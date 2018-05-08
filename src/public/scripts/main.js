@@ -67,16 +67,16 @@ class CMS
         });
 
         //Content Divs
-        this.divEntriesAll = document.getElementById("entries-all");
-        this.divEntriesSingle = document.getElementById("entries-single");
-        this.divEntriesAdd = document.getElementById("entries-add");
-        this.divEntriesEdit = document.getElementById("entries-edit");
-        this.divEntriesDelete = document.getElementById("entries-delete");
+        this.divEntriesAll      = document.getElementById("entries-all");
+        this.divEntriesSingle   = document.getElementById("entries-single");
+        this.divEntriesAdd      = document.getElementById("entries-add");
+        this.divEntriesEdit     = document.getElementById("entries-edit");
+        this.divEntriesDelete   = document.getElementById("entries-delete");
 
-        this.divUsersAll = document.getElementById("users-all");
+        this.divUsersAll        = document.getElementById("users-all");
 
-        this.divRegister = document.getElementById("users-register");
-        this.divLogin = document.getElementById("users-login");
+        this.divRegister        = document.getElementById("users-register");
+        this.divLogin           = document.getElementById("users-login");
 
         this.Debug();
     }
@@ -177,9 +177,36 @@ class CMS
         //console.log(data);
     }
 
+    UpdateEntry(aID)
+    {
+        const url = '/api/entries/' + aID;
+
+        const postOptions = 
+        {
+            method: 'PATCH',
+            credentials: 'include'
+        }
+
+        const data = this.PostData(url, postOptions);
+
+        //Debug Purpose
+        //console.log(data);
+    }
+
     DeleteEntry(aID)
     {
         const url = '/api/entries/' + aID;
+
+        const postOptions = 
+        {
+            method: 'DELETE',
+            credentials: 'include'
+        }
+
+        const data = this.PostData(url, postOptions);
+
+        //Debug Purpose
+        //console.log(data);
     }
 
     async GetAllUsers()
@@ -210,7 +237,7 @@ class CMS
 
     async PostData(aURL, aPostoptions)
     {
-        const response = await fetch(aURL);
+        const response = await fetch(aURL, aPostoptions);
         const data = await response.json();
 
         //Debug Purpose
@@ -267,12 +294,32 @@ class CMS
 
     PresentEntryAsHTML(aData)
     {
-        let divTitle = document.getElementById("entry-single-title");
-        let divContent = document.getElementById("entry-single-content");
-        let divCreatedBy = document.getElementById("entry-single-created-by");
-        let divCReatedAt = document.getElementById("entry-single-created-at");
+        let divTitle        = document.getElementById("entry-single-title");
+        let divContent      = document.getElementById("entry-single-content");
+        let divCreatedBy    = document.getElementById("entry-single-created-by");
+        let divCreatedAt    = document.getElementById("entry-single-created-at");
 
         console.log(aData);
+    }
+
+    UpdateEntryEdit(aID)
+    {
+        const data = this.GetEntry(aID);
+
+        let inputEditTitle      = document.getElementById("edit-title");
+        let inputEditContent    = document.getElementById("edit-content");
+        let butttonEdit         = document.getElementById("btn-edit");
+
+        //Write this when GetEntry works
+
+        //inputEditTitle.value = ;
+        //inputEditContent.value = ;
+
+        //butttonEdit.removeEventListener("submit", this.editCommand);
+        
+        //this.editCommand = () => { this.UpdateEntry() };
+
+        //butttonEdit.addEventListener("submit", this.editCommand);
     }
 
     DivToggle(aString)

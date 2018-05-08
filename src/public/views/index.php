@@ -13,6 +13,10 @@
 </head>
 <body>
 
+<header>
+    Boilerplate retards API
+</header>
+
 <nav>
 
     <form id="form-search" method="POST">
@@ -72,11 +76,11 @@
         </div>
     </div>
 
-    
-
     <div id="entries-delete" class="hidden">
         <div>
             <strong>Delete Entry</strong>
+        </div>
+        <div id="entries-delete-confirmation">
         </div>
     </div>
 
