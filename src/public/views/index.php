@@ -5,32 +5,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Frontend</title>
-
+  <title>Retards</title>
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Cinzel|Raleway" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script src="scripts/main.js"></script>
+  <script src="scripts/main.js" defer></script>
 
 </head>
 <body>
-
-<header>
-    Boilerplate retards API
-</header>
-
-<nav>
-
-    <form id="form-search" method="POST">
-        <input id="input-search" type="text" name="search-text">
-        <button id="btn-search" type="submit" form="form-search">Search</button>
-    </form>
-</nav>
-<main>
-
-    <div id="entries-all" class="hidden">
-        <div>
-            <strong>All entries</strong>
-        </div>
-        <div id="entries-all-container">
+    <nav class="nav top">
+        <ul>
+            <li class="usrname">usrname</li>
+            <li class="login">login</li>
+            <li class="search">🔎</li>
+        </ul>
+    </nav>
+    <header class="hero">
+        <h1 class="title">Boilerplate retards API</h1>
+    </header>
+        <main>
+            <!-- <form id="form-search" method="POST">
+                <input id="input-search" type="text" name="search-text">
+                <button id="btn-search" type="submit" form="form-search">Search</button>
+            </form> -->
+        
+        <div id="entries-all" class="hidden">
+            <div>
+                <strong>All entries</strong>
+            </div>
+            <div id="entries-all-container">
         </div>
     </div>
 
