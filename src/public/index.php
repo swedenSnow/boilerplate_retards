@@ -90,6 +90,12 @@ $app->post('/register', function ($request, $response, $args)
     return $response->withJson('Success');
 });
 
+$app->get('/register/{username}', function ($request, $response, $args) {
+    $username = $args['username'];
+    $user_exists = $this->users->GetUserByID($username);
+    return $response->withJson(['data' => $user_exists]);
+});
+
 /**
  * The group is used to group everything connected to the API under '/api'
  * This was done so that we can check if the user is authed when calling '/api'
@@ -104,6 +110,14 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/users
     $app->get('/users', function ($request, $response, $args) 
     {
+        $query_params = $request->getQueryParams();
+        
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->users->GetNumUsers($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }
+
         $all_users = $this->users->GetAllUsers();
         return $response->withJson(['data' => $all_users]);
     });
@@ -122,6 +136,14 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/entries
     $app->get('/entries', function ($request, $response, $args)
     {
+        $query_params = $request->getQueryParams();
+
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->entries->GetNumEntries($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }
+
         $all_entries = $this->entries->GetAllEntries();                                               //This should be limited to 20 later on
         return $response->withJson(['data' => $all_entries]);
     });
@@ -193,7 +215,15 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/comments
     $app->get('/comments', function ($request, $response, $args)
     {
-        $all_comments = $this->comments->GetAllComments();                                               //This should be limited to 20 later on
+        $query_params = $request->getQueryParams();
+        
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->comments->GetNumComments($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }        
+
+        $all_comments = $this->comments->GetAllComments();
         return $response->withJson(['data' => $all_comments]);
     });
 
@@ -201,6 +231,15 @@ $app->group('/api', function () use ($app) {
     $app->get('/comments/{id}', function ($request, $response, $args)
     {
         $id = $args['id'];
+        
+        $query_params = $request->getQueryParams();
+        
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->comments->GetNumComments($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }        
+
         $comment = $this->comments->GetCommentsByID($id);
         return $response->withJson(['data' => $comment]);
     });
@@ -220,6 +259,6 @@ $app->group('/api', function () use ($app) {
         $comment = $this->comments->DeleteComment($id);
         return $response->withJson(['data' => $comment]);
     });
-});
+});//->add($auth);
 
 $app->run();

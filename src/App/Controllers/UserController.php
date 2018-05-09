@@ -33,6 +33,24 @@ class UserController
         }
     }
 
+    public function GetNumUsers($limit)
+    {        
+        try 
+        {
+            //Not returning Password
+            $statement = $this->db->prepare("SELECT u.userID, u.username, u.createdAt FROM users AS u LIMIT :num");
+            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
+            $statement->execute();
+            $result = $statement->fetchAll();
+
+            return $result;
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
     public function GetUserByID($id)
     {        
         try 
@@ -44,6 +62,28 @@ class UserController
             $result = $statement->fetch();
 
             return $result;
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    public function UsernameExists($username)
+    {
+        try
+        {
+            $statement = $this->db->prepare("SELECT * FROM users WHERE username=:username"); 
+            $statement->bindparam(":username", $username);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($statement->rowCount() > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
         catch (PDOException $e)
         {

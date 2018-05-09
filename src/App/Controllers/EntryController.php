@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Controllers;
+use PDO;
 
 class EntryController
 {
@@ -25,6 +26,23 @@ class EntryController
             echo $e->getMessage();
         }
     }
+    
+    public function GetNumEntries($limit)
+    {        
+        try 
+        {
+            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT :num");
+            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
+            $statement->execute();
+
+            return $statement->fetchAll();
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
 
     public function GetEntryByID($id)
     {   

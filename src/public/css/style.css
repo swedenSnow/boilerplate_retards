@@ -5,8 +5,31 @@ body, html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
-
 .hidden
 {
     display: none;
+}
+
+.register-username-container #register-username
+{
+    border-radius: 3px;
+    border: 1px #000000 solid;
+    padding-left: 10px;
+    font-weight: bolder;
+    color: #000000;
+    height: 40px;
+    width: 350px;
+}
+
+.register-username-container .fa 
+{
+    margin: auto -30px;
+    color: #000000;
+}
+
+
+input[type="text"] 
+{    
+    background: #FFFFFF;
+    padding-right: 50px; 
 }

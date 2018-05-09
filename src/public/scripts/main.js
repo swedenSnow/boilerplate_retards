@@ -1,10 +1,4 @@
-async function main() {
-  const response = await fetch('/todos/1');
-  const { data } = await response.json();
-  console.log(data);
-}
-
-main();
+//debugger;
 
 class DOMFactory
 {
@@ -23,9 +17,7 @@ class DOMFactory
     CreateTextAndAppendTo(aText, aElementToAppendTo)
     {
         let textNode = document.createTextNode(aText);
-        aElementToAppendTo.appendChild(element);
-
-        return textNode;
+        aElementToAppendTo.appendChild(textNode);
     }
 
     CreateLinkWithText(aLinkText, aLinkHref, aElementToAppendTo)
@@ -50,22 +42,6 @@ class CMS
     {
         this.DOMFactory = new DOMFactory();
 
-        const formLogin = document.getElementById('form-login');
-        formLogin.addEventListener('submit', (e) =>
-        {
-            e.preventDefault();
-            const formData = new FormData(formLogin);
-            this.Login(formData);
-        });
-        
-        const formRegister = document.getElementById('form-login');
-        formLogin.addEventListener('submit', (e) =>
-        {
-            e.preventDefault();
-            const formData = new FormData(formRegister);
-            this.Register(formData);
-        });
-
         //Content Divs
         this.divEntriesAll      = document.getElementById("entries-all");
         this.divEntriesSingle   = document.getElementById("entries-single");
@@ -78,6 +54,31 @@ class CMS
         this.divRegister        = document.getElementById("users-register");
         this.divLogin           = document.getElementById("users-login");
 
+        //EventListeners
+        //Forms
+        const formLogin = document.getElementById("form-login");
+        formLogin.addEventListener("submit", (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formLogin);
+            this.Login(formData);
+        });
+        
+        const formRegister = document.getElementById("form-login");
+        formLogin.addEventListener("submit", (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formRegister);
+            this.Register(formData);
+        });
+
+        //Input
+        this.inputRegisterUsername     = document.getElementById("register-username");
+        this.inputRegisterUsername.addEventListener("onblur", () => this.CheckUsernameAvailability());
+
+        //Buttons
+
+        //Debug things...
         this.Debug();
     }
 
@@ -85,19 +86,19 @@ class CMS
     {
         this.divDebug = document.getElementById("debug");
 
-        btnShowRegister = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
+        let btnShowRegister = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("Register Div", btnShowRegister);
         btnShowRegister.addEventListener("click", () => this.divRegister.classList.toggle("hidden"));
 
-        btnShowLogin = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
+        let btnShowLogin = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("Register Div", btnShowLogin);
         btnShowLogin.addEventListener("click", () => this.divLogin.classList.toggle("hidden"));
 
-        btnShowAllUsers = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
+        let btnShowAllUsers = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("All Users Div", btnShowAllUsers);
         btnShowAllUsers.addEventListener("click", () => this.divUsersAll.classList.toggle("hidden"));
         
-        btnShowAllEntries = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
+        let btnShowAllEntries = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("All Entries Div", btnShowAllEntries);
         btnShowAllEntries.addEventListener("click", () => this.divEntriesAll.classList.toggle("hidden"));
     }
@@ -117,6 +118,8 @@ class CMS
 
         //Debug Purpose
         //console.log(data);
+
+        //this.HandleLoginResult();
     }
 
     LogOut()
@@ -139,10 +142,11 @@ class CMS
 
         //Debug Purpose
         //console.log(data);
+
+        //this.HandleRegisterResult();
     }
 
-    //Should return 20 entries 
-    GetAllEntries()
+    async GetAllEntries()
     {
         const url = '/api/entries';
 
@@ -151,7 +155,7 @@ class CMS
         this.PresentEntriesAsHTML(data);
     }
 
-    GetEntry(aID)
+    async GetEntry(aID)
     {
         const url = '/api/entries/' + aID;
 
@@ -160,7 +164,7 @@ class CMS
         this.PresentEntryAsHTML(data);
     }
 
-    PostEntry(aFormData)
+    async PostEntry(aFormData)
     {
         const url = 'api/todos';
         
@@ -171,13 +175,13 @@ class CMS
             credentials: 'include'
         }
 
-        const data = this.PostData(url, postOptions);
+        const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
         //console.log(data);
     }
 
-    UpdateEntry(aID)
+    async UpdateEntry(aID)
     {
         const url = '/api/entries/' + aID;
 
@@ -187,13 +191,13 @@ class CMS
             credentials: 'include'
         }
 
-        const data = this.PostData(url, postOptions);
+        const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
         //console.log(data);
     }
 
-    DeleteEntry(aID)
+    async DeleteEntry(aID)
     {
         const url = '/api/entries/' + aID;
 
@@ -203,7 +207,7 @@ class CMS
             credentials: 'include'
         }
 
-        const data = this.PostData(url, postOptions);
+        const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
         //console.log(data);
@@ -218,7 +222,7 @@ class CMS
         this.PresentUsersAsHTML(data);
     }
 
-    PostComment(aFormData)
+    async PostComment(aFormData)
     {
         const url = '/api/comments';
 
@@ -342,6 +346,49 @@ class CMS
         {
             aElement.removeChild(aElement.firstChild);
         }
+    }
+
+    async CheckUsernameAvailability()
+    {
+        console.log(this.inputRegisterUsername.value);
+
+        let username = this.inputRegisterUsername.value;
+        
+        if (username.length > 0)
+        {
+            let icon = document.getElementById("register-username-icon");
+            icon.classList.toggle("fa-user");
+            icon.classList.toggle("fa-spinner");
+          
+            const data = await this.GetUserNameAvailability(username);
+
+            console.log(data);
+
+            if (true)
+            {
+                //icon.classList.toggle("fa-check");
+                //this.inputRegisterUsername.classList.toggle("green", true);
+                //this.inputRegisterUsername.classList.toggle("red", false);
+            }
+            else
+            {
+                //icon.classList.toggle("fa-times");
+                //this.inputRegisterUsername.classList.toggle("red", true);
+                //this.inputRegisterUsername.classList.toggle("green", false);
+            }
+        }
+    }
+
+    async GetUserNameAvailability(aUserName)
+    {
+        console.log(aUserName);
+
+        const url = 'register/' + aUserName;
+
+        const data = this.FetchData(url);
+
+        //Debug purpose
+        console.log(data);
     }
 }
 

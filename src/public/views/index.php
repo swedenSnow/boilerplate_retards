@@ -8,7 +8,8 @@
   <title>Frontend</title>
 
   <link rel="stylesheet" href="css/style.css">
-  <script src="scripts/main.js"></script>
+  <script src="scripts/main.js" defer></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
 
 </head>
 <body>
@@ -38,12 +39,23 @@
         <div>
             <strong>Single Entry</strong>
         </div>
+    
         <div id="entries-single-container">
             <div id="entry-single-title"></div>
             <div id="entry-single-content"></div>
             <div id="entry-single-created-by"></div>
             <div id="entry-single-created-at"></div>
+            <div id="entry-likes">
+                <i class="far fa-thumbs-up"></i>
+            </div>
         </div>
+
+        <div id="entry-comments">
+            <div id="entry-comment-username"></div>
+            <div id="entry-comment-content"></div>
+            <div id="entry-comment-created-at"></div>
+        </div>
+
     </div>
 
     <div id="entries-post" class="hidden">
@@ -99,10 +111,15 @@
         <div>
             <strong>Register</strong>
             <form id="form-register" method="POST">
-                <label for="register-username"><strong>Username:</strong></label>
-                <input id="register-username" type="text" name="username">
-                <label for="register-password"><strong>Username:</strong></label>
-                <input id="register-password" type="password" name="password">
+                <div class="register-username-container">
+                    <label for="register-username"><strong>Username:</strong></label>
+                    <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
+                    <i id="register-username-icon" class="fa fa-user"></i>
+                </div>
+                <div class="register-password-container">        
+                    <label for="register-password"><strong>Password:</strong></label>
+                    <input id="register-password" type="password" name="password" required>
+                </div>
                 <button id="btn-register" form="form-register">Register</button>
             </form>
         </div>
@@ -116,11 +133,11 @@
         <div>
             <strong>Login</strong>
             <form id="form-login" method="POST">
-                <label for="register-username"><strong>Username:</strong></label>
-                <input id="register-username" type="text" name="username">
-                <label for="register-password"><strong>Username:</strong></label>
-                <input id="register-password" type="password" name="password">
-                <button id="btn-register" form="form-register">Login</button>
+                <label for="login-username"><strong>Username:</strong></label>
+                <input id="login-username" type="text" name="username" pattern=".{6,}" required title="Usernames have a minimum length of 6 characters">
+                <label for="login-password"><strong>Password:</strong></label>
+                <input id="login-password" type="password" name="password" required>
+                <button id="btn-login" form="form-login">Login</button>
             </form>
         </div>
 
