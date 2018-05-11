@@ -405,85 +405,63 @@ header,
   justify-content: center;
   height: 20rem;
   width: 100%;
-  background-image: radial-gradient(
-      circle at 100% 150%,
-      #3bc1ac 24%,
-      #42d2bb 25%,
-      #42d2bb 28%,
-      #3bc1ac 29%,
-      #3bc1ac 36%,
-      #42d2bb 36%,
-      #42d2bb 40%,
-      transparent 40%,
-      transparent
+  /* background: linear-gradient(135deg, #ccc 25%, transparent 25%) -50px 0,
+    linear-gradient(225deg, #eee 25%, transparent 25%) -50px 0,
+    linear-gradient(315deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, #eee 25%, transparent 25%);
+  background-size: 100px 100px;
+  background-color: #fff; */
+  background: linear-gradient(
+      30deg,
+      white 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #bdbdbd 87.5%,
+      #bdbdbd 0
     ),
-    radial-gradient(
-      circle at 0 150%,
-      #3bc1ac 24%,
-      #42d2bb 25%,
-      #42d2bb 28%,
-      #3bc1ac 29%,
-      #3bc1ac 36%,
-      #42d2bb 36%,
-      #42d2bb 40%,
-      transparent 40%,
-      transparent
+    linear-gradient(
+      150deg,
+      white 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #bdbdbd 87.5%,
+      #bdbdbd 0
     ),
-    radial-gradient(
-      circle at 50% 100%,
-      #42d2bb 10%,
-      #3bc1ac 11%,
-      #3bc1ac 23%,
-      #42d2bb 24%,
-      #42d2bb 30%,
-      #3bc1ac 31%,
-      #3bc1ac 43%,
-      #42d2bb 44%,
-      #42d2bb 50%,
-      #3bc1ac 51%,
-      #3bc1ac 63%,
-      #42d2bb 64%,
-      #42d2bb 71%,
-      transparent 71%,
-      transparent
+    linear-gradient(
+      30deg,
+      white 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #bdbdbd 87.5%,
+      #bdbdbd 0
     ),
-    radial-gradient(
-      circle at 100% 50%,
-      #42d2bb 5%,
-      #3bc1ac 6%,
-      #3bc1ac 15%,
-      #42d2bb 16%,
-      #42d2bb 20%,
-      #3bc1ac 21%,
-      #3bc1ac 30%,
-      #42d2bb 31%,
-      #42d2bb 35%,
-      #3bc1ac 36%,
-      #3bc1ac 45%,
-      #42d2bb 46%,
-      #42d2bb 49%,
-      transparent 50%,
-      transparent
+    linear-gradient(
+      150deg,
+      white 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #bdbdbd 87.5%,
+      #bdbdbd 0
     ),
-    radial-gradient(
-      circle at 0 50%,
-      #42d2bb 5%,
-      #3bc1ac 6%,
-      #3bc1ac 15%,
-      #42d2bb 16%,
-      #42d2bb 20%,
-      #3bc1ac 21%,
-      #3bc1ac 30%,
-      #42d2bb 31%,
-      #42d2bb 35%,
-      #3bc1ac 36%,
-      #3bc1ac 45%,
-      #42d2bb 46%,
-      #42d2bb 49%,
-      transparent 50%,
-      transparent
-    );
-  background-size: 100px 50px;
+    linear-gradient(
+      60deg,
+      #dbdbdb 25%,
+      transparent 25.5%,
+      transparent 75%,
+      #dbdbdb 75%,
+      #dbdbdb 0
+    ),
+    linear-gradient(
+      60deg,
+      #dbdbdb 25%,
+      transparent 25.5%,
+      transparent 75%,
+      #dbdbdb 75%,
+      #dbdbdb 0
+    ),
+    lightpink;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+  background-size: 80px 140px;
 }
 
 .title {
