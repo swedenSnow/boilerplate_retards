@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class CommentController
+class CommentsController
 {
     private $db;
 

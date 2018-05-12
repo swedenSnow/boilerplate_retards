@@ -246,9 +246,11 @@ class CMS
         //Loading Div.
 
         let data = await this.GetEntry(aID);
-        await this.GetCommentsForID(aID);
+        let commentData = await this.GetCommentsForID(aID);
+        console.log(commentData);
 
         this.PresentEntryAsHTML(data);
+        this.PresentCommentsAsHTML(commentData);
         
         this.DivToggle("ShowSingleEntry");
     }
@@ -276,14 +278,12 @@ class CMS
     }
 
     async GetCommentsForID(aID)
-    {
-        return;
-        
+    {        
         const url = '/api/entries/comments/' + aID;
 
         const data = await this.FetchData(url);
 
-        this.PresentCommentsForSingleEntry(data);
+        return data;
     }
 
     async PostEntry(aFormData)
@@ -488,16 +488,43 @@ class CMS
         console.log(aData.data.entryID);
         if (aData.data.createdBy == this.userID)
         {
-            let edit = this.DOMFactory.CreateLinkWithText("EDIT", "javascript:void(0)", divOptions);
-            edit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
-        }
+            let linkEdit = this.DOMFactory.CreateLinkWithText("EDIT", "javascript:void(0)", divOptions);
+            linkEdit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
 
-        console.log(aData);
+            let linkDelete = this.DOMFactory.CreateLinkWithText("DELETE", "javascript:void(0)", divOptions);
+            linkDelete.addEventListener("click", () => this.ShowDeleteEntry(aData.data.entryID));
+        }
     }
 
-    PresentCommentsForSingleEntry(aData)
+    PresentCommentsAsHTML(aData)
     {
-        console.log("Write PresentCommentsForSingleEntry()");
+        let divComments = document.getElementById("entry-comments");
+
+        this.ClearElement(divComments);
+
+        if (aData.data != null)
+        {
+            for (let comment of aData.data)
+            {
+                console.log(comment);
+    
+                let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
+    
+                let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                divUserName.innerText = user.username;
+    
+                let divUserCreated = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                divUserCreated.innerText = "Created at: " + comment.createdAt;
+    
+                let divCommentContent = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                divCommentContent.innerText = comment.content;
+            }
+        }
+        else
+        {
+            let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
+            divComment.innerText = "No comments. Why dont you post one?"
+        }
     }
 
     PresentSearchResults(aSearchText, aData)
