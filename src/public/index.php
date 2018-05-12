@@ -94,7 +94,7 @@ $app->post('/register', function ($request, $response, $args)
 
 $app->get('/register/{username}', function ($request, $response, $args) {
     $username = $args['username'];
-    $user_exists = $this->users->GetUserByID($username);
+    $user_exists = $this->users->UsernameExists($username);
     return $response->withJson(['data' => $user_exists]);
 });
 
@@ -154,7 +154,7 @@ $app->group('/api', function () use ($app) {
     $app->post('/entries', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        $new_entry = $this->entries->AddEntry($body);
+        $new_entry = $this->entries->AddEntry($_SESSION['userID'], $body);
         return $response->withJson(['data' => $new_entry]);                                           
     });
 

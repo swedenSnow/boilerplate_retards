@@ -61,14 +61,13 @@ class EntryController
         }
     }
 
-    public function AddEntry($body)
+    public function AddEntry($user_id, $body)
     { 
-        $user_id = $body['user_id'];
         $title = $body['title'];
         $content = $body['content'];
         $created_at = date("Y-m-d H:i:s");
             
-        $statement = $this->database->prepare("INSERT INTO entries (title, content, createdBy, createdAt) VALUES (:title, :content, :userID, :createdAt)");
+        $statement = $this->db->prepare("INSERT INTO entries (title, content, createdBy, createdAt) VALUES (:title, :content, :userID, :createdAt)");
         $statement->bindParam(':title', $title);
         $statement->bindParam(':content', $content);
         $statement->bindParam(':userID', $user_id); 

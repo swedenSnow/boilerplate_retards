@@ -4,6 +4,7 @@ class DOMFactory
 {
     constructor()
     {
+        this.editCommand = null;
     }
 
     CreateElementAndAppendTo(aType, aElementToAppendTo)
@@ -74,6 +75,14 @@ class CMS
             this.Register(formData);
         });
 
+        const formPost = document.getElementById("form-post");
+        formPost.addEventListener("submit", (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formPost);
+            this.PostEntry(formData);
+        });
+
         const formSearch = document.getElementById("form-search");
         formSearch.addEventListener("submit", (e) =>
         {
@@ -85,15 +94,23 @@ class CMS
 
         //Input
         this.inputRegisterUsername     = document.getElementById("register-username");
-        this.inputRegisterUsername.addEventListener("onblur", () => this.CheckUsernameAvailability());
+        this.inputRegisterUsername.addEventListener("blur", () => this.CheckUsernameAvailability());
 
         
-        this.inputSearchText     = document.getElementById("input-search");
+        this.inputSearchText        = document.getElementById("input-search");
+
+        this.inputPostTitle         = document.getElementById("post-title");
+        this.inputPostContent       = document.getElementById("post-content");
+
+        this.inputEditTitle         = document.getElementById("edit-title");
+        this.inputEditContent       = document.getElementById("edit-content");
 
         //Buttons
 
         //Debug things...
         this.Debug();
+
+        this.userID = 2;
     }
 
     Debug()
@@ -143,12 +160,14 @@ class CMS
 
     HandleLoginResult(aData)
     {
+        console.log(aData);   
         if (aData.error != undefined)
         {    
             console.log("ERROR: " + aData.error);
         }
         else
-        {            
+        {         
+            console.log(aData.data);   
             this.userID = aData.data[0];
             this.userName = aData.data[1];
 
@@ -226,10 +245,25 @@ class CMS
     {
         //Loading Div.
 
-        await this.GetEntry(aID);
+        let data = await this.GetEntry(aID);
         await this.GetCommentsForID(aID);
+
+        this.PresentEntryAsHTML(data);
         
         this.DivToggle("ShowSingleEntry");
+    }
+
+    async ShowEditEntry(aID)
+    {
+        //Loading Div.
+
+        console.log("ID: " + aID);
+        let data = await this.GetEntry(aID);
+        console.log(data);
+
+        await this.UpdateEntryEdit(data);
+
+        this.DivToggle("ShowEditEntry");
     }
 
     async GetEntry(aID)
@@ -238,7 +272,7 @@ class CMS
 
         const data = await this.FetchData(url);
 
-        this.PresentEntryAsHTML(data);
+        return data;
     }
 
     async GetCommentsForID(aID)
@@ -254,6 +288,9 @@ class CMS
 
     async PostEntry(aFormData)
     {
+        console.log(this.inputPostTitle.value);
+        console.log(this.inputPostContent.value);
+
         const url = 'api/entries';
         
         const postOptions = 
@@ -266,7 +303,10 @@ class CMS
         const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
-        //console.log(data);
+        console.log(data);
+
+        this.inputPostTitle.value   = "";
+        this.inputPostContent.value = "";
     }
 
     async UpdateEntry(aID)
@@ -343,6 +383,25 @@ class CMS
         //console.log(data);
     }
 
+    async ShowPostsByUsername(aUserName)
+    {
+        console.log(aUserName);
+        let data = await this.GetEntriesByUsername(aUserName);
+
+        console.log(data);
+        this.PresentEntriesAsHTML(data);
+        this.DivToggle("ShowAllEntries");
+    }
+
+    async GetEntriesByUsername(aUserName)
+    {
+        const url = '/api/' + aUserName + '/entries';
+
+        const data = await this.FetchData(url);
+
+        return data;
+    }
+
     async PostData(aURL, aPostoptions)
     {
         const response = await fetch(aURL, aPostoptions);
@@ -389,7 +448,7 @@ class CMS
 
             let divUserPostLink = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
             let linkUser = this.DOMFactory.CreateLinkWithText("Show posts", "javascript:void(0)", divUserPostLink);
-            linkUser.addEventListener("click", () => this.ShowPostsByUserID(user.userID));
+            linkUser.addEventListener("click", () => this.ShowPostsByUsername(user.username));
         }
     }
 
@@ -407,6 +466,8 @@ class CMS
             let linkTitle = this.DOMFactory.CreateLinkWithText(entry.title, "javascript:void(0)", divEntryTitle);
             linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
         }
+
+        console.log("Showing " + aData.data.length + " posts.");
     }
 
     PresentEntryAsHTML(aData)
@@ -415,11 +476,21 @@ class CMS
         let divContent      = document.getElementById("entry-single-content");
         let divCreatedBy    = document.getElementById("entry-single-created-by");
         let divCreatedAt    = document.getElementById("entry-single-created-at");
+        let divOptions      = document.getElementById("entry-single-options");
 
         divTitle.innerText = aData.data.title;
         divContent.innerText = aData.data.content;
         divCreatedBy.innerText = aData.data.username;
         divCreatedAt.innerText = aData.data.createdAt;
+
+        this.ClearElement(divOptions);
+
+        console.log(aData.data.entryID);
+        if (aData.data.createdBy == this.userID)
+        {
+            let edit = this.DOMFactory.CreateLinkWithText("EDIT", "javascript:void(0)", divOptions);
+            edit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
+        }
 
         console.log(aData);
     }
@@ -448,24 +519,34 @@ class CMS
         }
     }
 
-    UpdateEntryEdit(aID)
+    UpdateEntryEdit(aData)
     {
-        const data = this.GetEntry(aID);
 
         let inputEditTitle      = document.getElementById("edit-title");
         let inputEditContent    = document.getElementById("edit-content");
         let butttonEdit         = document.getElementById("btn-edit");
 
         //Write this when GetEntry works
+        console.log(aData);
 
-        //inputEditTitle.value = ;
-        //inputEditContent.value = ;
+        inputEditTitle.value = aData.data.title;
+        inputEditContent.value = aData.data.content;
 
-        //butttonEdit.removeEventListener("submit", this.editCommand);
+
+        if (this.editCommand != null)
+        {
+            butttonEdit.removeEventListener("submit", this.editCommand);
+        }
         
-        //this.editCommand = () => { this.UpdateEntry() };
+        const formEdit = document.getElementById("form-edit");
+        this.editCommand = (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formEdit);
+            this.UpdateEntry(aData.data.entryID);
+        };
 
-        //butttonEdit.addEventListener("submit", this.editCommand);
+        formEdit.addEventListener("submit", this.editCommand);
     }
 
     DivToggle(aString)
@@ -501,38 +582,41 @@ class CMS
         if (username.length > 0)
         {
             let icon = document.getElementById("register-username-icon");
-            icon.classList.toggle("fa-user");
+            icon.classList.remove("fa-user");
             icon.classList.toggle("fa-spinner");
           
             const data = await this.GetUserNameAvailability(username);
 
             console.log(data);
 
-            if (true)
+            if (data.data == true)
             {
-                //icon.classList.toggle("fa-check");
-                //this.inputRegisterUsername.classList.toggle("green", true);
-                //this.inputRegisterUsername.classList.toggle("red", false);
+                icon.classList.toggle("fa-times");
+                icon.classList.remove("fa-check");
+                icon.classList.remove("fa-spinner");
+                this.inputRegisterUsername.style.borderColor = "red";
+                this.inputRegisterUsername.style.backgroundColor = "rgba(255, 0, 0, 0.1)";
             }
             else
             {
-                //icon.classList.toggle("fa-times");
-                //this.inputRegisterUsername.classList.toggle("red", true);
-                //this.inputRegisterUsername.classList.toggle("green", false);
+                icon.classList.toggle("fa-check");
+                icon.classList.remove("fa-times");
+                icon.classList.remove("fa-spinner");
+                this.inputRegisterUsername.style.borderColor = "green";
+                this.inputRegisterUsername.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
             }
         }
     }
 
     async GetUserNameAvailability(aUserName)
     {
-        console.log(aUserName);
+        console.log("Checking username: " + aUserName);
 
         const url = 'register/' + aUserName;
 
-        const data = this.FetchData(url);
+        const data = await this.FetchData(url);
 
-        //Debug purpose
-        console.log(data);
+        return data;
     }
 }
 

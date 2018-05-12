@@ -45,6 +45,7 @@
             <div id="entry-single-content"></div>
             <div id="entry-single-created-by"></div>
             <div id="entry-single-created-at"></div>
+            <div id="entry-single-options"></div>
             <div id="entry-likes">
                 <i class="far fa-thumbs-up"></i>
             </div>
@@ -59,7 +60,7 @@
     </div>
 
     <div id="entries-post" class="hidden">
-        <div id="register-message" class="hidden">
+        <div id="post-message" class="hidden">
         </div>
         <div>
             <strong>Post Entry</strong>
@@ -74,7 +75,7 @@
     </div>
 
     <div id="entries-edit" class="hidden">
-        <div id="register-message" class="hidden">
+        <div id="edit-message" class="hidden">
         </div>
         <div>
             <strong>Edit Entry</strong>
