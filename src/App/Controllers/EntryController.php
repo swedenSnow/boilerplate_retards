@@ -81,7 +81,7 @@ class EntryController
     {
         try 
         {
-            $statement = $this->database->prepare("DELETE FROM entries WHERE entryID=:id");
+            $statement = $this->db->prepare("DELETE FROM entries WHERE entryID=:id");
             $statement->bindparam(":id", $id);   
             $statement->execute();
 
@@ -100,7 +100,7 @@ class EntryController
             $title = $body['title'];
             $content = $body['content'];
 
-            $statement = $this->database->prepare("UPDATE entries 
+            $statement = $this->db->prepare("UPDATE entries 
             SET title=:title, content=:content 
             WHERE entryID=:id"
             );

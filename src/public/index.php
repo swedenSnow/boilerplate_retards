@@ -146,7 +146,7 @@ $app->group('/api', function () use ($app) {
             return $response->withJson(['data' => $limit_entries]);
         }
 
-        $all_entries = $this->entries->GetAllEntries();                                               //This should be limited to 20 later on
+        $all_entries = $this->entries->GetAllEntries();
         return $response->withJson(['data' => $all_entries]);
     });
 
@@ -154,6 +154,7 @@ $app->group('/api', function () use ($app) {
     $app->post('/entries', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
+        return $response->withJson(['data' => $_SESSION]);                  
         $new_entry = $this->entries->AddEntry($_SESSION['userID'], $body);
         return $response->withJson(['data' => $new_entry]);                                           
     });
@@ -241,8 +242,8 @@ $app->group('/api', function () use ($app) {
     $app->post('/comments', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        $new_comment = $this->comments->PostComment($body);
-        return $response->withJson(['data' => $new_comment]);                                           
+        $new_comment = $this->comments->PostComment($_SESSION['userID'], $body);
+        return $response->withJson(['data' => $new_comment]);
      });
 
     // DELETE http://localhost:XXXX/api/comments/id

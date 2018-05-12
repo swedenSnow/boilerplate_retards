@@ -47,7 +47,7 @@
             <div id="entry-single-created-at"></div>
             <div id="entry-single-options"></div>
             <div id="entry-likes">
-                <i class="far fa-thumbs-up"></i>
+                <i id="entry-like" class="far fa-thumbs-up"></i>
             </div>
         </div>
 

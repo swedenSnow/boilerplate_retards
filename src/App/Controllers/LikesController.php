@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Controllers;
+use PDO;
 
 class LikesController
 {

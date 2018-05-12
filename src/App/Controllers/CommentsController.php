@@ -60,10 +60,22 @@ class CommentsController
         }
     }
 
-    public function PostComment($body)
+    public function PostComment($user_id, $body)
     {
         try 
         {
+            $entry_id = $body['id'];
+            $content = $body['content'];
+            $created_at = date("Y-m-d H:i:s");
+                
+            $statement = $this->db->prepare("INSERT INTO comments (entryID, content, createdBy, createdAt) VALUES (:entryID, :content, :userID, :createdAt)");
+            $statement->bindParam(':entryID', $entry_id);
+            $statement->bindParam(':content', $content);
+            $statement->bindParam(':userID', $user_id); 
+            $statement->bindParam(':createdAt', $created_at); 
+            $statement->execute();
+    
+            return ['id' => (int)$this->db->lastInsertId()];
         }
         catch (PDOException $e)
         {
@@ -74,7 +86,12 @@ class CommentsController
     public function DeleteComment($id)
     {
         try 
-        {
+        { 
+            $statement = $this->db->prepare("DELETE FROM comments WHERE commentID=:id");
+            $statement->bindparam(":id", $id);   
+            $statement->execute();
+
+            return $statement;
         }
         catch (PDOException $e)
         {

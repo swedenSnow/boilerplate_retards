@@ -5,6 +5,7 @@ class DOMFactory
     constructor()
     {
         this.editCommand = null;
+        this.cmdPostComment = null;
     }
 
     CreateElementAndAppendTo(aType, aElementToAppendTo)
@@ -105,6 +106,8 @@ class CMS
         this.inputEditTitle         = document.getElementById("edit-title");
         this.inputEditContent       = document.getElementById("edit-content");
 
+        this.inputCommentContent    = document.getElementById("comment-content");
+
         //Buttons
 
         //Debug things...
@@ -190,11 +193,7 @@ class CMS
             body: aFormData
         }
 
-        //console.log(aFormData);
         const data = await this.PostData(url, postOptions);
-
-        //Debug Purpose
-        console.log(data);
 
         //this.HandleRegisterResult();
     }
@@ -249,7 +248,7 @@ class CMS
         let commentData = await this.GetCommentsForID(aID);
 
         this.PresentEntryAsHTML(data);
-        this.PresentCommentsAsHTML(commentData);
+        this.PresentCommentsAsHTML(aID, commentData);
         
         this.DivToggle("ShowSingleEntry");
     }
@@ -287,9 +286,6 @@ class CMS
 
     async PostEntry(aFormData)
     {
-        console.log(this.inputPostTitle.value);
-        console.log(this.inputPostContent.value);
-
         const url = 'api/entries';
         
         const postOptions = 
@@ -300,8 +296,6 @@ class CMS
         }
 
         const data = await this.PostData(url, postOptions);
-
-        //Debug Purpose
         console.log(data);
 
         this.inputPostTitle.value   = "";
@@ -328,9 +322,6 @@ class CMS
          */
 
         const data = await this.PostData(url, postOptions);
-
-        //Debug Purpose
-        //console.log(data);
     }
 
     async DeleteEntry(aID)
@@ -344,9 +335,6 @@ class CMS
         }
 
         const data = await this.PostData(url, postOptions);
-
-        //Debug Purpose
-        //console.log(data);
     }
 
     async ShowAllUsers()
@@ -365,30 +353,33 @@ class CMS
         this.PresentUsersAsHTML(data);
     }
 
-    async PostComment(aFormData)
+    async PostComment(aID, aFormData)
     {
+        aFormData.append("id", aID);
+
         const url = '/api/comments';
 
         const postOptions = 
         {
             method: 'POST',
-            body: formData,
+            body: aFormData,
             credentials: 'include'
         }
 
         const data = await this.PostData(url, postOptions);
 
-        //Debug Purpose
-        //console.log(data);
+        //Refreshing this instead of using returndata because it was faster to code.
+        this.ShowSingleEntry(aID);
+
+        this.inputCommentContent.value = "";
     }
 
     async ShowPostsByUsername(aUserName)
     {
-        console.log(aUserName);
         let data = await this.GetEntriesByUsername(aUserName);
 
-        console.log(data);
         this.PresentEntriesAsHTML(data);
+
         this.DivToggle("ShowAllEntries");
     }
 
@@ -404,12 +395,17 @@ class CMS
     async PostData(aURL, aPostoptions)
     {
         const response = await fetch(aURL, aPostoptions);
-        //const data = await response.json();
+        
         const data = await response.json();
 
-        //Debug Purpose
-        //console.log(data);
+        return data;
+    }
 
+    async PostDataDebug(aURL, aPostoptions)
+    {
+        const response = await fetch(aURL, aPostoptions);
+        const data = await response.text();
+        console.log(data);
         return data;
     }
 
@@ -422,9 +418,6 @@ class CMS
 
         const response = await fetch(aURL, postOptions);
         const data = await response.json();
-
-        //Debug Purpose
-        //console.log(data);
 
         return data;
     }
@@ -494,7 +487,7 @@ class CMS
         }
     }
 
-    PresentCommentsAsHTML(aData)
+    PresentCommentsAsHTML(aID, aData)
     {
         let divComments = document.getElementById("entry-comments");
 
@@ -504,6 +497,8 @@ class CMS
         {
             for (let comment of aData.data)
             {    
+
+                //This could be extracted
                 let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
     
                 let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
@@ -524,6 +519,22 @@ class CMS
             let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
             divComment.innerText = "No comments. Why dont you post one?"
         }
+
+        const formAddComment = document.getElementById("form-addcomment");
+
+        if (this.cmdPostComment != null)
+        {
+            formAddComment.removeEventListener("submit", this.cmdPostComment);
+        }
+        
+        this.cmdPostComment = (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formAddComment);
+            this.PostComment(aID, formData);
+        };
+
+        formAddComment.addEventListener("submit", this.cmdPostComment);
     }
 
     PresentSearchResults(aSearchText, aData)
@@ -552,27 +563,24 @@ class CMS
         let inputEditContent    = document.getElementById("edit-content");
         let butttonEdit         = document.getElementById("btn-edit");
 
-        //Write this when GetEntry works
-        console.log(aData);
-
         inputEditTitle.value = aData.data.title;
         inputEditContent.value = aData.data.content;
 
+        const formEdit = document.getElementById("form-edit");
 
-        if (this.editCommand != null)
+        if (this.cmdEdit != null)
         {
-            butttonEdit.removeEventListener("submit", this.editCommand);
+            formEdit.removeEventListener("submit", this.cmdEdit);
         }
         
-        const formEdit = document.getElementById("form-edit");
-        this.editCommand = (e) =>
+        this.cmdEdit = (e) =>
         {
             e.preventDefault();
             const formData = new FormData(formEdit);
-            this.UpdateEntry(aData.data.entryID);
+            this.UpdateEntry(aData.data.entryID, formData);
         };
 
-        formEdit.addEventListener("submit", this.editCommand);
+        formEdit.addEventListener("submit", this.cmdEdit);
     }
 
     DivToggle(aString)
