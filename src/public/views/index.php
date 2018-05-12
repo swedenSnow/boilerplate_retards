@@ -52,9 +52,15 @@
         </div>
 
         <div id="entry-comments">
-            <div id="entry-comment-username"></div>
-            <div id="entry-comment-content"></div>
-            <div id="entry-comment-created-at"></div>
+        </div>
+
+        <div id="entry-add-comment">
+            <strong>Add comment</strong>
+            <form id="form-addcomment" method="POST">
+                <label for="comment-content"><strong>Content:</strong></label>
+                <textarea id="comment-content" name="content"></textarea>            
+                <button id="btn-addcomment" form="form-addcomment">Post Comment</button>
+            </form>
         </div>
 
     </div>
