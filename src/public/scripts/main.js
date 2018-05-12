@@ -45,9 +45,11 @@ class CMS
         //Content Divs
         this.divEntriesAll      = document.getElementById("entries-all");
         this.divEntriesSingle   = document.getElementById("entries-single");
-        this.divEntriesAdd      = document.getElementById("entries-add");
+        this.divEntriesAdd      = document.getElementById("entries-post");
         this.divEntriesEdit     = document.getElementById("entries-edit");
         this.divEntriesDelete   = document.getElementById("entries-delete");
+
+        this.divSearchResults   = document.getElementById("entries-search-results");
 
         this.divUsersAll        = document.getElementById("users-all");
 
@@ -64,17 +66,29 @@ class CMS
             this.Login(formData);
         });
         
-        const formRegister = document.getElementById("form-login");
-        formLogin.addEventListener("submit", (e) =>
+        const formRegister = document.getElementById("form-register");
+        formRegister.addEventListener("submit", (e) =>
         {
             e.preventDefault();
             const formData = new FormData(formRegister);
             this.Register(formData);
         });
 
+        const formSearch = document.getElementById("form-search");
+        formSearch.addEventListener("submit", (e) =>
+        {
+            e.preventDefault();
+            const formData = new FormData(formSearch);
+            this.Search(formData);
+        });
+
+
         //Input
         this.inputRegisterUsername     = document.getElementById("register-username");
         this.inputRegisterUsername.addEventListener("onblur", () => this.CheckUsernameAvailability());
+
+        
+        this.inputSearchText     = document.getElementById("input-search");
 
         //Buttons
 
@@ -91,19 +105,24 @@ class CMS
         btnShowRegister.addEventListener("click", () => this.divRegister.classList.toggle("hidden"));
 
         let btnShowLogin = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Register Div", btnShowLogin);
+        this.DOMFactory.CreateTextAndAppendTo("Login Div", btnShowLogin);
         btnShowLogin.addEventListener("click", () => this.divLogin.classList.toggle("hidden"));
 
         let btnShowAllUsers = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("All Users Div", btnShowAllUsers);
-        btnShowAllUsers.addEventListener("click", () => this.divUsersAll.classList.toggle("hidden"));
+        btnShowAllUsers.addEventListener("click", () => this.ShowAllUsers());
         
         let btnShowAllEntries = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("All Entries Div", btnShowAllEntries);
-        btnShowAllEntries.addEventListener("click", () => this.divEntriesAll.classList.toggle("hidden"));
+        btnShowAllEntries.addEventListener("click", () => this.ShowAllEntries());
+        
+        let btnShowPostEntry = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
+        this.DOMFactory.CreateTextAndAppendTo("Post Entry", btnShowPostEntry);
+        btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));
+        
     }
 
-    Login(aFormData)
+    async Login(aFormData)
     {
         const url = '/login';
 
@@ -114,12 +133,27 @@ class CMS
             credentials: 'include'
         }
 
-        const data = this.PostData(url, postOptions);
+        const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
         //console.log(data);
 
-        //this.HandleLoginResult();
+        this.HandleLoginResult(data);
+    }
+
+    HandleLoginResult(aData)
+    {
+        if (aData.error != undefined)
+        {    
+            console.log("ERROR: " + aData.error);
+        }
+        else
+        {            
+            this.userID = aData.data[0];
+            this.userName = aData.data[1];
+
+            console.log("Welcome " + this.userName + ". You are now logged in." );
+        }
     }
 
     LogOut()
@@ -127,23 +161,56 @@ class CMS
         const url = '/logout';
     }
 
-    Register(aFormData)
+    async Register(aFormData)
     {
         const url = '/register';
 
         const postOptions = 
         {
             method: 'POST',
-            body: aFormData,
-            credentials: 'include'
+            body: aFormData
         }
 
-        const data = this.PostData(url, postOptions);
+        //console.log(aFormData);
+        const data = await this.PostData(url, postOptions);
 
         //Debug Purpose
-        //console.log(data);
+        console.log(data);
 
         //this.HandleRegisterResult();
+    }
+
+    async Search(aFormData)
+    {
+        let searchText = this.inputSearchText.value;
+        if (searchText != "")
+        {
+            const url = 'api/search';
+        
+            const postOptions = 
+            {
+                method: 'POST',
+                body: aFormData
+            }
+    
+            const data = await this.PostData(url, postOptions);
+    
+            this.PresentSearchResults(searchText, data);
+    
+            //Debug Purpose
+            console.log(data);
+    
+            this.DivToggle("ShowSearchResults");
+        }
+    }
+
+    async ShowAllEntries()
+    {
+        //Loading Div.
+
+        this.GetAllEntries();
+
+        this.DivToggle("ShowAllEntries");
     }
 
     async GetAllEntries()
@@ -155,6 +222,16 @@ class CMS
         this.PresentEntriesAsHTML(data);
     }
 
+    async ShowSingleEntry(aID)
+    {
+        //Loading Div.
+
+        await this.GetEntry(aID);
+        await this.GetCommentsForID(aID);
+        
+        this.DivToggle("ShowSingleEntry");
+    }
+
     async GetEntry(aID)
     {
         const url = '/api/entries/' + aID;
@@ -164,14 +241,25 @@ class CMS
         this.PresentEntryAsHTML(data);
     }
 
+    async GetCommentsForID(aID)
+    {
+        return;
+        
+        const url = '/api/entries/comments/' + aID;
+
+        const data = await this.FetchData(url);
+
+        this.PresentCommentsForSingleEntry(data);
+    }
+
     async PostEntry(aFormData)
     {
-        const url = 'api/todos';
+        const url = 'api/entries';
         
         const postOptions = 
         {
             method: 'POST',
-            body: formData,
+            body: aFormData,
             credentials: 'include'
         }
 
@@ -190,6 +278,15 @@ class CMS
             method: 'PATCH',
             credentials: 'include'
         }
+
+        /*
+        const postOptions = 
+        {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'content=Fresh Content&title=My New Shiny Title'
+         }
+         */
 
         const data = await this.PostData(url, postOptions);
 
@@ -211,6 +308,13 @@ class CMS
 
         //Debug Purpose
         //console.log(data);
+    }
+
+    async ShowAllUsers()
+    {
+        await this.GetAllUsers();
+
+        this.DivToggle("ShowAllUsers");
     }
 
     async GetAllUsers()
@@ -242,6 +346,7 @@ class CMS
     async PostData(aURL, aPostoptions)
     {
         const response = await fetch(aURL, aPostoptions);
+        //const data = await response.json();
         const data = await response.json();
 
         //Debug Purpose
@@ -272,13 +377,20 @@ class CMS
 
         this.ClearElement(divUsersContainer);
 
-        for (let user of aData)
+        for (let user of aData.data)
         {
-            console.log(user);
-        }
+            let divUser = this.DOMFactory.CreateElementAndAppendTo("div", divUsersContainer);
 
-        //Debug Purpose
-        //console.log(aData);
+            let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
+            divUserName.innerText = user.username;
+
+            let divUserCreated = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
+            divUserCreated.innerText = "Created at: " + user.createdAt;
+
+            let divUserPostLink = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
+            let linkUser = this.DOMFactory.CreateLinkWithText("Show posts", "javascript:void(0)", divUserPostLink);
+            linkUser.addEventListener("click", () => this.ShowPostsByUserID(user.userID));
+        }
     }
 
     PresentEntriesAsHTML(aData)
@@ -287,13 +399,14 @@ class CMS
 
         this.ClearElement(divAllEntriesContainer);
 
-        for (let entry of aData)
+        for (let entry of aData.data)
         {
-            console.log(entry);
-        }
+            let divEntry = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
 
-        //Debug Purpose
-        //console.log(aData);
+            let divEntryTitle = this.DOMFactory.CreateElementAndAppendTo("div", divEntry);
+            let linkTitle = this.DOMFactory.CreateLinkWithText(entry.title, "javascript:void(0)", divEntryTitle);
+            linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
+        }
     }
 
     PresentEntryAsHTML(aData)
@@ -303,7 +416,36 @@ class CMS
         let divCreatedBy    = document.getElementById("entry-single-created-by");
         let divCreatedAt    = document.getElementById("entry-single-created-at");
 
+        divTitle.innerText = aData.data.title;
+        divContent.innerText = aData.data.content;
+        divCreatedBy.innerText = aData.data.username;
+        divCreatedAt.innerText = aData.data.createdAt;
+
         console.log(aData);
+    }
+
+    PresentCommentsForSingleEntry(aData)
+    {
+        console.log("Write PresentCommentsForSingleEntry()");
+    }
+
+    PresentSearchResults(aSearchText, aData)
+    {
+        let divSearchResults = document.getElementById("entries-search-results-container");
+        let divSearchResultsText = document.getElementById("entries-search-results-text");
+
+        this.ClearElement(divSearchResults);
+
+        divSearchResultsText.innerText = "Search word: " + aSearchText + " returned " + aData.data.length + " results.";
+
+        for (let result of aData.data)
+        {
+            let divResult = this.DOMFactory.CreateElementAndAppendTo("div", divSearchResults);
+
+            let divEntryTitle = this.DOMFactory.CreateElementAndAppendTo("div", divResult);
+            let linkTitle = this.DOMFactory.CreateLinkWithText(result.title, "javascript:void(0)", divEntryTitle);
+            linkTitle.addEventListener("click", () => this.ShowSingleEntry(result.entryID));
+        }
     }
 
     UpdateEntryEdit(aID)
@@ -338,9 +480,11 @@ class CMS
 
         this.divRegister.classList.toggle("hidden", aString != "ShowRegister");
         this.divLogin.classList.toggle("hidden", aString != "ShowLogin");
+
+        this.divSearchResults.classList.toggle("hidden", aString != "ShowSearchResults");
     }
 
-    ClearElement()
+    ClearElement(aElement)
     {
         while (aElement.firstChild) 
         {

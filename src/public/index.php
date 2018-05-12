@@ -80,11 +80,13 @@ $app->post('/register', function ($request, $response, $args)
 
     $username = $body['username'];
     $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
-    
-    $statement = $this->database->prepare("INSERT INTO users(username, password) 
-    VALUES(:username, :password)");
+    $created_at = date("Y-m-d H:i:s");
+        
+        $statement = $this->database->prepare("INSERT INTO users(username, password, createdAt) 
+        VALUES(:username, :password, :createdAt)");
     $statement->bindparam(":username", $username);
-    $statement->bindparam(":password", $hashed_password);            
+    $statement->bindparam(":password", $hashed_password);    
+    $statement->bindparam(":createdAt", $created_at);          
     $statement->execute(); 
     
     return $response->withJson('Success');
@@ -181,8 +183,8 @@ $app->group('/api', function () use ($app) {
         return $response->withJson(['data' => $entry]);
     });
 
-    // POST http://localhost:XXXX/api/entries
-    $app->post('/entries/search', function ($request, $response, $args)
+    // POST http://localhost:XXXX/api/entries/search
+    $app->post('/search', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
         $search_results = $this->entries->Search($body['search-text']);
@@ -231,16 +233,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/comments/{id}', function ($request, $response, $args)
     {
         $id = $args['id'];
-        
-        $query_params = $request->getQueryParams();
-        
-        if (isset($query_params['limit']))
-        {
-            $limit_entries = $this->comments->GetNumComments($query_params['limit']); 
-            return $response->withJson(['data' => $limit_entries]);
-        }        
-
-        $comment = $this->comments->GetCommentsByID($id);
+        $comment = $this->comments->GetCommentID($id);
         return $response->withJson(['data' => $comment]);
     });
 
@@ -258,6 +251,14 @@ $app->group('/api', function () use ($app) {
         $id = $args['id'];
         $comment = $this->comments->DeleteComment($id);
         return $response->withJson(['data' => $comment]);
+    });
+
+    // GET http://localhost:XXXX/api/entries/comments/id
+    $app->get('/entries/comments/{id}', function ($request, $response, $args) 
+    {
+        $id = $args['id'];
+        $entry_comments = $this->comments->GetCommentsForEntryID($id);
+        return $response->withJson(['data' => $entry_comments]);
     });
 });//->add($auth);
 

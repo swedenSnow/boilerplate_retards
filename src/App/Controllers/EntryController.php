@@ -1,5 +1,4 @@
 <?php 
-
 namespace App\Controllers;
 use PDO;
 
@@ -75,6 +74,8 @@ class EntryController
         $statement->bindParam(':userID', $user_id); 
         $statement->bindParam(':createdAt', $created_at); 
         $statement->execute();
+
+        return ['id' => (int)$this->db->lastInsertId()];
     }
 
     public function DeleteEntry($id)
@@ -122,12 +123,12 @@ class EntryController
         try 
         {
             $search_value = "%" .$search_text. "%";
-            $statement = $this->database->prepare("SELECT * FROM entries WHERE (title LIKE :search_value OR content LIKE :search_value)");
+            $statement = $this->db->prepare("SELECT * FROM entries WHERE (title LIKE :search_value OR content LIKE :search_value)");
             $statement->bindparam(":search_value", $search_value);   
             $statement->execute();
             $result = $statement->fetchAll();
 
-            return 'Not implemented';
+            return $result;
         }
         catch (PDOException $e)
         {

@@ -1,5 +1,6 @@
 <?php 
 namespace App\Controllers;
+use PDO;
 
 if (session_status() == PHP_SESSION_NONE) 
 {
@@ -106,11 +107,13 @@ class UserController
     {
         $username = $body['username'];
         $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
+        $created_at = date("Y-m-d H:i:s");
         
-        $statement = $this->database->prepare("INSERT INTO users(username, password) 
-        VALUES(:username, :password)");
+        $statement = $this->database->prepare("INSERT INTO users(username, password, createdAt) 
+        VALUES(:username, :password, :createdAt)");
         $statement->bindparam(":username", $username);
-        $statement->bindparam(":password", $hashed_password);            
+        $statement->bindparam(":password", $hashed_password); 
+        $statement->bindparam(":createdAt", $created_at);            
         $statement->execute(); 
     }
 

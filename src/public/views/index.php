@@ -96,6 +96,16 @@
         </div>
     </div>
 
+    <div id="entries-search-results" class="hidden">
+        <div>
+            <strong>Search Results</strong>
+        </div>
+        <div id="entries-search-results-text">
+        </div>
+        <div id="entries-search-results-container">
+        </div>
+    </div>
+
     <div id="users-all" class="hidden">
         <div>
             <strong>All Users</strong>

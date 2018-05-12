@@ -43,29 +43,12 @@ class CommentController
         }
     }
 
-    public function GetCommentsByID($id)
+    public function GetCommentID($id)
     {   
         try 
         {
-            $statement = $this->db->prepare("SELECT * FROM comments ORDER BY commentID DESC WHERE createdBy:id");
+            $statement = $this->db->prepare("SELECT * FROM comments WHERE commentID=:id");
             $statement->bindParam(':id', $id, PDO::PARAM_INT);
-            $statement->execute();
-
-            return $statement->fetchAll();
-        }
-        catch (PDOException $e)
-        {
-            echo $e->getMessage();
-        }
-    }
-
-    public function GetNumCommentsByID($id, $limit)
-    {
-        try 
-        {
-            $statement = $this->db->prepare("SELECT * FROM comments ORDER BY commentID DESC WHERE createdBy:id LIMIT :num");
-            $statement->bindParam(':id', $id, PDO::PARAM_INT);
-            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
             $statement->execute();
 
             return $statement->fetchAll();
@@ -88,6 +71,17 @@ class CommentController
     }
 
     public function DeleteComment($id)
+    {
+        try 
+        {
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    public function GetCommentsForEntryID($id)
     {
         try 
         {
