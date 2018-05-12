@@ -15,7 +15,7 @@ class EntryController
     {        
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT 20");
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT 20");
             $statement->execute();
 
             return $statement->fetchAll();
@@ -30,7 +30,7 @@ class EntryController
     {        
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT :num");
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT :num");
             $statement->bindParam(':num', $limit, PDO::PARAM_INT);
             $statement->execute();
 
@@ -47,7 +47,7 @@ class EntryController
     {   
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID WHERE entryID=:id");
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID WHERE entryID=:id");
             $statement->execute([
               ":id" => $id
             ]);
@@ -139,7 +139,7 @@ class EntryController
     {
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.userID FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE username=:username");
+            $statement = $this->db->prepare("SELECT e.*, u.userID, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE username=:username");
             
             $statement->bindparam(":username", $username);  
             $statement->execute(); 
@@ -157,7 +157,7 @@ class EntryController
     {
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.userID FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE createdBy=:id");
+            $statement = $this->db->prepare("SELECT e.*, u.userID, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE createdBy=:id");
             $statement->bindparam(":id", $id);   
             $statement->execute(); 
             $result = $statement->fetchAll();

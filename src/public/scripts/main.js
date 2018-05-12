@@ -247,7 +247,6 @@ class CMS
 
         let data = await this.GetEntry(aID);
         let commentData = await this.GetCommentsForID(aID);
-        console.log(commentData);
 
         this.PresentEntryAsHTML(data);
         this.PresentCommentsAsHTML(commentData);
@@ -485,7 +484,6 @@ class CMS
 
         this.ClearElement(divOptions);
 
-        console.log(aData.data.entryID);
         if (aData.data.createdBy == this.userID)
         {
             let linkEdit = this.DOMFactory.CreateLinkWithText("EDIT", "javascript:void(0)", divOptions);
@@ -505,13 +503,14 @@ class CMS
         if (aData.data != null)
         {
             for (let comment of aData.data)
-            {
-                console.log(comment);
-    
+            {    
                 let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
     
                 let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
-                divUserName.innerText = user.username;
+
+                let divUserLink = this.DOMFactory.CreateElementAndAppendTo("div", divUserName);
+                let linkUser = this.DOMFactory.CreateLinkWithText(comment.username, "javascript:void(0)", divUserLink);
+                linkUser.addEventListener("click", () => this.ShowPostsByUsername(comment.username));
     
                 let divUserCreated = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
                 divUserCreated.innerText = "Created at: " + comment.createdAt;

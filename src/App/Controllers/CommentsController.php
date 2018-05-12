@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Controllers;
+use PDO;
 
 class CommentsController
 {
@@ -15,7 +16,7 @@ class CommentsController
     {        
         try 
         {
-            $statement = $this->db->prepare("SELECT * FROM comments ORDER BY commentID DESC LIMIT 20");
+            $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID ORDER BY commentID DESC LIMIT 20");
             $statement->execute();
 
             return $statement->fetchAll();
@@ -30,7 +31,7 @@ class CommentsController
     {        
         try 
         {
-            $statement = $this->db->prepare("SELECT * FROM comments LIMIT :num");
+            $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID LIMIT :num");
             $statement->bindParam(':num', $limit, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll();
@@ -47,7 +48,7 @@ class CommentsController
     {   
         try 
         {
-            $statement = $this->db->prepare("SELECT * FROM comments WHERE commentID=:id");
+            $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID WHERE commentID=:id");
             $statement->bindParam(':id', $id, PDO::PARAM_INT);
             $statement->execute();
 
@@ -85,6 +86,12 @@ class CommentsController
     {
         try 
         {
+            $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID WHERE entryID=:id");
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->execute();
+            $result = $statement->fetchAll();
+
+            return $result;
         }
         catch (PDOException $e)
         {
