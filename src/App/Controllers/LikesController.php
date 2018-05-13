@@ -12,14 +12,15 @@ class LikesController
         $this->db = $pdo;
     }
 
-    public function GetLikesForID($entry_id)
+    public function GetLikesForEntryID($entry_id) 
     {        
         try 
-        {
-            $statement = $this->db->prepare("SELECT COUNT(*) as num_likes FROM likes WHERE entryID=");
-            $statement->execute([':id' => $id]);
+        {   
+            //"SELECT COUNT(*) as num_likes FROM likes WHERE entryID=:id"
+            $statement = $this->db->prepare("SELECT * FROM likes WHERE entryID=:id");
+            $statement->execute([':id' => $entry_id]);
 
-            return $getOne->fetch();
+            return $statement->fetchAll();
         }
         catch (PDOException $e)
         {

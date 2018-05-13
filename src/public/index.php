@@ -261,6 +261,19 @@ $app->group('/api', function () use ($app) {
         $entry_comments = $this->comments->GetCommentsForEntryID($id);
         return $response->withJson(['data' => $entry_comments]);
     });
+
+    //---------------------------------------------------------------------------------------------
+    // Likes
+    //---------------------------------------------------------------------------------------------
+
+    // GET http://localhost:XXXX/api/likes/id
+    $app->get('/likes/{id}', function ($request, $response, $args) 
+    {
+        $id = $args['id'];
+        $entry_comments = $this->likes->GetLikesForEntryID($id);
+        return $response->withJson(['data' => $entry_comments]);
+    });
+
 });//->add($auth);
 
 $app->run();

@@ -92,6 +92,11 @@ $container['comments'] = function ($c) {
     return $commentsControllers;
 };
 
+$container['likes'] = function ($c) {
+    $likesControllers = new \App\Controllers\LikesController($c->get('db'));
+    return $likesControllers;
+};
+
 
 
 

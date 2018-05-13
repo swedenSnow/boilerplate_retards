@@ -6,6 +6,7 @@ class DOMFactory
     {
         this.editCommand = null;
         this.cmdPostComment = null;
+        this.entryLiked = undefined;
     }
 
     CreateElementAndAppendTo(aType, aElementToAppendTo)
@@ -57,6 +58,8 @@ class CMS
 
         this.divRegister        = document.getElementById("users-register");
         this.divLogin           = document.getElementById("users-login");
+
+        this.iconLikes          = document.getElementById("entry-like");
 
         //EventListeners
         //Forms
@@ -246,9 +249,11 @@ class CMS
 
         let data = await this.GetEntry(aID);
         let commentData = await this.GetCommentsForID(aID);
+        let likesData = await this.GetLikesData(aID);
 
         this.PresentEntryAsHTML(data);
         this.PresentCommentsAsHTML(aID, commentData);
+        this.UpdateLikes(likesData);
         
         this.DivToggle("ShowSingleEntry");
     }
@@ -280,6 +285,17 @@ class CMS
         const url = '/api/entries/comments/' + aID;
 
         const data = await this.FetchData(url);
+
+        return data;
+    }
+
+    async GetLikesData(aID)
+    {
+        const url = 'api/likes/' + aID;
+
+        const data = await this.FetchData(url);
+
+        console.log(data);
 
         return data;
     }
@@ -497,8 +513,6 @@ class CMS
         {
             for (let comment of aData.data)
             {    
-
-                //This could be extracted
                 let divComment = this.DOMFactory.CreateElementAndAppendTo("div", divComments);
     
                 let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
@@ -581,6 +595,32 @@ class CMS
         };
 
         formEdit.addEventListener("submit", this.cmdEdit);
+    }
+
+    
+    UpdateLikes(aLikesData)
+    {
+        if (aLikesData.data != null)
+        {
+            let like = aLikesData.data.find(o => Number(o.userID) === this.userID);
+
+            if (like != undefined)
+            {
+                this.iconLikes.classList.toggle("fas", true);
+                this.iconLikes.classList.toggle("far", false);
+
+                this.entryLiked = true;
+            }
+            else
+            {
+                this.iconLikes.classList.toggle("fas", false);
+                this.iconLikes.classList.toggle("far", true);
+
+                this.entryLiked = false;
+            }
+
+            console.log("Likes: " + aLikesData.data.length);
+        }
     }
 
     DivToggle(aString)
