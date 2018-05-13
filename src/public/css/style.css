@@ -370,6 +370,7 @@ nav {
 }
 
 nav ul {
+  font-family: "Raleway";
   margin: 0;
   padding: 0;
   list-style: none;
@@ -413,7 +414,7 @@ header,
   background-color: #fff; */
   background: linear-gradient(
       30deg,
-      white 12%,
+      #bdbdbd 12%,
       transparent 12.5%,
       transparent 87%,
       #bdbdbd 87.5%,
@@ -421,15 +422,15 @@ header,
     ),
     linear-gradient(
       150deg,
-      white 12%,
+      #bdbdbd 12%,
       transparent 12.5%,
       transparent 87%,
-      #bdbdbd 87.5%,
+      pink 87.5%,
       #bdbdbd 0
     ),
     linear-gradient(
       30deg,
-      white 12%,
+      #bdbdbd 12%,
       transparent 12.5%,
       transparent 87%,
       #bdbdbd 87.5%,
@@ -437,7 +438,7 @@ header,
     ),
     linear-gradient(
       150deg,
-      white 12%,
+      #bdbdbd 12%,
       transparent 12.5%,
       transparent 87%,
       #bdbdbd 87.5%,
@@ -445,21 +446,21 @@ header,
     ),
     linear-gradient(
       60deg,
-      #dbdbdb 25%,
+      pink 25%,
       transparent 25.5%,
       transparent 75%,
       #dbdbdb 75%,
-      #dbdbdb 0
+      pink 0
     ),
     linear-gradient(
       60deg,
-      #dbdbdb 25%,
+      lightblue 25%,
       transparent 25.5%,
       transparent 75%,
       #dbdbdb 75%,
-      #dbdbdb 0
+      lightblue 0
     ),
-    lightpink;
+    white;
   background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
   background-size: 80px 140px;
 }
@@ -468,14 +469,35 @@ header,
   font-size: 3rem;
   letter-spacing: 5px;
   text-transform: uppercase;
+  text-align: center;
 }
 
+h1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+}
+
+h1:before,
+h1:after {
+  flex: 1;
+  height: 3px;
+  content: "";
+  background-color: black;
+}
+
+h1::before {
+  margin-right: 2rem;
+}
+h1::after {
+  margin-left: 2rem;
+}
 main {
   display: flex;
-  min-height: 100vh;
-  min-width: 100%;
+  min-height: 100%;
+  min-width: 100vw;
 }
-
 .hidden {
   display: none;
 }

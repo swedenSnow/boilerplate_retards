@@ -20,7 +20,7 @@
         </ul>
     </nav>
     <header class="hero">
-        <h1 class="title">Boilerplate retards API</h1>
+        <h1 class="title">Boilerplate Retards</h1>
     </header>
         <main>
             <!-- <form id="form-search" method="POST">
