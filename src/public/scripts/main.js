@@ -6,6 +6,7 @@ class DOMFactory
     {
         this.editCommand = null;
         this.cmdPostComment = null;
+        this.cmdLike = null;
         this.entryLiked = undefined;
     }
 
@@ -117,6 +118,7 @@ class CMS
         this.Debug();
 
         this.userID = 2;
+        this.userName = "indiehjaerta";
     }
 
     Debug()
@@ -141,8 +143,7 @@ class CMS
         
         let btnShowPostEntry = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("Post Entry", btnShowPostEntry);
-        btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));
-        
+        btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));  
     }
 
     async Login(aFormData)
@@ -253,7 +254,7 @@ class CMS
 
         this.PresentEntryAsHTML(data);
         this.PresentCommentsAsHTML(aID, commentData);
-        this.UpdateLikes(likesData);
+        this.UpdateLikes(aID, likesData);
         
         this.DivToggle("ShowSingleEntry");
     }
@@ -429,7 +430,8 @@ class CMS
     {
         const postOptions = 
         {
-            method: 'GET'
+            method: 'GET',
+            credentials: 'include'
         }
 
         const response = await fetch(aURL, postOptions);
@@ -598,11 +600,13 @@ class CMS
     }
 
     
-    UpdateLikes(aLikesData)
+    UpdateLikes(aID, aLikesData)
     {
+        console.log(this.userID);
         if (aLikesData.data != null)
         {
             let like = aLikesData.data.find(o => Number(o.userID) === this.userID);
+            console.log(this.userID);
 
             if (like != undefined)
             {
@@ -610,6 +614,18 @@ class CMS
                 this.iconLikes.classList.toggle("far", false);
 
                 this.entryLiked = true;
+
+                if (this.cmdLike != null)
+                {
+                    this.iconLikes.removeEventListener("click", this.cmdLike);
+                }
+                
+                this.cmdLike = () => this.UpdateLikeState(aID, false);
+
+                this.iconLikes.addEventListener("click", this.cmdLike);
+
+                console.log("LOL");
+                
             }
             else
             {
@@ -617,6 +633,15 @@ class CMS
                 this.iconLikes.classList.toggle("far", true);
 
                 this.entryLiked = false;
+
+                if (this.cmdLike != null)
+                {
+                    this.iconLikes.removeEventListener("click", this.cmdLike);
+                }
+                
+                this.cmdLike = () => this.UpdateLikeState(aID, true);
+
+                this.iconLikes.addEventListener("click", this.cmdLike);
             }
 
             console.log("Likes: " + aLikesData.data.length);
@@ -691,6 +716,15 @@ class CMS
         const data = await this.FetchData(url);
 
         return data;
+    }
+
+    async UpdateLikeState(aID, aLikeState)
+    {
+        const url = 'api/likes/' + aID + "?like=" + aLikeState;
+
+        const data = await this.FetchData(url);
+
+        console.log(data);
     }
 }
 

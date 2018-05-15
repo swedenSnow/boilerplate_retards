@@ -44,6 +44,41 @@ class LikesController
             echo $e->getMessage();
         }
     }
+
+    public function Like($user_id, $entry_id)
+    {        
+        try 
+        {
+            $statement = $this->db->prepare("INSERT INTO likes(entryID, userID) VALUES(:entryID, :userID)");
+            $statement->bindparam(":entryID", $entry_id);   
+            $statement->bindparam(":userID", $user_id);   
+            $statement->execute();
+
+            return $statement->rowCount();
+            
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    public function UnLike($entry_id, $user_id)
+    {        
+        try 
+        {
+            $statement = $this->db->prepare("DELETE FROM likes WHERE entryID=:entryID AND userID=:userID");
+            $statement->bindparam(":entryID", $entry_id);   
+            $statement->bindparam(":userID", $user_id);   
+            $statement->execute();
+
+            return $statement->rowCount();
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

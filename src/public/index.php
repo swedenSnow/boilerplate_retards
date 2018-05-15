@@ -269,9 +269,42 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/likes/id
     $app->get('/likes/{id}', function ($request, $response, $args) 
     {
+        $query_params = $request->getQueryParams();
+
         $id = $args['id'];
+        if (isset($query_params['like']))
+        {
+            if ($query_params['like'] == "true")
+            {
+                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+            }
+            else
+            {
+                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+            }
+            return $response->withJson(['data' => $like_reponse]);
+        }
         $entry_comments = $this->likes->GetLikesForEntryID($id);
         return $response->withJson(['data' => $entry_comments]);
+    });
+    
+    // GET http://localhost:XXXX/api/likes/id
+    $app->get('/likes/{id}/like?', function ($request, $response, $args) 
+    {      
+        $id = $args['id'];
+        if (isset($query_params['like']))
+        {
+            if ($query_params['like'] == true)
+            {
+                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+            }
+            else
+            {
+                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+            }
+            return $response->withJson(['data' => $like_reponse]);
+        }
+        return $response->withJson(['data' => null]);
     });
 
 });//->add($auth);

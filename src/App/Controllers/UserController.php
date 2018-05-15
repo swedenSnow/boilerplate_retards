@@ -109,7 +109,7 @@ class UserController
         $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
         $created_at = date("Y-m-d H:i:s");
         
-        $statement = $this->database->prepare("INSERT INTO users(username, password, createdAt) 
+        $statement = $this->db->prepare("INSERT INTO users(username, password, createdAt) 
         VALUES(:username, :password, :createdAt)");
         $statement->bindparam(":username", $username);
         $statement->bindparam(":password", $hashed_password); 
