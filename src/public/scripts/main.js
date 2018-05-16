@@ -318,26 +318,21 @@ class CMS
         this.inputPostContent.value = "";
     }
 
-    async UpdateEntry(aID)
+    async UpdateEntry(aID, aFormData)
     {
         const url = '/api/entries/' + aID;
 
-        const postOptions = 
-        {
-            method: 'PATCH',
-            credentials: 'include'
-        }
-
-        /*
+        
         const postOptions = 
         {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'content=Fresh Content&title=My New Shiny Title'
+            body: 'title=' + aFormData.get("title") + '&content=' + aFormData.get("content")
          }
-         */
 
         const data = await this.PostData(url, postOptions);
+
+         console.log(data);
     }
 
     async DeleteEntry(aID)
