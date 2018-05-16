@@ -154,7 +154,6 @@ $app->group('/api', function () use ($app) {
     $app->post('/entries', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        return $response->withJson(['data' => $_SESSION]);                  
         $new_entry = $this->entries->AddEntry($_SESSION['userID'], $body);
         return $response->withJson(['data' => $new_entry]);                                           
     });

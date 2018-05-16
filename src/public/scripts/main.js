@@ -167,7 +167,6 @@ class CMS
 
     HandleLoginResult(aData)
     {
-        console.log(aData);   
         if (aData.error != undefined)
         {    
             console.log("ERROR: " + aData.error);
@@ -414,7 +413,6 @@ class CMS
         const response = await fetch(aURL, aPostoptions);
         
         const data = await response.json();
-        console.log(data);
 
         return data;
     }
