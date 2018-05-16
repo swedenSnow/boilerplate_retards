@@ -1,84 +1,121 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: May 02, 2018 at 11:23 AM
--- Server version: 5.6.35
--- PHP Version: 7.0.15
+-- Värd: localhost:8889
+-- Tid vid skapande: 09 maj 2018 kl 08:59
+-- Serverversion: 5.6.34-log
+-- PHP-version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Database: `todos`
+-- Databas: `cmsdb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `todos`
+-- Tabellstruktur `comments`
 --
 
-CREATE TABLE `todos` (
-  `id` int(11) NOT NULL,
-  `content` varchar(200) NOT NULL,
-  `completed` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `todos`
---
-
-INSERT INTO `todos` (`id`, `content`, `completed`) VALUES
-(1, 'Buy Milk', 0);
+CREATE TABLE `comments` (
+  `commentID` int(11) NOT NULL,
+  `entryID` int(11) NOT NULL,
+  `content` varchar(250) COLLATE utf8mb4_swedish_ci NOT NULL,
+  `createdBy` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabellstruktur `entries`
+--
+
+CREATE TABLE `entries` (
+  `entryID` int(11) NOT NULL,
+  `title` varchar(100) COLLATE utf8mb4_swedish_ci NOT NULL,
+  `content` varchar(1000) COLLATE utf8mb4_swedish_ci NOT NULL,
+  `createdBy` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellstruktur `likes`
+--
+
+CREATE TABLE `likes` (
+  `entryID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellstruktur `users`
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(200) NOT NULL,
-  `password` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `userID` int(11) NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_swedish_ci NOT NULL,
+  `password` varchar(200) COLLATE utf8mb4_swedish_ci NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(6, 'goran', '$2y$10$j2UiTfFgGYVds6gOm7ZCvuJJ9gjROaO4c/zZthYJSar9MdnAKuRKS');
-
---
--- Indexes for dumped tables
+-- Index för dumpade tabeller
 --
 
 --
--- Indexes for table `todos`
+-- Index för tabell `comments`
 --
-ALTER TABLE `todos`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`commentID`);
 
 --
--- Indexes for table `users`
+-- Index för tabell `entries`
+--
+ALTER TABLE `entries`
+  ADD PRIMARY KEY (`entryID`);
+
+--
+-- Index för tabell `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`userID`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT för dumpade tabeller
 --
 
 --
--- AUTO_INCREMENT for table `todos`
+-- AUTO_INCREMENT för tabell `comments`
 --
-ALTER TABLE `todos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `comments`
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT för tabell `entries`
+--
+ALTER TABLE `entries`
+  MODIFY `entryID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT för tabell `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

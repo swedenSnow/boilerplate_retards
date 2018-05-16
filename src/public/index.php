@@ -80,14 +80,22 @@ $app->post('/register', function ($request, $response, $args)
 
     $username = $body['username'];
     $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
-    
-    $statement = $this->database->prepare("INSERT INTO users(username, password) 
-    VALUES(:username, :password)");
+    $created_at = date("Y-m-d H:i:s");
+        
+        $statement = $this->db->prepare("INSERT INTO users(username, password, createdAt) 
+        VALUES(:username, :password, :createdAt)");
     $statement->bindparam(":username", $username);
-    $statement->bindparam(":password", $hashed_password);            
+    $statement->bindparam(":password", $hashed_password);    
+    $statement->bindparam(":createdAt", $created_at);          
     $statement->execute(); 
     
     return $response->withJson('Success');
+});
+
+$app->get('/register/{username}', function ($request, $response, $args) {
+    $username = $args['username'];
+    $user_exists = $this->users->UsernameExists($username);
+    return $response->withJson(['data' => $user_exists]);
 });
 
 /**
@@ -104,6 +112,14 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/users
     $app->get('/users', function ($request, $response, $args) 
     {
+        $query_params = $request->getQueryParams();
+        
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->users->GetNumUsers($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }
+
         $all_users = $this->users->GetAllUsers();
         return $response->withJson(['data' => $all_users]);
     });
@@ -122,7 +138,15 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/entries
     $app->get('/entries', function ($request, $response, $args)
     {
-        $all_entries = $this->entries->GetAllEntries();                                               //This should be limited to 20 later on
+        $query_params = $request->getQueryParams();
+
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->entries->GetNumEntries($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }
+
+        $all_entries = $this->entries->GetAllEntries();
         return $response->withJson(['data' => $all_entries]);
     });
 
@@ -130,7 +154,7 @@ $app->group('/api', function () use ($app) {
     $app->post('/entries', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        $new_entry = $this->entries->AddEntry($body);
+        $new_entry = $this->entries->AddEntry($_SESSION['userID'], $body);
         return $response->withJson(['data' => $new_entry]);                                           
     });
 
@@ -159,8 +183,8 @@ $app->group('/api', function () use ($app) {
         return $response->withJson(['data' => $entry]);
     });
 
-    // POST http://localhost:XXXX/api/entries
-    $app->post('/entries/search', function ($request, $response, $args)
+    // POST http://localhost:XXXX/api/entries/search
+    $app->post('/search', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
         $search_results = $this->entries->Search($body['search-text']);
@@ -193,7 +217,15 @@ $app->group('/api', function () use ($app) {
     // GET http://localhost:XXXX/api/comments
     $app->get('/comments', function ($request, $response, $args)
     {
-        $all_comments = $this->comments->GetAllComments();                                               //This should be limited to 20 later on
+        $query_params = $request->getQueryParams();
+        
+        if (isset($query_params['limit']))
+        {
+            $limit_entries = $this->comments->GetNumComments($query_params['limit']); 
+            return $response->withJson(['data' => $limit_entries]);
+        }        
+
+        $all_comments = $this->comments->GetAllComments();
         return $response->withJson(['data' => $all_comments]);
     });
 
@@ -201,7 +233,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/comments/{id}', function ($request, $response, $args)
     {
         $id = $args['id'];
-        $comment = $this->comments->GetCommentsByID($id);
+        $comment = $this->comments->GetCommentID($id);
         return $response->withJson(['data' => $comment]);
     });
 
@@ -209,8 +241,8 @@ $app->group('/api', function () use ($app) {
     $app->post('/comments', function ($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        $new_comment = $this->comments->PostComment($body);
-        return $response->withJson(['data' => $new_comment]);                                           
+        $new_comment = $this->comments->PostComment($_SESSION['userID'], $body);
+        return $response->withJson(['data' => $new_comment]);
      });
 
     // DELETE http://localhost:XXXX/api/comments/id
@@ -220,6 +252,60 @@ $app->group('/api', function () use ($app) {
         $comment = $this->comments->DeleteComment($id);
         return $response->withJson(['data' => $comment]);
     });
-});
+
+    // GET http://localhost:XXXX/api/entries/comments/id
+    $app->get('/entries/comments/{id}', function ($request, $response, $args) 
+    {
+        $id = $args['id'];
+        $entry_comments = $this->comments->GetCommentsForEntryID($id);
+        return $response->withJson(['data' => $entry_comments]);
+    });
+
+    //---------------------------------------------------------------------------------------------
+    // Likes
+    //---------------------------------------------------------------------------------------------
+
+    // GET http://localhost:XXXX/api/likes/id
+    $app->get('/likes/{id}', function ($request, $response, $args) 
+    {
+        $query_params = $request->getQueryParams();
+
+        $id = $args['id'];
+        if (isset($query_params['like']))
+        {
+            if ($query_params['like'] == "true")
+            {
+                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+            }
+            else
+            {
+                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+            }
+            return $response->withJson(['data' => $like_reponse]);
+        }
+        $entry_comments = $this->likes->GetLikesForEntryID($id);
+        return $response->withJson(['data' => $entry_comments]);
+    });
+    
+    // GET http://localhost:XXXX/api/likes/id
+    $app->get('/likes/{id}/like?', function ($request, $response, $args) 
+    {      
+        $id = $args['id'];
+        if (isset($query_params['like']))
+        {
+            if ($query_params['like'] == true)
+            {
+                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+            }
+            else
+            {
+                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+            }
+            return $response->withJson(['data' => $like_reponse]);
+        }
+        return $response->withJson(['data' => null]);
+    });
+
+});//->add($auth);
 
 $app->run();

@@ -1,6 +1,6 @@
 <?php 
-
 namespace App\Controllers;
+use PDO;
 
 class EntryController
 {
@@ -15,7 +15,23 @@ class EntryController
     {        
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT 20");
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT 20");
+            $statement->execute();
+
+            return $statement->fetchAll();
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+    
+    public function GetNumEntries($limit)
+    {        
+        try 
+        {
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT :num");
+            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
             $statement->execute();
 
             return $statement->fetchAll();
@@ -26,11 +42,12 @@ class EntryController
         }
     }
 
+
     public function GetEntryByID($id)
     {   
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.username FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID WHERE entryID=:id");
+            $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID WHERE entryID=:id");
             $statement->execute([
               ":id" => $id
             ]);
@@ -44,26 +61,27 @@ class EntryController
         }
     }
 
-    public function AddEntry($body)
+    public function AddEntry($user_id, $body)
     { 
-        $user_id = $body['user_id'];
         $title = $body['title'];
         $content = $body['content'];
         $created_at = date("Y-m-d H:i:s");
             
-        $statement = $this->database->prepare("INSERT INTO entries (title, content, createdBy, createdAt) VALUES (:title, :content, :userID, :createdAt)");
+        $statement = $this->db->prepare("INSERT INTO entries (title, content, createdBy, createdAt) VALUES (:title, :content, :userID, :createdAt)");
         $statement->bindParam(':title', $title);
         $statement->bindParam(':content', $content);
         $statement->bindParam(':userID', $user_id); 
         $statement->bindParam(':createdAt', $created_at); 
         $statement->execute();
+
+        return ['id' => (int)$this->db->lastInsertId()];
     }
 
     public function DeleteEntry($id)
     {
         try 
         {
-            $statement = $this->database->prepare("DELETE FROM entries WHERE entryID=:id");
+            $statement = $this->db->prepare("DELETE FROM entries WHERE entryID=:id");
             $statement->bindparam(":id", $id);   
             $statement->execute();
 
@@ -82,7 +100,7 @@ class EntryController
             $title = $body['title'];
             $content = $body['content'];
 
-            $statement = $this->database->prepare("UPDATE entries 
+            $statement = $this->db->prepare("UPDATE entries 
             SET title=:title, content=:content 
             WHERE entryID=:id"
             );
@@ -104,12 +122,12 @@ class EntryController
         try 
         {
             $search_value = "%" .$search_text. "%";
-            $statement = $this->database->prepare("SELECT * FROM entries WHERE (title LIKE :search_value OR content LIKE :search_value)");
+            $statement = $this->db->prepare("SELECT * FROM entries WHERE (title LIKE :search_value OR content LIKE :search_value)");
             $statement->bindparam(":search_value", $search_value);   
             $statement->execute();
             $result = $statement->fetchAll();
 
-            return 'Not implemented';
+            return $result;
         }
         catch (PDOException $e)
         {
@@ -121,7 +139,7 @@ class EntryController
     {
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.userID FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE username=:username");
+            $statement = $this->db->prepare("SELECT e.*, u.userID, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE username=:username");
             
             $statement->bindparam(":username", $username);  
             $statement->execute(); 
@@ -139,7 +157,7 @@ class EntryController
     {
         try 
         {
-            $statement = $this->db->prepare("SELECT e.*, u.userID FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE createdBy=:id");
+            $statement = $this->db->prepare("SELECT e.*, u.userID, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e INNER JOIN users AS u ON e.createdBy = u.userID WHERE createdBy=:id");
             $statement->bindparam(":id", $id);   
             $statement->execute(); 
             $result = $statement->fetchAll();

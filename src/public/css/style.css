@@ -479,6 +479,44 @@ h1 {
   padding: 2rem;
 }
 
+a
+{
+    color: #000000;
+}
+
+.register-username-container #register-username
+{
+    border: 1px #000000 solid;
+    padding-left: 1em;
+    font-weight: bolder;
+    color: #000000;
+    height: 2.5em;
+    width: 10em;
+}
+
+#register-password
+{
+    border: 1px #000000 solid;
+    padding-left: 1em;
+    font-weight: bolder;
+    color: #000000;
+    height: 2.5em;
+    width: 10em + 50px;
+}
+
+.register-username-container .fa 
+{
+    margin: auto -30px;
+    color: #000000;
+}
+
+
+input[type="text"] 
+{    
+    background: #FFFFFF;
+    padding-right: 50px; 
+}
+
 h1:before,
 h1:after {
   flex: 1;
