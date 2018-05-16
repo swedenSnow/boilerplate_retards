@@ -414,6 +414,7 @@ class CMS
         const response = await fetch(aURL, aPostoptions);
         
         const data = await response.json();
+        console.log(data);
 
         return data;
     }
