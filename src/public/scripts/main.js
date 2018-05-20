@@ -80,21 +80,26 @@ class CMS
             this.Register(formData);
         });
 
+        /*
         const formPost = document.getElementById("form-post");
         formPost.addEventListener("submit", (e) =>
         {
             e.preventDefault();
             const formData = new FormData(formPost);
             this.PostEntry(formData);
-        });
+        });*/
 
-        const formSearch = document.getElementById("form-search");
-        formSearch.addEventListener("submit", (e) =>
+        this.formSearch = document.getElementById("form-search");
+        this.formSearch.addEventListener("submit", (e) =>
         {
             e.preventDefault();
-            const formData = new FormData(formSearch);
+            const formData = new FormData(this.formSearch);
             this.Search(formData);
         });
+
+        let btnLogout = document.getElementById("logout-btn");
+
+        btnLogout.addEventListener("click", () => this.LogOut());
 
 
         //Input
@@ -113,6 +118,8 @@ class CMS
         this.inputCommentContent    = document.getElementById("comment-content");
 
         //Buttons
+
+        this.iconSearch             = document.getElementById("search-btn");
 
         //Debug things...
         this.Debug();
@@ -173,17 +180,48 @@ class CMS
         }
         else
         {         
-            console.log(aData.data);   
             this.userID = aData.data[0];
             this.userName = aData.data[1];
 
-            console.log("Welcome " + this.userName + ". You are now logged in." );
+            let navUsername = document.getElementById("nav-username");
+            navUsername.innerText = this.userName;
+
+            this.iconSearch.classList.remove("hidden");
+            this.inputSearchText.classList.remove("search-hidden");
+            this.inputSearchText.classList.add("search-show");
+
+            let loginContainer = document.getElementById("login-container");
+            loginContainer.classList.add("hidden");
+            
+            let logoutContainer = document.getElementById("logout-container");
+            logoutContainer.classList.remove("hidden");
+
+            let message = document.getElementById("message");
+            message.innerText = "Welcome " + this.userName + ". You are now logged in.";
         }
     }
 
-    LogOut()
+    async LogOut()
     {
         const url = '/logout';
+
+        const data = await this.FetchData(url);
+
+        let navUsername = document.getElementById("nav-username");
+        navUsername.innerText = "Not logged in";
+
+        this.iconSearch.classList.add("hidden");
+        this.inputSearchText.classList.add("search-hidden");
+        this.inputSearchText.classList.remove("search-show");
+
+        let loginContainer = document.getElementById("login-container");
+        loginContainer.classList.remove("hidden");
+        
+        let logoutContainer = document.getElementById("logout-container");
+        logoutContainer.classList.add("hidden");
+        
+        let message = document.getElementById("message");
+        message.innerText = "You are now logged out.";
     }
 
     async Register(aFormData)

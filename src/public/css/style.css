@@ -580,9 +580,9 @@ main {
   padding: 2rem;
   margin: 0;
 }
-/* .hidden {
+.hidden {
   display: none;
-} */
+}
 
 .login-modal-container {
   -webkit-transition: all 0.25s ease-out;
@@ -604,15 +604,16 @@ main {
   transition: all 500ms ease;
   justify-content: flex-end;
   transition: all 0.5s;
+  box-sizing: border-box;
 }
 
 .wrapper-modal {
   display: flex;
-  width: 50%;
   align-self: flex-start;
   align-content: flex-end;
   justify-content: flex-end;
   transition: all 500ms ease;
+  padding-top: calc(20px + 1.4em);
 }
 
 .login-modal-content {
@@ -687,4 +688,33 @@ form {
   color: white;
   text-decoration: none;
   cursor: pointer;
+}
+
+#form-search
+{
+  padding: 0;
+  margin-bottom: 0;
+  flex-flow: row nowrap;
+}
+
+#input-search
+{
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  transition: all 1s ease 1s;
+  padding-right: 0;
+  position: relative; 
+  right:0;
+}
+
+.search-hidden
+{
+  display: none;
+  width: 0px;
+}
+
+.search-show
+{
+  width: 180px;
+  transition: all 1s ease 1s;
 }
