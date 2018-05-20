@@ -16,12 +16,18 @@
 <body>
     <nav class="nav top">
         <ul>
-            <li class="usrname-container">usrname</li>
+            <li id="nav-username" class="usrname-container">Not logged in</li>
+            <li class="search-container">
+                <form id="form-search" method="POST" class="">
+                    <input id="input-search" type="text" name="search-text" class="search-hidden">
+                    <button class="search-btn hidden" id="search-btn"><i class="fas fa-search" style="color: white;"></i></button>
+                </form>
+            </li>
             <li class="login-container" id="login-container">
                 <button class="login-btn" id="login-btn">Login</button>
             </li>
-            <li class="search-container">
-               <button class="search-btn" id="search-btn">🔎</button>
+            <li class="logout-container hidden" id="logout-container">
+                <button class="logout-btn" id="logout-btn">Logout</button>
             </li>
         </ul>
     </nav>
@@ -29,50 +35,50 @@
         <div class="wrapper-modal">
             <div class="login-modal-content" id="login-modal-content">
                 <span class="close-login">&times;</span>
-                    <div id="users-login" class="hidden">
+                    <div id="users-login">
                         <div id="login-message" class="hidden">
-                        </div>
+                    </div>
                     <div>
-                    <br>
-                    <br>
-                    <form id="form-login" method="POST">
-                        <strong class="login-head">Log in</strong>
                         <br>
-                        <label for="login-username"><strong>Username:</strong></label>
-                        <div class="register-username-container">
-                            <input id="login-username" type="text" name="username" pattern=".{6,}" required title="Usernames have a minimum length of 6 characters">
-                            <i id="register-username-icon" class="fa fa-user"></i>
-                        </div>
-                        <br>   
-                        <label for="login-password"><strong>Password:</strong></label>
-                        <div class="register-password-container">   
-                            <input id="login-password" type="password" name="password" required>
-                        </div>
-                        <br>                        
-                        <button id="btn-login" form="form-login">Login</button>
-                        <br>  
-                    </form>
-                    <div id="users-register" class="hidden">
-                        <div id="register-message" class="hidden">
-                        </div>
-                    <div>
-                        <form id="form-register" method="POST">
-                            <strong class="login-head">Register</strong>
+                        <br>
+                        <form id="form-login" method="POST">
+                            <strong class="login-head">Log in</strong>
                             <br>
-                            <label for="register-username"><strong>Username:</strong></label>
+                            <label for="login-username"><strong>Username:</strong></label>
                             <div class="register-username-container">
-                                <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
-                            <i id="register-username-icon" class="fa fa-user"></i>
-                            <br>
+                                <input id="login-username" type="text" name="username" pattern=".{6,}" required title="Usernames have a minimum length of 6 characters">
+                                <i id="register-username-icon" class="fa fa-user"></i>
                             </div>
-                            <br>
-                            <label for="register-password"><strong>Password:</strong></label>
-                            <div class="register-password-container">        
-                                <input id="register-password" type="password" name="password " required>
+                            <br>   
+                            <label for="login-password"><strong>Password:</strong></label>
+                            <div class="register-password-container">   
+                                <input id="login-password" type="password" name="password" required>
                             </div>
-                            <br>
-                            <button id="btn-register" form="form-register">Register</button>
+                            <br>                        
+                            <button id="btn-login" form="form-login">Login</button>
+                            <br>  
                         </form>
+                        <div id="users-register" class="hidden">
+                            <div id="register-message" class="hidden">
+                            </div>
+                        <div>
+                            <form id="form-register" method="POST">
+                                <strong class="login-head">Register</strong>
+                                <br>
+                                <label for="register-username"><strong>Username:</strong></label>
+                                <div class="register-username-container">
+                                    <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
+                                <i id="register-username-icon" class="fa fa-user"></i>
+                                <br>
+                                </div>
+                                <br>
+                                <label for="register-password"><strong>Password:</strong></label>
+                                <div class="register-password-container">        
+                                    <input id="register-password" type="password" name="password " required>
+                                </div>
+                                <br>
+                                <button id="btn-register" form="form-register">Register</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -86,10 +92,10 @@
     </header>
     
     <main>
-            <!-- <form id="form-search" method="POST">
-                <input id="input-search" type="text" name="search-text">
-                <button id="btn-search" type="submit" form="form-search">Search</button>
-            </form> -->
+
+        <div id="message">
+
+        </div>
     
         <!-- <div id="entries-all" class="hidden">
             <div>
