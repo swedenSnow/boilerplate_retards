@@ -58,9 +58,9 @@
                             <button id="btn-login" form="form-login">Login</button>
                             <br>  
                         </form>
-                        <div id="users-register" class="hidden">
-                            <div id="register-message" class="hidden">
-                            </div>
+                        <!-- <div id="users-register" class="hidden"> -->
+                            <!-- <div id="register-message" class="hidden">
+                            </div> -->
                         <div>
                             <form id="form-register" method="POST">
                                 <strong class="login-head">Register</strong>
@@ -88,7 +88,7 @@
     </div>
                     
     <header class="hero">
-        <h1 class="title">Boilerplate Retards</h1>
+        <h1 id="title" class="title">Boilerplate Retards</h1>
     </header>
     
     <main>

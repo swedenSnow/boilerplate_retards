@@ -418,19 +418,22 @@ button {
   background-color: #bdbdbd;
   color: black;
   transition: color 0.5s linear;
-  transition: all 500ms ease;
+  transition: all 300ms ease;
   cursor: pointer;
   border: 1px solid #000;
+  font-family: "Raleway";
+  height: 2rem;
 }
 
 button:hover {
   background-color: rgba(0, 255, 128, 0.904);
   color: white;
   text-shadow: 1px 1px 1px #000;
+  font-size: 1.1rem;
 }
 
 .login-container button {
-  transition: all 500ms ease-in-out;
+  transition: all 300ms ease-in-out;
   width: 80px;
   height: 1.7rem;
 }
@@ -706,31 +709,27 @@ form {
   cursor: pointer;
 }
 
-#form-search
-{
+#form-search {
   padding: 0;
   margin-bottom: 0;
   flex-flow: row nowrap;
 }
 
-#input-search
-{
+#input-search {
   -webkit-transition: all 1s;
   -moz-transition: all 1s;
   transition: all 1s ease 1s;
   padding-right: 0;
-  position: relative; 
-  right:0;
+  position: relative;
+  right: 0;
 }
 
-.search-hidden
-{
+.search-hidden {
   display: none;
   width: 0px;
 }
 
-.search-show
-{
+.search-show {
   width: 180px;
   transition: all 1s ease 1s;
 }
