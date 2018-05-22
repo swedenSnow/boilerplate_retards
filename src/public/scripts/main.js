@@ -50,11 +50,13 @@ class CMS
         let linkPostEntry = document.getElementById("user-postentry");
         let linkLogout = document.getElementById("user-logout");
         
+        linkMyEntries.addEventListener("click", () => this.ShowMyEntries());
         linkAllEntries.addEventListener("click", () => this.ShowAllEntries());
         linkPostEntry.addEventListener("click", () => this.ShowPostEntry());
         linkLogout.addEventListener("click", () => this.LogOut());
 
         //Content Divs
+        this.divMessage         = document.getElementById("entries-message");
         this.divEntriesAll      = document.getElementById("entries-all");
         this.divEntriesSingle   = document.getElementById("entries-single");
         this.divEntriesAdd      = document.getElementById("entries-post");
@@ -130,8 +132,6 @@ class CMS
         this.iconSearch             = document.getElementById("search-btn");
 
         //Debug things...
-        // this.Debug();
-
         this.userID = 2;
         this.userName = "indiehjaerta";
     }
@@ -174,9 +174,6 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-        //Debug Purpose
-        //console.log(data);
-
         this.HandleLoginResult(data);
     }
 
@@ -191,8 +188,14 @@ class CMS
             this.userID = aData.data[0];
             this.userName = aData.data[1];
 
+            let btnUsername = document.getElementById("loggedin-username");
+            btnUsername.innerHTML = this.userName + ' <i class="fas fa-chevron-down"></i>';
+
             let navUsername = document.getElementById("nav-username");
-            navUsername.innerText = this.userName;
+            navUsername.classList.remove("hidden");
+
+            let navNotLoggedIn = document.getElementById("nav-notloggedin");
+            navNotLoggedIn.classList.add("hidden");
 
             this.iconSearch.classList.remove("hidden");
             this.inputSearchText.classList.remove("search-hidden");
@@ -207,10 +210,9 @@ class CMS
             let title = document.getElementById("title");
             title.innerText = "Welcome " + this.userName;
 
-            let message = document.getElementById("message");
-            message.innerText = "You are now logged in";
-            
-            // message.innerText = "Welcome " + this.userName + ". You are now logged in.";
+            this.divMessage.innerText = "You are now logged in";
+
+            this.divMessage.classList.toggle("hidden", false);
         }
     }
 
@@ -221,7 +223,10 @@ class CMS
         const data = await this.FetchData(url);
 
         let navUsername = document.getElementById("nav-username");
-        navUsername.innerText = "Not logged in";
+        navUsername.classList.add("hidden");
+
+        let navNotLoggedIn = document.getElementById("nav-notloggedin");
+        navNotLoggedIn.classList.remove("hidden");
 
         this.iconSearch.classList.add("hidden");
         this.inputSearchText.classList.add("search-hidden");
@@ -233,8 +238,7 @@ class CMS
         let logoutContainer = document.getElementById("logout-container");
         logoutContainer.classList.add("hidden");
         
-        let message = document.getElementById("message");
-        message.innerText = "You are now logged out.";
+        this.divMessage.innerText = "You are now logged out.";
 
         let title = document.getElementById("title");
         title.innerText = "Boilerplate Retards";
@@ -291,6 +295,24 @@ class CMS
     async GetAllEntries()
     {
         const url = '/api/entries';
+
+        const data = await this.FetchData(url);
+
+        this.PresentEntriesAsHTML(data);
+    }
+
+    async ShowMyEntries()
+    {
+        //Loading Div.
+
+        this.GetMyEntries();
+
+        this.DivToggle("ShowAllEntries");
+    }
+
+    async GetMyEntries()
+    {
+        const url = 'api/' + this.userName + '/entries';
 
         const data = await this.FetchData(url);
 
@@ -549,11 +571,13 @@ class CMS
 
         if (aData.data.createdBy == this.userID)
         {
-            let linkEdit = this.DOMFactory.CreateLinkWithText("EDIT", "javascript:void(0)", divOptions);
+            let linkEdit = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divOptions);
             linkEdit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
+            linkEdit.innerHTML = '<i class="fas fa-edit"></i>';
 
-            let linkDelete = this.DOMFactory.CreateLinkWithText("DELETE", "javascript:void(0)", divOptions);
+            let linkDelete = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divOptions);
             linkDelete.addEventListener("click", () => this.ShowDeleteEntry(aData.data.entryID));
+            linkDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
         }
     }
 
@@ -710,10 +734,9 @@ class CMS
 
         this.divUsersAll.classList.toggle("hidden", aString != "ShowAllUsers");
 
-        this.divRegister.classList.toggle("hidden", aString != "ShowRegister");
-        this.divLogin.classList.toggle("hidden", aString != "ShowLogin");
-
         this.divSearchResults.classList.toggle("hidden", aString != "ShowSearchResults");
+
+        this.divMessage.classList.toggle("hidden", aString != "ShowMessage");
     }
 
     ClearElement(aElement)
@@ -786,7 +809,7 @@ const modal = document.getElementById('login-modal-container');
 const modalTwo = document.getElementById("login-modal-container-2");
 // button that opens the modal
 const btn = document.getElementById("login-btn");
-const btnTwo = document.getElementById("not-loggedin");
+const btnTwo = document.getElementById("loggedin-username");
 // <span> element that closes the modal
 const span = document.getElementsByClassName("close-login")[0];
 
@@ -795,6 +818,7 @@ const spanTwo = document.getElementsByClassName("close-notloggedin")[0];
 //Close after submit
 const loginButton = document.getElementById("btn-login");
 const registerButton = document.getElementById("btn-register");
+const logoutButton = document.getElementById("user-logout");
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
@@ -820,6 +844,11 @@ loginButton.onclick = function() {
 
 registerButton.onclick = function() {
     modal.style.display = "none";
+}
+
+logoutButton.onclick = function() {
+    modalTwo.style.display = "none";
+    console.log("lul");
 }
 
 // When the user clicks anywhere outside of the modal, close it

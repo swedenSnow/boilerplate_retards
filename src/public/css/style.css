@@ -834,7 +834,6 @@ form {
   width: 180px;
   transition: 2s ease-in-out;
 }
-
 /* Tablet */
 @media screen and (max-width: 768px) {
   .login-modal-container {
