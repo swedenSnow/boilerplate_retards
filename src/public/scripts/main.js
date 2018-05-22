@@ -45,6 +45,14 @@ class CMS
     constructor()
     {
         this.DOMFactory = new DOMFactory();
+        let linkMyEntries = document.getElementById("user-myentries");
+        let linkAllEntries = document.getElementById("user-allentries");
+        let linkPostEntry = document.getElementById("user-postentry");
+        let linkLogout = document.getElementById("user-logout");
+        
+        linkAllEntries.addEventListener("click", () => this.ShowAllEntries());
+        linkPostEntry.addEventListener("click", () => this.ShowPostEntry());
+        linkLogout.addEventListener("click", () => this.LogOut());
 
         //Content Divs
         this.divEntriesAll      = document.getElementById("entries-all");
@@ -122,7 +130,7 @@ class CMS
         this.iconSearch             = document.getElementById("search-btn");
 
         //Debug things...
-        this.Debug();
+        // this.Debug();
 
         this.userID = 2;
         this.userName = "indiehjaerta";
@@ -196,8 +204,13 @@ class CMS
             let logoutContainer = document.getElementById("logout-container");
             logoutContainer.classList.remove("hidden");
 
+            let title = document.getElementById("title");
+            title.innerText = "Welcome " + this.userName;
+
             let message = document.getElementById("message");
-            message.innerText = "Welcome " + this.userName + ". You are now logged in.";
+            message.innerText = "You are now logged in";
+            
+            // message.innerText = "Welcome " + this.userName + ". You are now logged in.";
         }
     }
 
@@ -222,6 +235,9 @@ class CMS
         
         let message = document.getElementById("message");
         message.innerText = "You are now logged out.";
+
+        let title = document.getElementById("title");
+        title.innerText = "Boilerplate Retards";
     }
 
     async Register(aFormData)
@@ -336,6 +352,10 @@ class CMS
         console.log(data);
 
         return data;
+    }
+
+    ShowPostEntry() {
+        this.DivToggle("ShowAddEntry");
     }
 
     async PostEntry(aFormData)
@@ -726,7 +746,7 @@ class CMS
                 icon.classList.remove("fa-check");
                 icon.classList.remove("fa-spinner");
                 this.inputRegisterUsername.style.borderColor = "red";
-                this.inputRegisterUsername.style.backgroundColor = "rgba(255, 0, 0, 0.1)";
+                this.inputRegisterUsername.style.backgroundColor = "rgba(250, 103, 103, 0.74)";
             }
             else
             {
@@ -734,7 +754,7 @@ class CMS
                 icon.classList.remove("fa-times");
                 icon.classList.remove("fa-spinner");
                 this.inputRegisterUsername.style.borderColor = "green";
-                this.inputRegisterUsername.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
+                this.inputRegisterUsername.style.backgroundColor = "rgba(127, 230, 127, 0.8)";
             }
         }
     }
@@ -762,23 +782,49 @@ class CMS
 
 // Get the modal
 const modal = document.getElementById('login-modal-container');
+
+const modalTwo = document.getElementById("login-modal-container-2");
 // button that opens the modal
 const btn = document.getElementById("login-btn");
+const btnTwo = document.getElementById("not-loggedin");
 // <span> element that closes the modal
 const span = document.getElementsByClassName("close-login")[0];
+
+const spanTwo = document.getElementsByClassName("close-notloggedin")[0];
+
+//Close after submit
+const loginButton = document.getElementById("btn-login");
+const registerButton = document.getElementById("btn-register");
+
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
     modal.style.display = "flex";
+}
+
+btnTwo.onclick = function() {
+    modalTwo.style.display ="flex";
 }
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal.style.display = "none";
 }
 
+spanTwo.onclick = function() {
+    modalTwo.style.display = "none";
+}
+//close after submit
+loginButton.onclick = function() {
+    modal.style.display = "none";
+
+}
+
+registerButton.onclick = function() {
+    modal.style.display = "none";
+}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target === modal) {
+    if (event.target == modal) {
         modal.style.display = "none";
     }
 }

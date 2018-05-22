@@ -16,7 +16,9 @@
 <body>
     <nav class="nav top">
         <ul>
-            <li id="nav-username" class="usrname-container">Not logged in</li>
+            <li id="nav-username" class="usrname-container">
+                <button class="not-loggedin" id="not-loggedin">Not logged in↓</button>
+            </li>
             <li class="search-container">
                 <form id="form-search" method="POST" class="">
                     <input id="input-search" type="text" name="search-text" class="search-hidden">
@@ -58,9 +60,6 @@
                             <button id="btn-login" form="form-login">Login</button>
                             <br>  
                         </form>
-                        <div id="users-register" class="hidden">
-                            <div id="register-message" class="hidden">
-                            </div>
                         <div>
                             <form id="form-register" method="POST">
                                 <strong class="login-head">Register</strong>
@@ -86,9 +85,43 @@
         </div>
     </div>
     </div>
+
+    <div class="login-modal-container-2" id="login-modal-container-2">
+        <div class="wrapper-modal-2">
+            <div class="login-modal-content-2" id="login-modal-content-2">
+                <span class="close-notloggedin">&times;</span>
+                <div class="user-menu">
+                    <ul>
+                        <br>
+                        <br>
+                        <strong class="login-head">Menu</strong>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-myentries">My entries →</a></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-allentries">All entries →</a></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-postentry">Post entry →</a></li>
+                        <br>
+                        <br>
+                        <li></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><button class="user-logout" id="user-logout">Log out</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
                     
     <header class="hero">
-        <h1 class="title">Boilerplate Retards</h1>
+        <h1 id="title" class="title">Boilerplate Retards</h1>
     </header>
     
     <main>
@@ -97,7 +130,7 @@
 
         </div>
     
-        <!-- <div id="entries-all" class="hidden">
+        <div id="entries-all" class="hidden">
             <div>
                 <strong>All entries</strong>
             </div>
@@ -189,9 +222,9 @@
         </div>
         <div id="users-all-container">
         </div>
-    </div> -->
+    </div>
 
-    <!-- <div id="users-register" class="hidden">
+    <div id="users-register" class="hidden">
 
         <div id="register-message" class="hidden">
         </div>
@@ -210,9 +243,9 @@
                 <button id="btn-register" form="form-register">Register</button>
             </form>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <div id="users-login" class="hidden">
+    <div id="users-login" class="hidden">
 
         <div id="login-message" class="hidden">
         </div>
@@ -228,7 +261,7 @@
             </form>
         </div>
 
-    </div> -->
+    </div>
 
 </main>
 
