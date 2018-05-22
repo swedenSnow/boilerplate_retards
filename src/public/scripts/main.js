@@ -402,7 +402,8 @@ class CMS
         return data;
     }
 
-    ShowPostEntry() {
+    ShowPostEntry() 
+    {
         this.DivToggle("ShowAddEntry");
     }
 
@@ -419,6 +420,22 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
         console.log(data);
+
+        this.HandleEntryPosted(data);
+    }
+
+    HandleEntryPosted(aData)
+    {
+        if (aData.data.id > 0)
+        {
+            this.divMessage.innerText = "Entry with title: " + this.inputPostTitle.value + " was posted.";
+            this.DivToggle("ShowMessage")
+        }
+        else
+        {
+            this.divMessage.innerText = "ERROR: Something went wrong posting an entry."; 
+            this.divMessage.classList.remove("hidden");
+        }
 
         this.inputPostTitle.value   = "";
         this.inputPostContent.value = "";
@@ -521,15 +538,6 @@ class CMS
         const response = await fetch(aURL, aPostoptions);
         
         const data = await response.json();
-
-        return data;
-    }
-
-    async PostDataDebug(aURL, aPostoptions)
-    {
-        const response = await fetch(aURL, aPostoptions);
-        
-        const data = await response.text();
 
         return data;
     }
