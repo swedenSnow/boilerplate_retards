@@ -45,6 +45,14 @@ class CMS
     constructor()
     {
         this.DOMFactory = new DOMFactory();
+        let linkMyEntries = document.getElementById("user-myentries");
+        let linkAllEntries = document.getElementById("user-allentries");
+        let linkPostEntry = document.getElementById("user-postentry");
+        let linkLogout = document.getElementById("user-logout");
+        
+        linkAllEntries.addEventListener("click", () => this.ShowAllEntries());
+        linkPostEntry.addEventListener("click", () => this.ShowPostEntry());
+        linkLogout.addEventListener("click", () => this.LogOut());
 
         //Content Divs
         this.divEntriesAll      = document.getElementById("entries-all");
@@ -122,7 +130,7 @@ class CMS
         this.iconSearch             = document.getElementById("search-btn");
 
         //Debug things...
-        this.Debug();
+        // this.Debug();
 
         this.userID = 2;
         this.userName = "indiehjaerta";
@@ -344,6 +352,10 @@ class CMS
         console.log(data);
 
         return data;
+    }
+
+    ShowPostEntry() {
+        this.DivToggle("ShowAddEntry");
     }
 
     async PostEntry(aFormData)
@@ -770,10 +782,15 @@ class CMS
 
 // Get the modal
 const modal = document.getElementById('login-modal-container');
+
+const modalTwo = document.getElementById("login-modal-container-2");
 // button that opens the modal
 const btn = document.getElementById("login-btn");
+const btnTwo = document.getElementById("not-loggedin");
 // <span> element that closes the modal
 const span = document.getElementsByClassName("close-login")[0];
+
+const spanTwo = document.getElementsByClassName("close-notloggedin")[0];
 
 //Close after submit
 const loginButton = document.getElementById("btn-login");
@@ -783,9 +800,17 @@ const registerButton = document.getElementById("btn-register");
 btn.onclick = function() {
     modal.style.display = "flex";
 }
+
+btnTwo.onclick = function() {
+    modalTwo.style.display ="flex";
+}
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal.style.display = "none";
+}
+
+spanTwo.onclick = function() {
+    modalTwo.style.display = "none";
 }
 //close after submit
 loginButton.onclick = function() {
