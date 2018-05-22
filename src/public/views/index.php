@@ -87,19 +87,34 @@
     </div>
 
     <div class="login-modal-container-2" id="login-modal-container-2">
-        <div class="wrapper-modal">
+        <div class="wrapper-modal-2">
             <div class="login-modal-content-2" id="login-modal-content-2">
                 <span class="close-notloggedin">&times;</span>
                 <div class="user-menu">
-                <strong class="login-head">Menu</strong>
                     <ul>
-                        <li><a href="javascript:void(0)" id="user-myentries">My entries</a></li>
-                        <li><a href="javascript:void(0)" id="user-allentries">All entries</a></li>
-                        <li><a href="javascript:void(0)" id="user-postentry">Post entry</a></li>
+                        <br>
+                        <br>
+                        <strong class="login-head">Menu</strong>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-myentries">My entries →</a></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-allentries">All entries →</a></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><a href="javascript:void(0)" id="user-postentry">Post entry →</a></li>
+                        <br>
+                        <br>
                         <li></li>
-                        <li><button><a href="javascript:void(0)" id="user-logout">Log out</a></button></li>
+                        <br>
+                        <br>
+                        <br>
+                        <li><button class="user-logout" id="user-logout">Log out</button></li>
                     </ul>
-
                 </div>
             </div>
         </div>

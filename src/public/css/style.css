@@ -690,11 +690,8 @@ main {
 .login-modal-content-2 {
   display: flex;
   flex-flow: row wrap;
-
-  width: 20vw;
-
-  height: 40vh;
   border-radius: 0.5rem;
+  min-width: 15rem;
   background: #444;
   background-image: -webkit-gradient(
     linear,
@@ -711,13 +708,26 @@ main {
   margin: auto;
   color: white;
   transition: all 500ms ease;
+  padding: 1rem;
 }
 
+.wrapper-modal-2 {
+  display: flex;
+  align-self: flex-start;
+  align-content: flex-end;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  transition: all 500ms ease;
+  padding-top: calc(20px + 1.4em);
+}
+/* 
 .user-menu {
   display: flex;
-  justify-content: space-around;
-  flex-flow: column wrap;
-}
+  flex-flow: row wrap;
+  height: 100%;
+  width: 100%;
+  padding: 0 3rem;
+} */
 
 .login-modal-content,
 input {
@@ -762,6 +772,7 @@ form {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  font-family: "Raleway";
 }
 
 .close-notloggedin {
@@ -769,9 +780,17 @@ form {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  font-family: "Raleway";
 }
 .close-login:hover,
 .close-login:focus {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.close-notloggedin:hover,
+.close-notloggedin:focus {
   color: white;
   text-decoration: none;
   cursor: pointer;
@@ -830,13 +849,53 @@ form {
   }
 }
 
-.user-menu ul,
-li a {
-  list-style: none;
-  color: white;
+.user-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
 }
 
-.user-menu a:hover {
+.user-menu ul {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.user-menu li,
+a {
   list-style: none;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.5s linear;
+}
+
+.user-menu a {
+  list-style: none;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color all 2s ease-in-out;
+}
+
+.user-menu a:hover,
+.user-menu a:focus {
+  text-decoration: underline;
   color: rgba(0, 255, 128, 0.904);
+  font-size: 1.3rem;
+}
+.user.menu a:link {
+  text-decoration: none;
+}
+
+button.user-logout {
+  width: 100%;
+}
+
+button.user-logout:hover,
+button.user-logout:focus {
+  background-color: red;
 }
