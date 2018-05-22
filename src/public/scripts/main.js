@@ -90,14 +90,13 @@ class CMS
             this.Register(formData);
         });
 
-        /*
         const formPost = document.getElementById("form-post");
         formPost.addEventListener("submit", (e) =>
         {
             e.preventDefault();
             const formData = new FormData(formPost);
             this.PostEntry(formData);
-        });*/
+        });
 
         this.formSearch = document.getElementById("form-search");
         this.formSearch.addEventListener("submit", (e) =>
@@ -175,13 +174,22 @@ class CMS
         const data = await this.PostData(url, postOptions);
 
         this.HandleLoginResult(data);
+        
+        let inputUsername = document.getElementById("login-username");
+        let inputPassword = document.getElementById("login-password");
+
+        inputUsername.value = "";
+        inputPassword.value = "";
     }
 
     HandleLoginResult(aData)
     {
         if (aData.error != undefined)
         {    
-            console.log("ERROR: " + aData.error);
+
+            let loginMessage = document.getElementById("login-message");
+            loginMessage.innerText = "ERROR: " + aData.error;
+            loginMessage.classList.remove("hidden");
         }
         else
         {         
@@ -213,6 +221,10 @@ class CMS
             this.divMessage.innerText = "You are now logged in";
 
             this.divMessage.classList.toggle("hidden", false);
+
+            let loginMessage = document.getElementById("login-message");
+            loginMessage.innerText = "";
+            loginMessage.classList.add("hidden");
         }
     }
 
@@ -256,7 +268,16 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-        //this.HandleRegisterResult();
+        this.HandleRegisterResult();
+    }
+
+    HandleRegisterResult()
+    {
+        let inputUsername = document.getElementById("register-username");
+        let inputPassword = document.getElementById("register-password");
+
+        inputUsername.value = "";
+        inputPassword.value = "";
     }
 
     async Search(aFormData)
@@ -413,6 +434,13 @@ class CMS
         const data = await this.PostData(url, postOptions);
 
          console.log(data);
+
+         
+        let inputEditTitle      = document.getElementById("edit-title");
+        let inputEditContent    = document.getElementById("edit-content");
+
+        inputEditTitle.value = "";
+        inputEditContent.value = "";
     }
 
     async DeleteEntry(aID)
@@ -488,6 +516,15 @@ class CMS
         const response = await fetch(aURL, aPostoptions);
         
         const data = await response.json();
+
+        return data;
+    }
+
+    async PostDataDebug(aURL, aPostoptions)
+    {
+        const response = await fetch(aURL, aPostoptions);
+        
+        const data = await response.text();
 
         return data;
     }
