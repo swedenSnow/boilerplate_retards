@@ -72,24 +72,32 @@ $app->get('/logout', function ($request, $response, $args) {
 /**
  *  First implementation
  * 
- * Fix: Check for dupliate usernames, check incoming values
+ * Fix: Check for duplicate usernames, check incoming values
  */
 $app->post('/register', function ($request, $response, $args) 
 {
     $body = $request->getParsedBody();
 
     $username = $body['username'];
+
+    $user_exists = $this->users->UsernameExists($username);
+
+    if ($user_exists == true)
+    {
+        return $response->withJson(['error' => 'Username already exists.']);
+    }
+
     $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
     $created_at = date("Y-m-d H:i:s");
         
-        $statement = $this->db->prepare("INSERT INTO users(username, password, createdAt) 
+    $statement = $this->db->prepare("INSERT INTO users(username, password, createdAt) 
         VALUES(:username, :password, :createdAt)");
     $statement->bindparam(":username", $username);
     $statement->bindparam(":password", $hashed_password);    
     $statement->bindparam(":createdAt", $created_at);          
     $statement->execute(); 
     
-    return $response->withJson('Success');
+    return $response->withJson(['registration' => 'successfull.']);
 });
 
 $app->get('/register/{username}', function ($request, $response, $args) {

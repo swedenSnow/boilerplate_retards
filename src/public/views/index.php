@@ -53,7 +53,7 @@
                             <label for="login-username"><strong>Username:</strong></label>
                             <div class="register-username-container">
                                 <input id="login-username" type="text" name="username" pattern=".{6,}" required title="Usernames have a minimum length of 6 characters">
-                                <i id="register-username-icon" class="fa fa-user"></i>
+                                <i id="login-username-icon" class="fa fa-user"></i>
                             </div>
                             <br>   
                             <label for="login-password"><strong>Password:</strong></label>
@@ -71,13 +71,13 @@
                                 <label for="register-username"><strong>Username:</strong></label>
                                 <div class="register-username-container">
                                     <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
-                                <i id="register-username-icon" class="fa fa-user"></i>
-                                <br>
+                                    <i id="register-username-icon" class="fa fa-user"></i>
+                                    <br>
                                 </div>
                                 <br>
                                 <label for="register-password"><strong>Password:</strong></label>
                                 <div class="register-password-container">        
-                                    <input id="register-password" type="password" name="password " required>
+                                    <input id="register-password" type="password" name="password" required>
                                 </div>
                                 <br>
                                 <button class="btn-register" id="btn-register" form="form-register">Register</button>
