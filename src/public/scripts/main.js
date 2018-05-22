@@ -193,6 +193,11 @@ class CMS
         }
         else
         {         
+            let loginModal = document.getElementById('login-modal-container');
+            
+            loginModal.style.display = "none";
+
+
             this.userID = aData.data[0];
             this.userName = aData.data[1];
 
@@ -876,11 +881,6 @@ span.onclick = function() {
 spanTwo.onclick = function() {
     modalTwo.style.display = "none";
 }
-//close after submit
-loginButton.onclick = function() {
-    modal.style.display = "none";
-
-}
 
 registerButton.onclick = function() {
     modal.style.display = "none";
@@ -888,7 +888,6 @@ registerButton.onclick = function() {
 
 logoutButton.onclick = function() {
     modalTwo.style.display = "none";
-    console.log("lul");
 }
 
 spanTwo.onclick = function() {
@@ -897,15 +896,12 @@ spanTwo.onclick = function() {
 
 linksClose.onclick = function() {
     modalTwo.style.display = "none";
-    console.log('lulz');
 }
 linksCloseTwo.onclick = function() {
     modalTwo.style.display = "none";
-    console.log('lulz');
 }
 linksCloseThree.onclick = function() {
     modalTwo.style.display = "none";
-    console.log('lulz');
 }
 
 // When the user clicks anywhere outside of the modal, close it
