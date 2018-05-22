@@ -16,8 +16,12 @@
 <body>
     <nav class="nav top">
         <ul>
-            <li id="nav-username" class="usrname-container">
-                <button class="not-loggedin" id="not-loggedin">Not logged in↓</button>
+            
+            <li id="nav-notloggedin" class="usrname-container">
+                Not logged in
+            </li>
+            <li id="nav-username" class="usrname-container hidden">
+                <button class="loggedin-username" id="loggedin-username"></button>
             </li>
             <li class="search-container">
                 <form id="form-search" method="POST" class="">
@@ -126,7 +130,7 @@
     
     <main>
 
-        <div id="message">
+        <div id="entries-message" class="hidden">
 
         </div>
     
@@ -224,44 +228,7 @@
         </div>
     </div>
 
-    <div id="users-register" class="hidden">
 
-        <div id="register-message" class="hidden">
-        </div>
-        <div>
-            <strong>Register</strong>
-            <form id="form-register" method="POST">
-                <div class="register-username-container">
-                    <label for="register-username"><strong>Username:</strong></label>
-                    <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
-                    <i id="register-username-icon" class="fa fa-user"></i>
-                </div>
-                <div class="register-password-container">        
-                    <label for="register-password"><strong>Password:</strong></label>
-                    <input id="register-password" type="password" name="password" required>
-                </div>
-                <button id="btn-register" form="form-register">Register</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="users-login" class="hidden">
-
-        <div id="login-message" class="hidden">
-        </div>
-
-        <div>
-            <strong>Login</strong>
-            <form id="form-login" method="POST">
-                <label for="login-username"><strong>Username:</strong></label>
-                <input id="login-username" type="text" name="username" pattern=".{6,}" required title="Usernames have a minimum length of 6 characters">
-                <label for="login-password"><strong>Password:</strong></label>
-                <input id="login-password" type="password" name="password" required>
-                <button id="btn-login" form="form-login">Login</button>
-            </form>
-        </div>
-
-    </div>
 
 </main>
 
