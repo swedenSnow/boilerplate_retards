@@ -102,15 +102,15 @@
                         <br>
                         <br>
                         <br>
-                        <li><a href="javascript:void(0)" id="user-myentries">My entries →</a></li>
+                        <li><a href="javascript:void(0)" class="close-links" id="user-myentries">My entries →</a></li>
                         <br>
                         <br>
                         <br>
-                        <li><a href="javascript:void(0)" id="user-allentries">All entries →</a></li>
+                        <li><a href="javascript:void(0)" class="close-links" id="user-allentries">All entries →</a></li>
                         <br>
                         <br>
                         <br>
-                        <li><a href="javascript:void(0)" id="user-postentry">Post entry →</a></li>
+                        <li><a href="javascript:void(0)" class="close-links" id="user-postentry">Post entry →</a></li>
                         <br>
                         <br>
                         <li></li>

@@ -819,6 +819,9 @@ const spanTwo = document.getElementsByClassName("close-notloggedin")[0];
 const loginButton = document.getElementById("btn-login");
 const registerButton = document.getElementById("btn-register");
 const logoutButton = document.getElementById("user-logout");
+const linksClose = document.getElementsByClassName("close-links")[0];
+const linksCloseTwo = document.getElementsByClassName("close-links")[1];
+const linksCloseThree = document.getElementsByClassName("close-links")[2];
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
@@ -851,10 +854,28 @@ logoutButton.onclick = function() {
     console.log("lul");
 }
 
+spanTwo.onclick = function() {
+    modalTwo.style.display = "none";
+}
+
+linksClose.onclick = function() {
+    modalTwo.style.display = "none";
+    console.log('lulz');
+}
+linksCloseTwo.onclick = function() {
+    modalTwo.style.display = "none";
+    console.log('lulz');
+}
+linksCloseThree.onclick = function() {
+    modalTwo.style.display = "none";
+    console.log('lulz');
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target == modal || event.target == modalTwo) {
         modal.style.display = "none";
+        modalTwo.style.display = "none";
     }
 }
 let cms = new CMS();
