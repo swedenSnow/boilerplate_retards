@@ -332,6 +332,9 @@ class CMS
         this.GetAllEntries();
 
         this.DivToggle("ShowAllEntries");
+
+        let divAllEntriesTitle = document.getElementById("entries-all-title");
+        divAllEntriesTitle.innerHTML = "<strong>All Entries</strong>";
     }
 
     async GetAllEntries()
@@ -350,6 +353,9 @@ class CMS
         this.GetMyEntries();
 
         this.DivToggle("ShowAllEntries");
+
+        let divAllEntriesTitle = document.getElementById("entries-all-title");
+        divAllEntriesTitle.innerHTML = "<strong>My Entries</strong>";
     }
 
     async GetMyEntries()
@@ -590,6 +596,17 @@ class CMS
         this.PresentEntriesAsHTML(data);
 
         this.DivToggle("ShowAllEntries");
+
+        let divAllEntriesTitle = document.getElementById("entries-all-title");
+
+        if (this.userName == aUserName)
+        {
+            divAllEntriesTitle.innerHTML = "<strong>My Entries</strong>";
+        }
+        else
+        {
+            divAllEntriesTitle.innerHTML = "<strong>" + aUserName + "'s Entries</strong>";
+        }
     }
 
     async GetEntriesByUsername(aUserName)
@@ -692,7 +709,12 @@ class CMS
 
         divTitle.innerText = aData.data.title;
         divContent.innerText = aData.data.content;
-        divCreatedBy.innerText = aData.data.username;
+
+        this.ClearElement(divCreatedBy);
+
+        let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
+        linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
+
         divCreatedAt.innerText = aData.data.createdAt;
 
         this.ClearElement(divOptions);

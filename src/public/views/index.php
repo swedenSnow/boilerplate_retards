@@ -61,7 +61,7 @@
                                 <input id="login-password" type="password" name="password" required>
                             </div>
                             <br>                        
-                            <button class="btn-login" id="btn-login" form="form-login" type="button">Login</button>
+                            <button class="btn-login" id="btn-login" form="form-login" type="submit">Login</button>
                             <br>  
                         </form>
                     </div>
@@ -84,7 +84,7 @@
                                 <input id="register-password" type="password" name="password" required>
                             </div>
                             <br>
-                            <button class="btn-register" id="btn-register" form="form-register" type="button">Register</button>
+                            <button class="btn-register" id="btn-register" form="form-register" type="submit">Register</button>
                         </form>
                      </div>
                 </div>
@@ -138,7 +138,7 @@
         </div>
     
         <div id="entries-all" class="hidden">
-            <div>
+            <div id="entries-all-title">
                 <strong>All entries</strong>
             </div>
             <div id="entries-all-container">
@@ -179,14 +179,14 @@
         <div id="post-message" class="hidden">
         </div>
         
-            <strong class="form-title">Post Entry</strong>
-            <form id="form-post" method="POST">
-                <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
-                <input id="post-title" type="text" name="title">
-                <label for="post-content" class="post-form-content"><strong>Content:</strong></label>
-                <textarea id="post-content" name="content"></textarea>            
-                <button id="btn-post" form="form-post">Post Entry</button>
-            </form>
+        <strong class="form-title">Post Entry</strong>
+        <form id="form-post" method="POST">
+            <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
+            <input id="post-title" type="text" name="title">
+            <label for="post-content" class="post-form-content"><strong>Content:</strong></label>
+            <textarea id="post-content" name="content"></textarea>            
+            <button id="btn-post" form="form-post">Post Entry</button>
+        </form>
         
     </div>
 
