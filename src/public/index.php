@@ -56,7 +56,9 @@ $app->post('/login', function ($request, $response, $args) {
     if (password_verify($body['password'], $user['password'])) {
         $_SESSION['loggedIn'] = true;
         $_SESSION['userID'] = $user['userID'];
-        return $response->withJson(['data' => [ $user['userID'], $user['username'] ]]);
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['userLevel'] = $user['userLevel'];
+        return $response->withJson(['data' => [ $user['userID'], $user['username'], $user['userLevel'] ]]);
     }
     return $response->withJson(['error' => 'wrong password']);
 });
@@ -69,22 +71,48 @@ $app->get('/logout', function ($request, $response, $args) {
     return $response->withJson('Success');
 });
 
+
+/**
+ * Check if were already logged in
+ */
+$app->get('/isloggedin', function ($request, $response, $args) {
+    if (isset($_SESSION['loggedIn'])) 
+    {
+        return $response->withJson(['loggedin' => [ $_SESSION['userID'], $_SESSION['username'], $_SESSION['userLevel'] ]]);
+    }
+
+    return $response->withJson(['notloggedin' => true]);
+});
+
 /**
  *  First implementation
  * 
- * Fix: Check for duplicate usernames, check incoming values
+ * Fix: Move to userclass
  */
 $app->post('/register', function ($request, $response, $args) 
 {
     $body = $request->getParsedBody();
 
     $username = $body['username'];
+    $username_length = strlen(utf8_decode($username)); 
+
+    if ($username_length < 6)
+    {
+        return $response->withJson(['error' => 'Username must be at least 6 characters long.']);
+    }
 
     $user_exists = $this->users->UsernameExists($username);
 
     if ($user_exists == true)
     {
         return $response->withJson(['error' => 'Username already exists.']);
+    }
+
+    $password_length = strlen(utf8_decode($body['password'])); 
+
+    if ($password_length < 6)
+    {
+        return $response->withJson(['error' => 'Password must be at least 6 characters long.']);
     }
 
     $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);

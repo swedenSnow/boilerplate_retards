@@ -913,6 +913,11 @@ button.user-logout:focus {
   font-size: 1.1rem;
 }
 
+.comment-deleted
+{
+  opacity: 0.3;
+}
+
 main {
   display: flex;
   flex-flow: row wrap;
