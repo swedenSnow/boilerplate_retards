@@ -208,6 +208,9 @@
         </div>
         <div id="entries-delete-confirmation">
         </div>
+        <div>
+            <button id="btn-confirm-delete">Yes</button>
+        </div>
     </div>
 
     <div id="entries-search-results" class="hidden">
