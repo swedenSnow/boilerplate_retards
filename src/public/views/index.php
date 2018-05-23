@@ -61,29 +61,32 @@
                                 <input id="login-password" type="password" name="password" required>
                             </div>
                             <br>                        
-                            <button class="btn-login" id="btn-login" form="form-login">Login</button>
+                            <button class="btn-login" id="btn-login" form="form-login" type="button">Login</button>
                             <br>  
                         </form>
-                        <div>
-                            <form id="form-register" method="POST">
-                                <strong class="login-head">Register</strong>
-                                <br>
-                                <label for="register-username"><strong>Username:</strong></label>
-                                <div class="register-username-container">
-                                    <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
-                                    <i id="register-username-icon" class="fa fa-user"></i>
-                                    <br>
-                                </div>
-                                <br>
-                                <label for="register-password"><strong>Password:</strong></label>
-                                <div class="register-password-container">        
-                                    <input id="register-password" type="password" name="password" required>
-                                </div>
-                                <br>
-                                <button class="btn-register" id="btn-register" form="form-register">Register</button>
-                            </form>
-                        </div>
                     </div>
+                    <div id="users-register">
+                        <div id="register-message" class="hidden">
+                    </div>
+                    <div>
+                        <form id="form-register" method="POST">
+                            <strong class="login-head">Register</strong>
+                            <br>
+                            <label for="register-username"><strong>Username:</strong></label>
+                            <div class="register-username-container">
+                                 <input id="register-username" type="text" name="username" pattern=".{6,}" required title="Username must be at least 6 characters.">
+                                <i id="register-username-icon" class="fa fa-user"></i>
+                                <br>
+                             </div>
+                            <br>
+                            <label for="register-password"><strong>Password:</strong></label>
+                            <div class="register-password-container">        
+                                <input id="register-password" type="password" name="password" required>
+                            </div>
+                            <br>
+                            <button class="btn-register" id="btn-register" form="form-register" type="button">Register</button>
+                        </form>
+                     </div>
                 </div>
             </div>
         </div>
@@ -208,8 +211,7 @@
         </div>
         <div id="entries-delete-confirmation">
         </div>
-        <div>
-            <button id="btn-confirm-delete">Yes</button>
+        <div id="entries-delete-button">
         </div>
     </div>
 

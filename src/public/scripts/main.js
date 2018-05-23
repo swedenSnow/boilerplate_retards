@@ -126,6 +126,10 @@ class CMS
 
         this.inputCommentContent    = document.getElementById("comment-content");
 
+        
+        this.inputRegisterUsername = document.getElementById("register-username");
+        this.inputRegisterPassword = document.getElementById("register-password");
+
         //Buttons
 
         this.iconSearch             = document.getElementById("search-btn");
@@ -262,26 +266,39 @@ class CMS
 
     async Register(aFormData)
     {
-        const url = '/register';
-
-        const postOptions = 
+        if (this.inputRegisterUsername.length >= 5)
         {
-            method: 'POST',
-            body: aFormData
+            const url = '/register';
+
+            const postOptions = 
+            {
+                method: 'POST',
+                body: aFormData
+            }
+    
+            const data = await this.PostData(url, postOptions);
+    
+            this.HandleRegisterResult();
+            
         }
-
-        const data = await this.PostData(url, postOptions);
-
-        this.HandleRegisterResult();
+        else
+        {
+            let registerMessage = document.getElementById("register-message");
+            registerMessage.classList.remove("hidden");
+            registerMessage.value = "ERROR: Username must be at least 6 characters long.";
+        }
     }
 
     HandleRegisterResult()
     {
-        let inputUsername = document.getElementById("register-username");
-        let inputPassword = document.getElementById("register-password");
+        this.inputRegisterUsername.value = "";
+        this.inputRegisterPassword.value = "";
 
-        inputUsername.value = "";
-        inputPassword.value = "";
+        
+        let loginModal = document.getElementById('login-modal-container');
+            
+        loginModal.style.display = "none";
+        registerMessage.classList.add("hidden");
     }
 
     async Search(aFormData)
@@ -923,12 +940,12 @@ class CMS
 
         let username = this.inputRegisterUsername.value;
         
-        if (username.length > 0)
-        {
-            let icon = document.getElementById("register-username-icon");
-            icon.classList.remove("fa-user");
-            icon.classList.toggle("fa-spinner");
-          
+        let icon = document.getElementById("register-username-icon");
+        icon.classList.remove("fa-user");
+        icon.classList.toggle("fa-spinner");
+
+        if (username.length >= 6)
+        {          
             const data = await this.GetUserNameAvailability(username);
 
             console.log(data);
@@ -949,6 +966,18 @@ class CMS
                 this.inputRegisterUsername.style.borderColor = "green";
                 this.inputRegisterUsername.style.backgroundColor = "rgba(127, 230, 127, 0.8)";
             }
+        }
+        else
+        {
+            icon.classList.toggle("fa-times");
+            icon.classList.remove("fa-check");
+            icon.classList.remove("fa-spinner");
+            this.inputRegisterUsername.style.borderColor = "red";
+            this.inputRegisterUsername.style.backgroundColor = "rgba(250, 103, 103, 0.74)";
+
+            let registerMessage = document.getElementById("register-message");
+            registerMessage.classList.remove("hidden");
+            registerMessage.innerHTML = "ERROR: Username must be at least 6 characters long.";
         }
     }
 
@@ -1000,10 +1029,6 @@ span.onclick = function() {
 
 spanTwo.onclick = function() {
     modalTwo.style.display = "none";
-}
-
-registerButton.onclick = function() {
-    modal.style.display = "none";
 }
 
 logoutButton.onclick = function() {
