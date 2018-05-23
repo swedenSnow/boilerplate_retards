@@ -350,8 +350,16 @@ font-family: 'Raleway', sans-serif;
 font-family: 'Cinzel', serif;
 ------------------------------------------------------------------ */
 
+/* css variables */
+
+:root {
+  --primary-font: "Raleway", sans-serif;
+  --title-font: "Abril Fatface", cursive;
+  --root-font: 1rem;
+  --title-fontsize: 4rem;
+}
 html {
-  /* min-width: 100%; */
+  -webkit-text-size-adjust: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-sizing: border-box;
@@ -377,7 +385,7 @@ nav {
   z-index: 1;
   color: whitesmoke;
   margin: 0;
-  height: 20px;
+  height: 30px;
   padding: 0.9rem;
 }
 
@@ -417,14 +425,15 @@ nav li {
 
 button {
   border-radius: 0.5rem;
-  background-color: #bdbdbd;
+  /* background-color: #bdbdbd; */
+  background-color: #648c95;
   color: black;
   transition: color 0.5s linear;
   transition: all 300ms ease;
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid rgb(238, 214, 214);
   font-family: "Raleway";
-  height: 1.7rem;
+  height: 2em;
   padding: 0 1rem;
   outline-style: none;
 }
@@ -611,14 +620,7 @@ h1::before {
 h1::after {
   margin-left: 2rem;
 }
-main {
-  display: flex;
-  flex-flow: row wrap;
-  padding: 2rem;
-  margin: 0;
-  height: 100vh;
-  background: #648c955c;
-}
+
 .hidden {
   display: none;
 }
@@ -909,4 +911,98 @@ button.user-logout:focus {
   opacity: 0.8;
   border-radius: 0px 13px 0px 13px;
   font-size: 1.1rem;
+}
+
+main {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 2rem;
+  margin: 0;
+  height: 67vh;
+  background: #444;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#fff),
+    to(#eee)
+  );
+  background-image: -webkit-linear-gradient(top, #648c95, #c8d5d9);
+  background-image: -moz-linear-gradient(top, #648c95, #c8d5d9);
+  background-image: -ms-linear-gradient(top, #444, #000);
+  background-image: -o-linear-gradient(top, #648c95, #c8d5d9);
+  background-image: linear-gradient(top, #648c95, #c8d5d9);
+  color: white;
+  transition: all 500ms ease;
+}
+
+#entries-message {
+  width: 100%;
+  height: 1.5rem;
+  font-family: var(--primary-font);
+  text-align: center;
+}
+
+.form-title {
+  font-size: 3rem;
+  font-family: var(--primary-font);
+  text-transform: uppercase;
+  color: #648c95;
+  text-shadow: 1px 1px 1px #000;
+  letter-spacing: 2px;
+  margin-left: 1rem;
+}
+
+.post-form-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-family: var(--primary-font);
+}
+
+.post-form-content {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-family: var(--primary-font);
+}
+
+#post-title {
+  border-radius: 8px;
+  height: 2em;
+  margin-bottom: 2rem;
+  width: 31%;
+}
+
+#entries-post {
+  min-height: 50%;
+  min-width: 50%;
+  background: #444;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#fff),
+    to(#eee)
+  );
+  background-image: -webkit-linear-gradient(top, #689098, #c2d1d5);
+  background-image: -moz-linear-gradient(top, #689098, #c2d1d5);
+  background-image: -ms-linear-gradient(top, #689098, #c2d1d5);
+  background-image: -o-linear-gradient(top, #689098, #c2d1d5);
+  background-image: linear-gradient(top, #689098, #c2d1d5);
+  color: black;
+  transition: all 500ms ease;
+  border-radius: 8px;
+}
+
+#post-content {
+  height: 15em;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+#btn-post {
+  width: 40%;
+  margin: auto;
+}
+
+#form-post {
 }
