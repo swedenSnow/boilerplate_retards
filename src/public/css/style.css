@@ -1006,3 +1006,27 @@ main {
 
 #form-post {
 }
+
+#entries-all-container {
+  padding: 1rem;
+  font-size: 2rem;
+}
+#entries-all-container a {
+  font-size: 1.5rem;
+  font-family: var(--primary-font);
+  margin-bottom: 2rem;
+  color: #000;
+  transition: background 0.5s linear;
+  transition: all 300ms ease;
+}
+
+a:hover,
+a:focus {
+  color: #ffffff;
+  text-shadow: 1px 1px #000000;
+}
+
+#entries-all-container div {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}

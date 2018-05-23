@@ -129,22 +129,19 @@
     </header>
     
     <main>
-
         <div id="entries-message" class="hidden">
-
         </div>
-    
         <div id="entries-all" class="hidden">
             <div>
-                <strong>All entries</strong>
+                <strong class="form-title">All entries</strong>
             </div>
-            <div id="entries-all-container">
+        <div id="entries-all-container">
         </div>
     </div>
 
     <div id="entries-single" class="hidden">
         <div>
-            <strong>Single Entry</strong>
+            <strong class="form-title">Single Entry</strong>
         </div>
     
         <div id="entries-single-container">
@@ -162,7 +159,7 @@
         </div>
 
         <div id="entry-add-comment">
-            <strong>Add comment</strong>
+            <strong class="form-title">Add comment</strong>
             <form id="form-addcomment" method="POST">
                 <label for="comment-content"><strong>Content:</strong></label>
                 <textarea id="comment-content" name="content"></textarea>            
@@ -191,7 +188,7 @@
         <div id="edit-message" class="hidden">
         </div>
         <div>
-            <strong>Edit Entry</strong>
+            <strong  class="form-title">Edit Entry</strong>
             <form id="form-edit" method="POST">
                 <label for="edit-title"><strong>Title:</strong></label>
                 <input id="edit-title" type="text" name="title">
@@ -204,7 +201,7 @@
 
     <div id="entries-delete" class="hidden">
         <div>
-            <strong>Delete Entry</strong>
+            <strong class="form-title">>Delete Entry</strong>
         </div>
         <div id="entries-delete-confirmation">
         </div>
@@ -215,7 +212,7 @@
 
     <div id="entries-search-results" class="hidden">
         <div>
-            <strong>Search Results</strong>
+            <strong class="form-title">Search Results</strong>
         </div>
         <div id="entries-search-results-text">
         </div>
@@ -225,7 +222,7 @@
 
     <div id="users-all" class="hidden">
         <div>
-            <strong>All Users</strong>
+            <strong class="form-title">All Users</strong>
         </div>
         <div id="users-all-container">
         </div>
