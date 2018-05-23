@@ -61,7 +61,11 @@
                                 <input id="login-password" type="password" name="password" required>
                             </div>
                             <br>                        
+<<<<<<< HEAD
                             <button class="btn-login" id="btn-login" form="form-login">Login</button>
+=======
+                            <button class="btn-login" id="btn-login" form="form-login" type="submit">Login</button>
+>>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
                             <br>  
                         </form>
                     </div>
@@ -84,7 +88,11 @@
                                 <input id="register-password" type="password" name="password" required>
                             </div>
                             <br>
+<<<<<<< HEAD
                             <button class="btn-register" id="btn-register" form="form-register">Register</button>
+=======
+                            <button class="btn-register" id="btn-register" form="form-register" type="submit">Register</button>
+>>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
                         </form>
                      </div>
                 </div>
@@ -135,8 +143,13 @@
         <div id="entries-message" class="hidden">
         </div>
         <div id="entries-all" class="hidden">
+<<<<<<< HEAD
             <div>
                 <strong class="form-title">All entries</strong>
+=======
+            <div id="entries-all-title">
+                <strong>All entries</strong>
+>>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
             </div>
         <div id="entries-all-container">
         </div>
@@ -176,14 +189,14 @@
         <div id="post-message" class="hidden">
         </div>
         
-            <strong class="form-title">Post Entry</strong>
-            <form id="form-post" method="POST">
-                <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
-                <input id="post-title" type="text" name="title">
-                <label for="post-content" class="post-form-content"><strong>Content:</strong></label>
-                <textarea id="post-content" name="content"></textarea>            
-                <button id="btn-post" form="form-post">Post Entry</button>
-            </form>
+        <strong class="form-title">Post Entry</strong>
+        <form id="form-post" method="POST">
+            <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
+            <input id="post-title" type="text" name="title">
+            <label for="post-content" class="post-form-content"><strong>Content:</strong></label>
+            <textarea id="post-content" name="content"></textarea>            
+            <button id="btn-post" form="form-post">Post Entry</button>
+        </form>
         
     </div>
 
