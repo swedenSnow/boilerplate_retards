@@ -133,31 +133,6 @@ class CMS
         this.CheckLoggedIn();
     }
 
-    Debug()
-    {
-        this.divDebug = document.getElementById("debug");
-
-        let btnShowRegister = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Register Div", btnShowRegister);
-        btnShowRegister.addEventListener("click", () => this.divRegister.classList.toggle("hidden"));
-
-        let btnShowLogin = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Login Div", btnShowLogin);
-        btnShowLogin.addEventListener("click", () => this.divLogin.classList.toggle("hidden"));
-
-        let btnShowAllUsers = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("All Users Div", btnShowAllUsers);
-        btnShowAllUsers.addEventListener("click", () => this.ShowAllUsers());
-        
-        let btnShowAllEntries = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("All Entries Div", btnShowAllEntries);
-        btnShowAllEntries.addEventListener("click", () => this.ShowAllEntries());
-        
-        let btnShowPostEntry = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Post Entry", btnShowPostEntry);
-        btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));  
-    }
-
     async CheckLoggedIn()
     {
         const url = '/isloggedin';
@@ -532,6 +507,29 @@ class CMS
         this.DivToggle("ShowMessage")
     }
 
+    async DeleteComment(aID, aElement, aDeleteLink)
+    {
+        const url = '/api/comments/' + aID;
+
+        const postOptions = 
+        {
+            method: 'DELETE',
+            credentials: 'include'
+        }
+
+        const data = await this.PostData(url, postOptions);
+
+        this.HandleDeleteComment(aElement, aDeleteLink);
+    }
+
+    HandleDeleteComment(aElement, aDeleteLink)
+    {
+        aElement.setAttribute("class", "comment-deleted");
+
+        var newDeleteElement = aDeleteLink.cloneNode(true);
+        aDeleteLink.parentNode.replaceChild(newDeleteElement, aDeleteLink);
+    }
+
     async ShowAllUsers()
     {
         await this.GetAllUsers();
@@ -654,7 +652,17 @@ class CMS
             linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
         }
 
-        console.log("Showing " + aData.data.length + " posts.");
+        if (aData.data.length == 0)
+        {
+            let divEntryInformation = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
+            this.DOMFactory.CreateTextAndAppendTo("Found 0 entries.", divEntryInformation);
+        }
+        else
+        {
+            let divEntryInformation = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
+            this.DOMFactory.CreateTextAndAppendTo("Showing " + aData.data.length + " posts.", divEntryInformation);
+        }
+
     }
 
     PresentEntryAsHTML(aData)
@@ -707,6 +715,19 @@ class CMS
     
                 let divCommentContent = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
                 divCommentContent.innerText = comment.content;
+
+                if (comment.createdBy == this.userID || this.userLevel == 1)
+                {
+                    let divCommentDelete = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                
+
+                    let linkDelete = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divCommentDelete);
+
+                    let cmdDelete = () => this.DeleteComment(comment.commentID, divComment, linkDelete);
+                    
+                    linkDelete.addEventListener("click", cmdDelete);
+                    linkDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                }
             }
         }
         else

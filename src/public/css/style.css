@@ -910,3 +910,8 @@ button.user-logout:focus {
   border-radius: 0px 13px 0px 13px;
   font-size: 1.1rem;
 }
+
+.comment-deleted
+{
+  opacity: 0.3;
+}
