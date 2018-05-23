@@ -37,7 +37,12 @@ class LikesController
             $statement->bindParam(':userID', $user_id); 
             $statement->execute();
 
-            return $statement;
+            if ($statement->rowCount() > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
         catch (PDOException $e)
         {
@@ -63,7 +68,7 @@ class LikesController
         }
     }
 
-    public function UnLike($entry_id, $user_id)
+    public function UnLike($user_id, $entry_id)
     {        
         try 
         {

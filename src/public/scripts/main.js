@@ -445,7 +445,6 @@ class CMS
     {
         const url = '/api/entries/' + aID;
 
-        
         const postOptions = 
         {
             method: 'PATCH',
@@ -455,17 +454,38 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-         console.log(data);
+        console.log(data);
 
-         
-        let inputEditTitle      = document.getElementById("edit-title");
-        let inputEditContent    = document.getElementById("edit-content");
-
-        inputEditTitle.value = "";
-        inputEditContent.value = "";
+        this.HandleEntryUpdated(data);
     }
 
-    async DeleteEntry(aID)
+    HandleEntryUpdated(aData)
+    {
+        console.log(aData);
+
+        this.divMessage.innerText = "Entry with title: " + this.inputEditTitle.value + " was updated.";
+        this.DivToggle("ShowMessage")
+
+        this.inputEditTitle.value = "";
+        this.inputEditContent.value = "";
+    }
+
+    ShowDeleteEntry(aID, aEntryTitle)
+    {
+        this.DivToggle("ShowDeleteEntry");
+
+        let confirmationDiv = document.getElementById("entries-delete-confirmation");
+        let confirmationButtonDiv = document.getElementById("entries-delete-button");
+
+        confirmationDiv.innerText = "Are you sure you want to delete entry titled: " + aEntryTitle;
+
+        let confirmButton = this.DOMFactory.CreateElementAndAppendTo("button", confirmationButtonDiv)
+        confirmButton.innerText = "Yes";
+
+        confirmButton.addEventListener("click", () => this.DeleteEntry(aID, aEntryTitle));
+    }
+
+    async DeleteEntry(aID, aEntryTitle)
     {
         const url = '/api/entries/' + aID;
 
@@ -476,6 +496,16 @@ class CMS
         }
 
         const data = await this.PostData(url, postOptions);
+
+        this.HandleEntryDeleted(aID, aEntryTitle, data);
+    }
+
+    HandleEntryDeleted(aID, aEntryTitle, aData)
+    {
+        console.log(aData);
+
+        this.divMessage.innerText = "Entry with title: " + aEntryTitle + " was deleted.";
+        this.DivToggle("ShowMessage")
     }
 
     async ShowAllUsers()
@@ -509,7 +539,6 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-        //Refreshing this instead of using returndata because it was faster to code.
         this.ShowSingleEntry(aID);
 
         this.inputCommentContent.value = "";
@@ -626,7 +655,7 @@ class CMS
             linkEdit.innerHTML = '<i class="fas fa-edit"></i>';
 
             let linkDelete = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divOptions);
-            linkDelete.addEventListener("click", () => this.ShowDeleteEntry(aData.data.entryID));
+            linkDelete.addEventListener("click", () => this.ShowDeleteEntry(aData.data.entryID, aData.data.title));
             linkDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
         }
     }
@@ -700,7 +729,6 @@ class CMS
 
     UpdateEntryEdit(aData)
     {
-
         let inputEditTitle      = document.getElementById("edit-title");
         let inputEditContent    = document.getElementById("edit-content");
         let butttonEdit         = document.getElementById("btn-edit");
@@ -731,8 +759,9 @@ class CMS
         console.log(this.userID);
         if (aLikesData.data != null)
         {
-            let like = aLikesData.data.find(o => Number(o.userID) === this.userID);
-            console.log(this.userID);
+            let like = aLikesData.data.find(o => Number(o.userID) === Number(this.userID));
+            console.log(aLikesData.data);
+            console.log(like);
 
             if (like != undefined)
             {
@@ -748,10 +777,7 @@ class CMS
                 
                 this.cmdLike = () => this.UpdateLikeState(aID, false);
 
-                this.iconLikes.addEventListener("click", this.cmdLike);
-
-                console.log("LOL");
-                
+                this.iconLikes.addEventListener("click", this.cmdLike);               
             }
             else
             {
@@ -772,6 +798,56 @@ class CMS
 
             console.log("Likes: " + aLikesData.data.length);
         }
+    }
+
+    async UpdateLikeState(aID, aLikeState)
+    {
+        const url = 'api/likes/' + aID + "?like=" + aLikeState;
+
+        const data = await this.FetchData(url);
+
+        this.HandleLikeUpdate(data);
+    }
+
+    //Uses same functionality as above, move to separate functions if we have time.
+    HandleLikeUpdate(aData)
+    {
+        if (aData.data == 1)
+        {
+            if (aData.type == "like")
+            {
+                this.iconLikes.classList.toggle("fas", true);
+                this.iconLikes.classList.toggle("far", false);
+
+                this.entryLiked = true;
+
+                if (this.cmdLike != null)
+                {
+                    this.iconLikes.removeEventListener("click", this.cmdLike);
+                }
+                
+                this.cmdLike = () => this.UpdateLikeState(aData.entryID, false);
+
+                this.iconLikes.addEventListener("click", this.cmdLike);
+            }
+            else if (aData.type == "unlike")
+            {
+                this.iconLikes.classList.toggle("fas", false);
+                this.iconLikes.classList.toggle("far", true);
+
+                this.entryLiked = false;
+                
+                if (this.cmdLike != null)
+                {
+                    this.iconLikes.removeEventListener("click", this.cmdLike);
+                }
+
+                this.cmdLike = () => this.UpdateLikeState(aData.entryID, true);
+
+                this.iconLikes.addEventListener("click", this.cmdLike);
+            }
+        }
+        console.log(aData);
     }
 
     DivToggle(aString)
@@ -843,14 +919,6 @@ class CMS
         return data;
     }
 
-    async UpdateLikeState(aID, aLikeState)
-    {
-        const url = 'api/likes/' + aID + "?like=" + aLikeState;
-
-        const data = await this.FetchData(url);
-
-        console.log(data);
-    }
 }
 
 // Get the modal

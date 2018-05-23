@@ -283,13 +283,19 @@ $app->group('/api', function () use ($app) {
         {
             if ($query_params['like'] == "true")
             {
-                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+                //return $response->withJson(['data' => $this->likes->UserIDLikesEntryID($_SESSION['userID'], $id)]);
+                if (!$this->likes->UserIDLikesEntryID($_SESSION['userID'], $id))
+                {
+                    $like_reponse = $this->likes->Like($_SESSION['userID'], $id); 
+                    return $response->withJson(['data' => $like_reponse, 'type' => 'like', 'entryID' => $id]);
+                }
+                return $response->withJson(['error' => 'user already likes post']);
             }
             else
             {
-                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+                $like_reponse = $this->likes->UnLike($_SESSION['userID'], $id); 
+                return $response->withJson(['data' => $like_reponse, 'type' => 'unlike', 'entryID' => $id]);
             }
-            return $response->withJson(['data' => $like_reponse]);
         }
         $entry_comments = $this->likes->GetLikesForEntryID($id);
         return $response->withJson(['data' => $entry_comments]);
@@ -303,13 +309,19 @@ $app->group('/api', function () use ($app) {
         {
             if ($query_params['like'] == true)
             {
-                $like_reponse = $this->likes->Like($id, $_SESSION['userID']); 
+                //return $response->withJson(['data' => $this->likes->UserIDLikesEntryID($_SESSION['userID'], $id)]);
+                if (!$this->likes->UserIDLikesEntryID($_SESSION['userID'], $id))
+                {
+                    $like_reponse = $this->likes->Like($_SESSION['userID'], $id); 
+                    return $response->withJson(['data' => $like_reponse, 'type' => 'like', 'entryID' => $id]);
+                }
+                return $response->withJson(['error' => 'user already likes post']);
             }
             else
             {
-                $like_reponse = $this->likes->UnLike($id, $_SESSION['userID']); 
+                $like_reponse = $this->likes->UnLike($_SESSION['userID'], $id); 
+                return $response->withJson(['data' => $like_reponse, 'type' => 'unlike', 'entryID' => $id ]);
             }
-            return $response->withJson(['data' => $like_reponse]);
         }
         return $response->withJson(['data' => null]);
     });
