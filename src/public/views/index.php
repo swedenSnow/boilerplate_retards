@@ -60,12 +60,10 @@
                             <div class="register-password-container">   
                                 <input id="login-password" type="password" name="password" required>
                             </div>
-                            <br>                        
-<<<<<<< HEAD
-                            <button class="btn-login" id="btn-login" form="form-login">Login</button>
-=======
+                            <br>     
+
                             <button class="btn-login" id="btn-login" form="form-login" type="submit">Login</button>
->>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
+
                             <br>  
                         </form>
                     </div>
@@ -88,11 +86,7 @@
                                 <input id="register-password" type="password" name="password" required>
                             </div>
                             <br>
-<<<<<<< HEAD
-                            <button class="btn-register" id="btn-register" form="form-register">Register</button>
-=======
                             <button class="btn-register" id="btn-register" form="form-register" type="submit">Register</button>
->>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
                         </form>
                      </div>
                 </div>
