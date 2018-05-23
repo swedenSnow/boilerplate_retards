@@ -126,38 +126,31 @@ class CMS
 
         this.inputCommentContent    = document.getElementById("comment-content");
 
+        
+        this.inputRegisterUsername = document.getElementById("register-username");
+        this.inputRegisterPassword = document.getElementById("register-password");
+
         //Buttons
 
         this.iconSearch             = document.getElementById("search-btn");
 
-        //Debug things...
-        this.userID = 2;
-        this.userName = "indiehjaerta";
+        this.CheckLoggedIn();
     }
 
-    Debug()
+    async CheckLoggedIn()
     {
-        this.divDebug = document.getElementById("debug");
+        const url = '/isloggedin';
 
-        let btnShowRegister = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Register Div", btnShowRegister);
-        btnShowRegister.addEventListener("click", () => this.divRegister.classList.toggle("hidden"));
+        const data = await this.FetchData(url);
 
-        let btnShowLogin = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Login Div", btnShowLogin);
-        btnShowLogin.addEventListener("click", () => this.divLogin.classList.toggle("hidden"));
-
-        let btnShowAllUsers = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("All Users Div", btnShowAllUsers);
-        btnShowAllUsers.addEventListener("click", () => this.ShowAllUsers());
-        
-        let btnShowAllEntries = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("All Entries Div", btnShowAllEntries);
-        btnShowAllEntries.addEventListener("click", () => this.ShowAllEntries());
-        
-        let btnShowPostEntry = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
-        this.DOMFactory.CreateTextAndAppendTo("Post Entry", btnShowPostEntry);
-        btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));  
+        if (data.loggedin)
+        {  
+            this.userID = data.loggedin[0];
+            this.userName = data.loggedin[1];
+            this.userLevel = data.loggedin[2];
+            
+            this.UpdateLoggedInElements(this.userName, this.userLevel);
+        }
     }
 
     async Login(aFormData)
@@ -197,40 +190,50 @@ class CMS
             
             loginModal.style.display = "none";
 
-
             this.userID = aData.data[0];
             this.userName = aData.data[1];
+            this.userLevel = aData.data[2];
 
-            let btnUsername = document.getElementById("loggedin-username");
-            btnUsername.innerHTML = this.userName + ' <i class="fas fa-chevron-down"></i>';
-
-            let navUsername = document.getElementById("nav-username");
-            navUsername.classList.remove("hidden");
-
-            let navNotLoggedIn = document.getElementById("nav-notloggedin");
-            navNotLoggedIn.classList.add("hidden");
-
-            this.iconSearch.classList.remove("hidden");
-            this.inputSearchText.classList.remove("search-hidden");
-            this.inputSearchText.classList.add("search-show");
-
-            let loginContainer = document.getElementById("login-container");
-            loginContainer.classList.add("hidden");
-            
-            let logoutContainer = document.getElementById("logout-container");
-            logoutContainer.classList.remove("hidden");
-
-            let title = document.getElementById("title");
-            title.innerText = "Welcome " + this.userName;
-
-            this.divMessage.innerText = "You are now logged in";
-
-            this.divMessage.classList.toggle("hidden", false);
-
-            let loginMessage = document.getElementById("login-message");
-            loginMessage.innerText = "";
-            loginMessage.classList.add("hidden");
+            this.UpdateLoggedInElements(this.userName, this.userLevel);
         }
+    }
+
+    UpdateLoggedInElements(aUserName, aUserLevel)
+    {
+        let btnUsername = document.getElementById("loggedin-username");
+        btnUsername.innerHTML = aUserName + ' <i class="fas fa-chevron-down"></i>';
+
+        let navUsername = document.getElementById("nav-username");
+        navUsername.classList.remove("hidden");
+
+        let navNotLoggedIn = document.getElementById("nav-notloggedin");
+        navNotLoggedIn.classList.add("hidden");
+
+        this.iconSearch.classList.remove("hidden");
+        this.inputSearchText.classList.remove("search-hidden");
+        this.inputSearchText.classList.add("search-show");
+
+        let loginContainer = document.getElementById("login-container");
+        loginContainer.classList.add("hidden");
+        
+        let logoutContainer = document.getElementById("logout-container");
+        logoutContainer.classList.remove("hidden");
+
+        let title = document.getElementById("title");
+        title.innerText = "Welcome " + aUserName;
+
+        this.divMessage.innerHTML = "You are now logged in.";
+
+        if (aUserLevel == 1)
+        {
+            this.divMessage.innerHTML += "<br> You are logged in with admin privilegies.";
+        }
+
+        this.divMessage.classList.toggle("hidden", false);
+
+        let loginMessage = document.getElementById("login-message");
+        loginMessage.innerText = "";
+        loginMessage.classList.add("hidden");
     }
 
     async LogOut()
@@ -263,26 +266,39 @@ class CMS
 
     async Register(aFormData)
     {
-        const url = '/register';
-
-        const postOptions = 
+        if (this.inputRegisterUsername.length >= 5)
         {
-            method: 'POST',
-            body: aFormData
+            const url = '/register';
+
+            const postOptions = 
+            {
+                method: 'POST',
+                body: aFormData
+            }
+    
+            const data = await this.PostData(url, postOptions);
+    
+            this.HandleRegisterResult();
+            
         }
-
-        const data = await this.PostData(url, postOptions);
-
-        this.HandleRegisterResult();
+        else
+        {
+            let registerMessage = document.getElementById("register-message");
+            registerMessage.classList.remove("hidden");
+            registerMessage.value = "ERROR: Username must be at least 6 characters long.";
+        }
     }
 
     HandleRegisterResult()
     {
-        let inputUsername = document.getElementById("register-username");
-        let inputPassword = document.getElementById("register-password");
+        this.inputRegisterUsername.value = "";
+        this.inputRegisterPassword.value = "";
 
-        inputUsername.value = "";
-        inputPassword.value = "";
+        
+        let loginModal = document.getElementById('login-modal-container');
+            
+        loginModal.style.display = "none";
+        registerMessage.classList.add("hidden");
     }
 
     async Search(aFormData)
@@ -508,6 +524,29 @@ class CMS
         this.DivToggle("ShowMessage")
     }
 
+    async DeleteComment(aID, aElement, aDeleteLink)
+    {
+        const url = '/api/comments/' + aID;
+
+        const postOptions = 
+        {
+            method: 'DELETE',
+            credentials: 'include'
+        }
+
+        const data = await this.PostData(url, postOptions);
+
+        this.HandleDeleteComment(aElement, aDeleteLink);
+    }
+
+    HandleDeleteComment(aElement, aDeleteLink)
+    {
+        aElement.setAttribute("class", "comment-deleted");
+
+        var newDeleteElement = aDeleteLink.cloneNode(true);
+        aDeleteLink.parentNode.replaceChild(newDeleteElement, aDeleteLink);
+    }
+
     async ShowAllUsers()
     {
         await this.GetAllUsers();
@@ -630,7 +669,17 @@ class CMS
             linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
         }
 
-        console.log("Showing " + aData.data.length + " posts.");
+        if (aData.data.length == 0)
+        {
+            let divEntryInformation = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
+            this.DOMFactory.CreateTextAndAppendTo("Found 0 entries.", divEntryInformation);
+        }
+        else
+        {
+            let divEntryInformation = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
+            this.DOMFactory.CreateTextAndAppendTo("Showing " + aData.data.length + " posts.", divEntryInformation);
+        }
+
     }
 
     PresentEntryAsHTML(aData)
@@ -648,7 +697,7 @@ class CMS
 
         this.ClearElement(divOptions);
 
-        if (aData.data.createdBy == this.userID)
+        if (aData.data.createdBy == this.userID || this.userLevel == 1)
         {
             let linkEdit = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divOptions);
             linkEdit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
@@ -683,6 +732,19 @@ class CMS
     
                 let divCommentContent = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
                 divCommentContent.innerText = comment.content;
+
+                if (comment.createdBy == this.userID || this.userLevel == 1)
+                {
+                    let divCommentDelete = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                
+
+                    let linkDelete = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divCommentDelete);
+
+                    let cmdDelete = () => this.DeleteComment(comment.commentID, divComment, linkDelete);
+                    
+                    linkDelete.addEventListener("click", cmdDelete);
+                    linkDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                }
             }
         }
         else
@@ -752,8 +814,7 @@ class CMS
 
         formEdit.addEventListener("submit", this.cmdEdit);
     }
-
-    
+  
     UpdateLikes(aID, aLikesData)
     {
         console.log(this.userID);
@@ -809,7 +870,7 @@ class CMS
         this.HandleLikeUpdate(data);
     }
 
-    //Uses same functionality as above, move to separate functions if we have time.
+    //Uses same functionality as UpdateLikes(), move to separate functions if we have time.
     HandleLikeUpdate(aData)
     {
         if (aData.data == 1)
@@ -879,12 +940,12 @@ class CMS
 
         let username = this.inputRegisterUsername.value;
         
-        if (username.length > 0)
-        {
-            let icon = document.getElementById("register-username-icon");
-            icon.classList.remove("fa-user");
-            icon.classList.toggle("fa-spinner");
-          
+        let icon = document.getElementById("register-username-icon");
+        icon.classList.remove("fa-user");
+        icon.classList.toggle("fa-spinner");
+
+        if (username.length >= 6)
+        {          
             const data = await this.GetUserNameAvailability(username);
 
             console.log(data);
@@ -905,6 +966,18 @@ class CMS
                 this.inputRegisterUsername.style.borderColor = "green";
                 this.inputRegisterUsername.style.backgroundColor = "rgba(127, 230, 127, 0.8)";
             }
+        }
+        else
+        {
+            icon.classList.toggle("fa-times");
+            icon.classList.remove("fa-check");
+            icon.classList.remove("fa-spinner");
+            this.inputRegisterUsername.style.borderColor = "red";
+            this.inputRegisterUsername.style.backgroundColor = "rgba(250, 103, 103, 0.74)";
+
+            let registerMessage = document.getElementById("register-message");
+            registerMessage.classList.remove("hidden");
+            registerMessage.innerHTML = "ERROR: Username must be at least 6 characters long.";
         }
     }
 
@@ -956,10 +1029,6 @@ span.onclick = function() {
 
 spanTwo.onclick = function() {
     modalTwo.style.display = "none";
-}
-
-registerButton.onclick = function() {
-    modal.style.display = "none";
 }
 
 logoutButton.onclick = function() {
