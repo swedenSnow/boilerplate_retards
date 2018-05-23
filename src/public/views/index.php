@@ -178,16 +178,16 @@
     <div id="entries-post" class="hidden">
         <div id="post-message" class="hidden">
         </div>
-        <div>
-            <strong>Post Entry</strong>
+        
+            <strong class="form-title">Post Entry</strong>
             <form id="form-post" method="POST">
-                <label for="post-title"><strong>Title:</strong></label>
+                <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
                 <input id="post-title" type="text" name="title">
-                <label for="post-content"><strong>Content:</strong></label>
+                <label for="post-content" class="post-form-content"><strong>Content:</strong></label>
                 <textarea id="post-content" name="content"></textarea>            
                 <button id="btn-post" form="form-post">Post Entry</button>
             </form>
-        </div>
+        
     </div>
 
     <div id="entries-edit" class="hidden">
@@ -236,9 +236,5 @@
 
 
 </main>
-
-<div id="debug">
-</div>
-
 </body>
 </html>
