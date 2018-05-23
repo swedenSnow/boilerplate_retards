@@ -130,9 +130,7 @@ class CMS
 
         this.iconSearch             = document.getElementById("search-btn");
 
-        //Debug things...
-        this.userID = 2;
-        this.userName = "indiehjaerta";
+        this.CheckLoggedIn();
     }
 
     Debug()
@@ -158,6 +156,22 @@ class CMS
         let btnShowPostEntry = this.DOMFactory.CreateElementAndAppendTo("button", this.divDebug);
         this.DOMFactory.CreateTextAndAppendTo("Post Entry", btnShowPostEntry);
         btnShowPostEntry.addEventListener("click", () => this.DivToggle("ShowAddEntry"));  
+    }
+
+    async CheckLoggedIn()
+    {
+        const url = '/isloggedin';
+
+        const data = await this.FetchData(url);
+
+        if (data.loggedin)
+        {  
+            this.userID = data.loggedin[0];
+            this.userName = data.loggedin[1];
+            this.userLevel = data.loggedin[2];
+            
+            this.UpdateLoggedInElements(this.userName, this.userLevel);
+        }
     }
 
     async Login(aFormData)
@@ -197,40 +211,50 @@ class CMS
             
             loginModal.style.display = "none";
 
-
             this.userID = aData.data[0];
             this.userName = aData.data[1];
+            this.userLevel = aData.data[2];
 
-            let btnUsername = document.getElementById("loggedin-username");
-            btnUsername.innerHTML = this.userName + ' <i class="fas fa-chevron-down"></i>';
-
-            let navUsername = document.getElementById("nav-username");
-            navUsername.classList.remove("hidden");
-
-            let navNotLoggedIn = document.getElementById("nav-notloggedin");
-            navNotLoggedIn.classList.add("hidden");
-
-            this.iconSearch.classList.remove("hidden");
-            this.inputSearchText.classList.remove("search-hidden");
-            this.inputSearchText.classList.add("search-show");
-
-            let loginContainer = document.getElementById("login-container");
-            loginContainer.classList.add("hidden");
-            
-            let logoutContainer = document.getElementById("logout-container");
-            logoutContainer.classList.remove("hidden");
-
-            let title = document.getElementById("title");
-            title.innerText = "Welcome " + this.userName;
-
-            this.divMessage.innerText = "You are now logged in";
-
-            this.divMessage.classList.toggle("hidden", false);
-
-            let loginMessage = document.getElementById("login-message");
-            loginMessage.innerText = "";
-            loginMessage.classList.add("hidden");
+            this.UpdateLoggedInElements(this.userName, this.userLevel);
         }
+    }
+
+    UpdateLoggedInElements(aUserName, aUserLevel)
+    {
+        let btnUsername = document.getElementById("loggedin-username");
+        btnUsername.innerHTML = aUserName + ' <i class="fas fa-chevron-down"></i>';
+
+        let navUsername = document.getElementById("nav-username");
+        navUsername.classList.remove("hidden");
+
+        let navNotLoggedIn = document.getElementById("nav-notloggedin");
+        navNotLoggedIn.classList.add("hidden");
+
+        this.iconSearch.classList.remove("hidden");
+        this.inputSearchText.classList.remove("search-hidden");
+        this.inputSearchText.classList.add("search-show");
+
+        let loginContainer = document.getElementById("login-container");
+        loginContainer.classList.add("hidden");
+        
+        let logoutContainer = document.getElementById("logout-container");
+        logoutContainer.classList.remove("hidden");
+
+        let title = document.getElementById("title");
+        title.innerText = "Welcome " + aUserName;
+
+        this.divMessage.innerHTML = "You are now logged in.";
+
+        if (aUserLevel == 1)
+        {
+            this.divMessage.innerHTML += "<br> You are logged in with admin privilegies.";
+        }
+
+        this.divMessage.classList.toggle("hidden", false);
+
+        let loginMessage = document.getElementById("login-message");
+        loginMessage.innerText = "";
+        loginMessage.classList.add("hidden");
     }
 
     async LogOut()
@@ -648,7 +672,7 @@ class CMS
 
         this.ClearElement(divOptions);
 
-        if (aData.data.createdBy == this.userID)
+        if (aData.data.createdBy == this.userID || this.userLevel == 1)
         {
             let linkEdit = this.DOMFactory.CreateLinkWithText("", "javascript:void(0)", divOptions);
             linkEdit.addEventListener("click", () => this.ShowEditEntry(aData.data.entryID));
@@ -752,8 +776,7 @@ class CMS
 
         formEdit.addEventListener("submit", this.cmdEdit);
     }
-
-    
+  
     UpdateLikes(aID, aLikesData)
     {
         console.log(this.userID);
@@ -809,7 +832,7 @@ class CMS
         this.HandleLikeUpdate(data);
     }
 
-    //Uses same functionality as above, move to separate functions if we have time.
+    //Uses same functionality as UpdateLikes(), move to separate functions if we have time.
     HandleLikeUpdate(aData)
     {
         if (aData.data == 1)
