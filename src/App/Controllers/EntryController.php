@@ -31,7 +31,7 @@ class EntryController
         try 
         {
             $statement = $this->db->prepare("SELECT e.*, u.username, (SELECT COUNT(*) FROM comments WHERE e.entryID=entryID) AS comments FROM entries AS e LEFT JOIN users AS u ON e.createdBy=u.userID ORDER BY entryID LIMIT :num");
-            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
+            $statement->bindParam(":num", $limit, PDO::PARAM_INT);
             $statement->execute();
 
             return $statement->fetchAll();
@@ -63,18 +63,18 @@ class EntryController
 
     public function AddEntry($user_id, $body)
     { 
-        $title = $body['title'];
-        $content = $body['content'];
+        $title = $body["title"];
+        $content = $body["content"];
         $created_at = date("Y-m-d H:i:s");
             
         $statement = $this->db->prepare("INSERT INTO entries (title, content, createdBy, createdAt) VALUES (:title, :content, :userID, :createdAt)");
-        $statement->bindParam(':title', $title);
-        $statement->bindParam(':content', $content);
-        $statement->bindParam(':userID', $user_id); 
-        $statement->bindParam(':createdAt', $created_at); 
+        $statement->bindParam(":title", $title);
+        $statement->bindParam(":content", $content);
+        $statement->bindParam(":userID", $user_id); 
+        $statement->bindParam(":createdAt", $created_at); 
         $statement->execute();
 
-        return ['id' => (int)$this->db->lastInsertId()];
+        return ["id" => (int)$this->db->lastInsertId()];
     }
 
     public function DeleteEntry($id)
@@ -97,8 +97,8 @@ class EntryController
     {
         try 
         {
-            $title = $body['title'];
-            $content = $body['content'];
+            $title = $body["title"];
+            $content = $body["content"];
 
             $statement = $this->db->prepare("UPDATE entries 
             SET title=:title, content=:content 

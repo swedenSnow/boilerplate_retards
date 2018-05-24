@@ -32,7 +32,7 @@ class CommentsController
         try 
         {
             $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID LIMIT :num");
-            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
+            $statement->bindParam(":num", $limit, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll();
 
@@ -49,7 +49,7 @@ class CommentsController
         try 
         {
             $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID WHERE commentID=:id");
-            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
 
             return $statement->fetchAll();
@@ -64,18 +64,18 @@ class CommentsController
     {
         try 
         {
-            $entry_id = $body['id'];
-            $content = $body['content'];
+            $entry_id = $body["id"];
+            $content = $body["content"];
             $created_at = date("Y-m-d H:i:s");
                 
             $statement = $this->db->prepare("INSERT INTO comments (entryID, content, createdBy, createdAt) VALUES (:entryID, :content, :userID, :createdAt)");
-            $statement->bindParam(':entryID', $entry_id);
-            $statement->bindParam(':content', $content);
-            $statement->bindParam(':userID', $user_id); 
-            $statement->bindParam(':createdAt', $created_at); 
+            $statement->bindParam(":entryID", $entry_id);
+            $statement->bindParam(":content", $content);
+            $statement->bindParam(":userID", $user_id); 
+            $statement->bindParam(":createdAt", $created_at); 
             $statement->execute();
     
-            return ['id' => (int)$this->db->lastInsertId()];
+            return ["id" => (int)$this->db->lastInsertId()];
         }
         catch (PDOException $e)
         {
@@ -104,7 +104,7 @@ class CommentsController
         try 
         {
             $statement = $this->db->prepare("SELECT c.*, u.username FROM comments AS c LEFT JOIN users AS u ON c.createdBy=u.userID WHERE entryID=:id");
-            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll();
 
