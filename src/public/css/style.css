@@ -1065,8 +1065,7 @@ div {
   padding: 1rem 2rem;
 }
 
-.comment-deleted
-{
+.comment-deleted {
   opacity: 0.3;
 }
 
@@ -1139,4 +1138,15 @@ div {
     color: white;
     background: transparent;
     border: 0;
+}
+
+#form-addcomment textarea {
+  height: 5em;
+  border-radius: 8px;
+  border: 1px solid grey;
+  margin-bottom: 1rem;
+}
+
+#form-addcomment button {
+  width: 50%;
 }
