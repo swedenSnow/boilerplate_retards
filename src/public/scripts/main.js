@@ -195,7 +195,7 @@ class CMS
             this.userName = aData.data[1];
             this.userLevel = aData.data[2];
 
-            loginMessage = "You are now logged in.";
+            let loginMessage = "You are now logged in.";
 
             this.UpdateLoggedInElements(this.userName, this.userLevel, loginMessage);
         }
@@ -676,7 +676,6 @@ class CMS
         return data;
     }
     
-    
     async FetchData(aURL)
     {
         const postOptions = 
@@ -753,8 +752,11 @@ class CMS
 
         this.ClearElement(divCreatedBy);
 
+        
+        divCreatedBy.innerHTML = "Posted By: ";
         let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
         linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
+
 
         divCreatedAt.innerText = aData.data.createdAt;
 
