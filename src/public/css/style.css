@@ -1153,12 +1153,17 @@ div {
   border-radius: 8px;
   border: 1px solid grey;
   margin-bottom: 1rem;
-  width: 100%;
+  min-width: 34%;
 }
 
 #form-addcomment button {
-  min-width: 45%;
-  width: 45%;
+  min-width: 35%;
+  text-align: center;
+  width: 37%;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  padding: 0px 10px;
 }
 
 #entry-single-content {
@@ -1167,7 +1172,7 @@ div {
 
 #entry-comments {
   padding: 1rem;
-  width: 85%;
+  width: 31%;
   border: 1px dashed;
   background: pink;
   margin-bottom: 2rem;
@@ -1190,7 +1195,20 @@ div {
   width: 100%;
 }
 
+#entry-comments {
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+}
 #entry-comments p {
   font-size: 1.2rem;
   margin-top: 0.5rem;
+}
+
+#entries-delete-confirmation {
+  padding: 1rem;
+}
+
+#entries-delete-button {
+  margin-left: 1rem;
 }
