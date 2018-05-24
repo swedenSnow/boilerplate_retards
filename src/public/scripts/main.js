@@ -147,8 +147,10 @@ class CMS
             this.userID = data.loggedin[0];
             this.userName = data.loggedin[1];
             this.userLevel = data.loggedin[2];
+
+            let loginMessage = "Welcome, you were automatically logged in.";
             
-            this.UpdateLoggedInElements(this.userName, this.userLevel);
+            this.UpdateLoggedInElements(this.userName, this.userLevel, loginMessage);
         }
     }
 
@@ -193,14 +195,16 @@ class CMS
             this.userName = aData.data[1];
             this.userLevel = aData.data[2];
 
-            this.UpdateLoggedInElements(this.userName, this.userLevel);
+            let loginMessage = "You are now logged in.";
+
+            this.UpdateLoggedInElements(this.userName, this.userLevel, loginMessage);
         }
     }
 
-    UpdateLoggedInElements(aUserName, aUserLevel)
+    UpdateLoggedInElements(aUserName, aUserLevel, aLoginMessage)
     {
         let btnUsername = document.getElementById("loggedin-username");
-        btnUsername.innerHTML = aUserName + ' <i class="fas fa-chevron-down"></i>';
+        btnUsername.innerHTML = aUserName + ' <i class="fas fa-sort-down"></i>';
 
         let navUsername = document.getElementById("nav-username");
         navUsername.classList.remove("hidden");
@@ -221,7 +225,7 @@ class CMS
         let title = document.getElementById("title");
         title.innerText = "Welcome, " + aUserName;
 
-        this.divMessage.innerHTML = "You are now logged in.";
+        this.divMessage.innerHTML = aLoginMessage;
 
         if (aUserLevel == 1)
         {
@@ -277,7 +281,7 @@ class CMS
     
             const data = await this.PostData(url, postOptions);
     
-            this.HandleRegisterResult();
+            this.HandleRegisterResult(data);
             
         }
         else
@@ -288,12 +292,11 @@ class CMS
         }
     }
 
-    HandleRegisterResult()
+    HandleRegisterResult(aData)
     {
         this.inputRegisterUsername.value = "";
         this.inputRegisterPassword.value = "";
 
-        
         this.inputRegisterUsername.style.borderColor = "";
         this.inputRegisterUsername.style.backgroundColor = "";
         
@@ -307,8 +310,15 @@ class CMS
             
         let registerMessage = document.getElementById("register-message");
         registerMessage.classList.remove("hidden");
-        registerMessage.innerText = "Registration successfull.";
-
+        
+        if (aData.error != undefined)
+        {
+            registerMessage.innerText = "ERROR: " + aData.error;
+        }
+        else
+        {
+            registerMessage.innerText = "Registration successfull.";    
+        }
     }
 
     async Search(aFormData)
@@ -434,18 +444,34 @@ class CMS
 
     async PostEntry(aFormData)
     {
-        const url = "api/entries";
-        
-        const postOptions = 
+        let postMessage = document.getElementById("post-message");
+        if (this.inputPostTitle.value.length < 2)
         {
-            method: "POST",
-            body: aFormData,
-            credentials: "include"
+            postMessage.innerText = "Title must be at least 2 characters long";
+            postMessage.classList.remove("hidden");
         }
-
-        const data = await this.PostData(url, postOptions);
-
-        this.HandleEntryPosted(data);
+        else if (this.inputPostContent.value.length < 5)
+        {
+            postMessage.innerText = "Content must be at least 5 characters long";
+            postMessage.classList.remove("hidden");
+        }
+        else
+        {
+            const url = "api/entries";
+            
+            const postOptions = 
+            {
+                method: "POST",
+                body: aFormData,
+                credentials: "include"
+            }
+    
+            const data = await this.PostData(url, postOptions);
+    
+            this.HandleEntryPosted(data);
+            
+            postMessage.classList.add("hidden");
+        }
     }
 
     HandleEntryPosted(aData)
@@ -467,18 +493,35 @@ class CMS
 
     async UpdateEntry(aID, aFormData)
     {
-        const url = "/api/entries/" + aID;
-
-        const postOptions = 
+        let editMessage = document.getElementById("edit-message");
+        if (this.inputEditTitle.value.length < 2)
         {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'title=' + aFormData.get("title") + '&content=' + aFormData.get("content")
-         }
-
-        const data = await this.PostData(url, postOptions);
-
-        this.HandleEntryUpdated(data);
+            editMessage.innerText = "Title must be at least 2 characters long";
+            editMessage.classList.remove("hidden");
+        }
+        else if (this.inputEditContent.value.length < 5)
+        {
+            editMessage.innerText = "Content must be at least 5 characters long";
+            editMessage.classList.remove("hidden");
+        }
+        else
+        {
+            
+            const url = "/api/entries/" + aID;
+        
+            const postOptions = 
+            {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'title=' + aFormData.get("title") + '&content=' + aFormData.get("content")
+            }
+        
+            const data = await this.PostData(url, postOptions);
+        
+            this.HandleEntryUpdated(data);
+            
+            editMessage.classList.add("hidden");
+        }
     }
 
     HandleEntryUpdated(aData)
@@ -633,7 +676,6 @@ class CMS
         return data;
     }
     
-    
     async FetchData(aURL)
     {
         const postOptions = 
@@ -710,8 +752,11 @@ class CMS
 
         this.ClearElement(divCreatedBy);
 
+        
+        divCreatedBy.innerHTML = "Posted By: ";
         let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
         linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
+
 
         divCreatedAt.innerText = aData.data.createdAt;
 
