@@ -1053,7 +1053,6 @@ div {
   font-family: var(--primary-font);
 }
 
-<<<<<<< HEAD
 #entries-search-results-container a {
   margin-bottom: 1rem;
   font-family: var(--primary-font);
@@ -1063,9 +1062,16 @@ div {
   padding: 1rem 2rem;
 }
 
-=======
->>>>>>> 9fb184b19a93b5161b41ae6ed11fc5afe2beb9a2
 .comment-deleted
 {
   opacity: 0.3;
+}
+
+
+
+#loggedin-username
+{
+    color: white;
+    background: transparent;
+    border: 0;
 }
