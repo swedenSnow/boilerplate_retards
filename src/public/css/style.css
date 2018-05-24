@@ -1040,3 +1040,8 @@ a:focus {
 #entries-search-results-text {
   margin-top: 3rem;
 }
+
+.comment-deleted
+{
+  opacity: 0.3;
+}
