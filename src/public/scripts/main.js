@@ -147,8 +147,10 @@ class CMS
             this.userID = data.loggedin[0];
             this.userName = data.loggedin[1];
             this.userLevel = data.loggedin[2];
+
+            let loginMessage = "Welcome, you were automatically logged in.";
             
-            this.UpdateLoggedInElements(this.userName, this.userLevel);
+            this.UpdateLoggedInElements(this.userName, this.userLevel, loginMessage);
         }
     }
 
@@ -193,11 +195,13 @@ class CMS
             this.userName = aData.data[1];
             this.userLevel = aData.data[2];
 
-            this.UpdateLoggedInElements(this.userName, this.userLevel);
+            loginMessage = "You are now logged in.";
+
+            this.UpdateLoggedInElements(this.userName, this.userLevel, loginMessage);
         }
     }
 
-    UpdateLoggedInElements(aUserName, aUserLevel)
+    UpdateLoggedInElements(aUserName, aUserLevel, aLoginMessage)
     {
         let btnUsername = document.getElementById("loggedin-username");
         btnUsername.innerHTML = aUserName + ' <i class="fas fa-sort-down"></i>';
@@ -221,7 +225,7 @@ class CMS
         let title = document.getElementById("title");
         title.innerText = "Welcome " + aUserName;
 
-        this.divMessage.innerHTML = "You are now logged in.";
+        this.divMessage.innerHTML = aLoginMessage;
 
         if (aUserLevel == 1)
         {
