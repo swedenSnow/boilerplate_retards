@@ -118,6 +118,10 @@
                         <li><a href="javascript:void(0)" class="close-links" id="user-postentry">Post entry →</a></li>
                         <br>
                         <br>
+                        <br>
+                        <li><a href="javascript:void(0)" class="close-links" id="user-allusers">All users →</a></li>
+                        <br>
+                        <br>
                         <li></li>
                         <br>
                         <br>
@@ -138,7 +142,7 @@
         </div>
         <div id="entries-all" class="hidden">
             <div>
-                <strong class="form-title">All entries</strong>
+                <strong id="entries-all-title" class="form-title">All entries</strong>
             </div>
         <div id="entries-all-container">
         </div>

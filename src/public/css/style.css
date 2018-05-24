@@ -1061,3 +1061,8 @@ div {
 #entries-search-results-container {
   padding: 1rem 2rem;
 }
+
+.comment-deleted
+{
+  opacity: 0.3;
+}

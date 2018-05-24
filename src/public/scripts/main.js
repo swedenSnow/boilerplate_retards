@@ -1,5 +1,3 @@
-//debugger;
-
 class DOMFactory
 {
     constructor()
@@ -48,11 +46,13 @@ class CMS
         let linkMyEntries = document.getElementById("user-myentries");
         let linkAllEntries = document.getElementById("user-allentries");
         let linkPostEntry = document.getElementById("user-postentry");
+        let linkAllUsers = document.getElementById("user-allusers");
         let linkLogout = document.getElementById("user-logout");
         
         linkMyEntries.addEventListener("click", () => this.ShowMyEntries());
         linkAllEntries.addEventListener("click", () => this.ShowAllEntries());
         linkPostEntry.addEventListener("click", () => this.ShowPostEntry());
+        linkAllUsers.addEventListener("click", () => this.ShowAllUsers());
         linkLogout.addEventListener("click", () => this.LogOut());
 
         //Content Divs
@@ -139,7 +139,7 @@ class CMS
 
     async CheckLoggedIn()
     {
-        const url = '/isloggedin';
+        const url = "/isloggedin";
 
         const data = await this.FetchData(url);
 
@@ -155,13 +155,13 @@ class CMS
 
     async Login(aFormData)
     {
-        const url = '/login';
+        const url = "/login";
 
         const postOptions = 
         {
-            method: 'POST',
+            method: "POST",
             body: aFormData,
-            credentials: 'include'
+            credentials: "include"
         }
 
         const data = await this.PostData(url, postOptions);
@@ -186,7 +186,7 @@ class CMS
         }
         else
         {         
-            let loginModal = document.getElementById('login-modal-container');
+            let loginModal = document.getElementById("login-modal-container");
             
             loginModal.style.display = "none";
 
@@ -238,7 +238,7 @@ class CMS
 
     async LogOut()
     {
-        const url = '/logout';
+        const url = "/logout";
 
         const data = await this.FetchData(url);
 
@@ -268,11 +268,11 @@ class CMS
     {
         if (this.inputRegisterUsername.length >= 5)
         {
-            const url = '/register';
+            const url = "/register";
 
             const postOptions = 
             {
-                method: 'POST',
+                method: "POST",
                 body: aFormData
             }
     
@@ -295,7 +295,7 @@ class CMS
         this.inputRegisterPassword.value = "";
 
         
-        let loginModal = document.getElementById('login-modal-container');
+        let loginModal = document.getElementById("login-modal-container");
             
         loginModal.style.display = "none";
         registerMessage.classList.add("hidden");
@@ -306,20 +306,17 @@ class CMS
         let searchText = this.inputSearchText.value;
         if (searchText != "")
         {
-            const url = 'api/search';
+            const url = "api/search";
         
             const postOptions = 
             {
-                method: 'POST',
+                method: "POST",
                 body: aFormData
             }
     
             const data = await this.PostData(url, postOptions);
     
             this.PresentSearchResults(searchText, data);
-    
-            //Debug Purpose
-            console.log(data);
     
             this.DivToggle("ShowSearchResults");
         }
@@ -334,12 +331,12 @@ class CMS
         this.DivToggle("ShowAllEntries");
 
         let divAllEntriesTitle = document.getElementById("entries-all-title");
-        divAllEntriesTitle.innerHTML = "<strong>All Entries</strong>";
+        divAllEntriesTitle.innerHTML = "All Entries";
     }
 
     async GetAllEntries()
     {
-        const url = '/api/entries';
+        const url = "/api/entries";
 
         const data = await this.FetchData(url);
 
@@ -355,12 +352,12 @@ class CMS
         this.DivToggle("ShowAllEntries");
 
         let divAllEntriesTitle = document.getElementById("entries-all-title");
-        divAllEntriesTitle.innerHTML = "<strong>My Entries</strong>";
+        divAllEntriesTitle.innerHTML = "My Entries";
     }
 
     async GetMyEntries()
     {
-        const url = 'api/' + this.userName + '/entries';
+        const url = "api/" + this.userName + "/entries";
 
         const data = await this.FetchData(url);
 
@@ -386,9 +383,7 @@ class CMS
     {
         //Loading Div.
 
-        console.log("ID: " + aID);
         let data = await this.GetEntry(aID);
-        console.log(data);
 
         await this.UpdateEntryEdit(data);
 
@@ -397,7 +392,7 @@ class CMS
 
     async GetEntry(aID)
     {
-        const url = '/api/entries/' + aID;
+        const url = "/api/entries/" + aID;
 
         const data = await this.FetchData(url);
 
@@ -406,7 +401,7 @@ class CMS
 
     async GetCommentsForID(aID)
     {        
-        const url = '/api/entries/comments/' + aID;
+        const url = "/api/entries/comments/" + aID;
 
         const data = await this.FetchData(url);
 
@@ -415,11 +410,9 @@ class CMS
 
     async GetLikesData(aID)
     {
-        const url = 'api/likes/' + aID;
+        const url = "api/likes/" + aID;
 
         const data = await this.FetchData(url);
-
-        console.log(data);
 
         return data;
     }
@@ -431,17 +424,16 @@ class CMS
 
     async PostEntry(aFormData)
     {
-        const url = 'api/entries';
+        const url = "api/entries";
         
         const postOptions = 
         {
-            method: 'POST',
+            method: "POST",
             body: aFormData,
-            credentials: 'include'
+            credentials: "include"
         }
 
         const data = await this.PostData(url, postOptions);
-        console.log(data);
 
         this.HandleEntryPosted(data);
     }
@@ -465,7 +457,7 @@ class CMS
 
     async UpdateEntry(aID, aFormData)
     {
-        const url = '/api/entries/' + aID;
+        const url = "/api/entries/" + aID;
 
         const postOptions = 
         {
@@ -476,15 +468,11 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-        console.log(data);
-
         this.HandleEntryUpdated(data);
     }
 
     HandleEntryUpdated(aData)
     {
-        console.log(aData);
-
         this.divMessage.innerText = "Entry with title: " + this.inputEditTitle.value + " was updated.";
         this.DivToggle("ShowMessage")
 
@@ -509,12 +497,12 @@ class CMS
 
     async DeleteEntry(aID, aEntryTitle)
     {
-        const url = '/api/entries/' + aID;
+        const url = "/api/entries/" + aID;
 
         const postOptions = 
         {
-            method: 'DELETE',
-            credentials: 'include'
+            method: "DELETE",
+            credentials: "include"
         }
 
         const data = await this.PostData(url, postOptions);
@@ -524,20 +512,18 @@ class CMS
 
     HandleEntryDeleted(aID, aEntryTitle, aData)
     {
-        console.log(aData);
-
         this.divMessage.innerText = "Entry with title: " + aEntryTitle + " was deleted.";
         this.DivToggle("ShowMessage")
     }
 
     async DeleteComment(aID, aElement, aDeleteLink)
     {
-        const url = '/api/comments/' + aID;
+        const url = "/api/comments/" + aID;
 
         const postOptions = 
         {
-            method: 'DELETE',
-            credentials: 'include'
+            method: "DELETE",
+            credentials: "include"
         }
 
         const data = await this.PostData(url, postOptions);
@@ -562,7 +548,7 @@ class CMS
 
     async GetAllUsers()
     {
-        const url = 'api/users';
+        const url = "api/users";
 
         const data = await this.FetchData(url);
 
@@ -573,13 +559,13 @@ class CMS
     {
         aFormData.append("id", aID);
 
-        const url = '/api/comments';
+        const url = "/api/comments";
 
         const postOptions = 
         {
-            method: 'POST',
+            method: "POST",
             body: aFormData,
-            credentials: 'include'
+            credentials: "include"
         }
 
         const data = await this.PostData(url, postOptions);
@@ -601,17 +587,17 @@ class CMS
 
         if (this.userName == aUserName)
         {
-            divAllEntriesTitle.innerHTML = "<strong>My Entries</strong>";
+            divAllEntriesTitle.innerHTML = "My Entries";
         }
         else
         {
-            divAllEntriesTitle.innerHTML = "<strong>" + aUserName + "'s Entries</strong>";
+            divAllEntriesTitle.innerHTML = aUserName + "'s Entries";
         }
     }
 
     async GetEntriesByUsername(aUserName)
     {
-        const url = '/api/' + aUserName + '/entries';
+        const url = "/api/" + aUserName + "/entries";
 
         const data = await this.FetchData(url);
 
@@ -626,21 +612,13 @@ class CMS
 
         return data;
     }
-
-    async PostDataDebug(aURL, aPostoptions)
-    {
-        const response = await fetch(aURL, aPostoptions);
-        const data = await response.text();
-        console.log(data);
-        return data;
-    }
-
+    
     async FetchData(aURL)
     {
         const postOptions = 
         {
-            method: 'GET',
-            credentials: 'include'
+            method: "GET",
+            credentials: "include"
         }
 
         const response = await fetch(aURL, postOptions);
@@ -799,7 +777,7 @@ class CMS
 
         this.ClearElement(divSearchResults);
 
-        divSearchResultsText.innerText = "Search word: " + aSearchText + " returned " + aData.data.length + " results.";
+        divSearchResultsText.innerHTML = "Search word: " + aSearchText + "<br>returned " + aData.data.length + " results.";
 
         for (let result of aData.data)
         {
@@ -839,12 +817,9 @@ class CMS
   
     UpdateLikes(aID, aLikesData)
     {
-        console.log(this.userID);
         if (aLikesData.data != null)
         {
             let like = aLikesData.data.find(o => Number(o.userID) === Number(this.userID));
-            console.log(aLikesData.data);
-            console.log(like);
 
             if (like != undefined)
             {
@@ -878,14 +853,12 @@ class CMS
 
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
-
-            console.log("Likes: " + aLikesData.data.length);
         }
     }
 
     async UpdateLikeState(aID, aLikeState)
     {
-        const url = 'api/likes/' + aID + "?like=" + aLikeState;
+        const url = "api/likes/" + aID + "?like=" + aLikeState;
 
         const data = await this.FetchData(url);
 
@@ -930,7 +903,6 @@ class CMS
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
         }
-        console.log(aData);
     }
 
     DivToggle(aString)
@@ -958,8 +930,6 @@ class CMS
 
     async CheckUsernameAvailability()
     {
-        console.log(this.inputRegisterUsername.value);
-
         let username = this.inputRegisterUsername.value;
         
         let icon = document.getElementById("register-username-icon");
@@ -969,8 +939,6 @@ class CMS
         if (username.length >= 6)
         {          
             const data = await this.GetUserNameAvailability(username);
-
-            console.log(data);
 
             if (data.data == true)
             {
@@ -1005,9 +973,7 @@ class CMS
 
     async GetUserNameAvailability(aUserName)
     {
-        console.log("Checking username: " + aUserName);
-
-        const url = 'register/' + aUserName;
+        const url = "register/" + aUserName;
 
         const data = await this.FetchData(url);
 
@@ -1017,7 +983,7 @@ class CMS
 }
 
 // Get the modal
-const modal = document.getElementById('login-modal-container');
+const modal = document.getElementById("login-modal-container");
 
 const modalTwo = document.getElementById("login-modal-container-2");
 // button that opens the modal
