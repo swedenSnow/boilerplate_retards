@@ -540,10 +540,12 @@ class CMS
         let confirmationDiv = document.getElementById("entries-delete-confirmation");
         let confirmationButtonDiv = document.getElementById("entries-delete-button");
 
-        confirmationDiv.innerText = "Are you sure you want to delete entry titled: " + aEntryTitle;
+        confirmationDiv.innerHTML = "Are you sure you want to delete entry with title:<br>" + aEntryTitle;
+
+        this.ClearElement(confirmationButtonDiv);
 
         let confirmButton = this.DOMFactory.CreateElementAndAppendTo("button", confirmationButtonDiv)
-        confirmButton.innerText = "Yes";
+        confirmButton.innerText = "Yes, I want to delete it! ";
 
         confirmButton.addEventListener("click", () => this.DeleteEntry(aID, aEntryTitle));
     }
@@ -752,11 +754,9 @@ class CMS
 
         this.ClearElement(divCreatedBy);
 
-        
         divCreatedBy.innerHTML = "Posted By: ";
         let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
         linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
-
 
         divCreatedAt.innerText = aData.data.createdAt;
 
@@ -1075,6 +1075,7 @@ const logoutButton = document.getElementById("user-logout");
 const linksClose = document.getElementsByClassName("close-links")[0];
 const linksCloseTwo = document.getElementsByClassName("close-links")[1];
 const linksCloseThree = document.getElementsByClassName("close-links")[2];
+const linksCloseFour = document.getElementsByClassName("close-links")[3];
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
@@ -1108,6 +1109,10 @@ linksCloseTwo.onclick = function() {
     modalTwo.style.display = "none";
 }
 linksCloseThree.onclick = function() {
+    modalTwo.style.display = "none";
+}
+
+linksCloseFour.onclick = function() {
     modalTwo.style.display = "none";
 }
 
