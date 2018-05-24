@@ -1133,10 +1133,11 @@ div {
   margin-bottom: 8px;
   text-shadow: 1px 1px grey;
 }
-#loggedin-username {
-  color: white;
-  background: transparent;
-  border: 0;
+#loggedin-username
+{
+    color: white;
+    background: transparent;
+    border: 0;
 }
 
 #form-addcomment textarea {

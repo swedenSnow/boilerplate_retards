@@ -265,6 +265,8 @@ class CMS
 
         let title = document.getElementById("title");
         title.innerText = "Boilerplate Retards";
+
+        this.DivToggle("HideAll");
     }
 
     async Register(aFormData)
