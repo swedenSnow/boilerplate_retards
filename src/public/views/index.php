@@ -161,6 +161,7 @@
             <div id="entry-single-options"></div>
             <div id="entry-likes">
                 <i id="entry-like" class="far fa-thumbs-up"></i>
+                <div id="entry-numlikes"></div>
             </div>
         </div>
 
@@ -179,10 +180,9 @@
     </div>
 
     <div id="entries-post" class="hidden">
+        <strong class="form-title">Post Entry</strong>
         <div id="post-message" class="hidden">
         </div>
-        
-        <strong class="form-title">Post Entry</strong>
         <form id="form-post" method="POST">
             <label for="post-title" class="post-form-title"><strong>Title:</strong></label>
             <input id="post-title" type="text" name="title">

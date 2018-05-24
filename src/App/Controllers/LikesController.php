@@ -18,7 +18,7 @@ class LikesController
         {   
             //"SELECT COUNT(*) as num_likes FROM likes WHERE entryID=:id"
             $statement = $this->db->prepare("SELECT * FROM likes WHERE entryID=:id");
-            $statement->execute([':id' => $entry_id]);
+            $statement->execute([":id" => $entry_id]);
 
             return $statement->fetchAll();
         }
@@ -33,8 +33,8 @@ class LikesController
         try 
         {
             $statement = $this->db->prepare("SELECT * FROM likes WHERE entryID=:entryID AND userID=:userID");
-            $statement->bindParam(':entryID', $entry_id); 
-            $statement->bindParam(':userID', $user_id); 
+            $statement->bindParam(":entryID", $entry_id); 
+            $statement->bindParam(":userID", $user_id); 
             $statement->execute();
 
             if ($statement->rowCount() > 0)

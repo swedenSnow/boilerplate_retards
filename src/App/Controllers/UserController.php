@@ -40,7 +40,7 @@ class UserController
         {
             //Not returning Password
             $statement = $this->db->prepare("SELECT u.userID, u.username, u.createdAt FROM users AS u LIMIT :num");
-            $statement->bindParam(':num', $limit, PDO::PARAM_INT);
+            $statement->bindParam(":num", $limit, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll();
 
@@ -105,8 +105,8 @@ class UserController
     // Responses...
     public function Register($body)
     {
-        $username = $body['username'];
-        $hashed_password = password_hash($body['password'], PASSWORD_DEFAULT);
+        $username = $body["username"];
+        $hashed_password = password_hash($body["password"], PASSWORD_DEFAULT);
         $created_at = date("Y-m-d H:i:s");
         
         $statement = $this->db->prepare("INSERT INTO users(username, password, createdAt) 
@@ -127,10 +127,10 @@ class UserController
         $statement->execute(); 
 
         $user = $statement->fetch();
-        if (password_verify($body['password'], $user['password'])) 
+        if (password_verify($body["password"], $user["password"])) 
         {
-            $_SESSION['loggedIn'] = true;
-            $_SESSION['userID'] = $user['userID'];
+            $_SESSION["loggedIn"] = true;
+            $_SESSION["userID"] = $user["userID"];
 
             return true;
         }

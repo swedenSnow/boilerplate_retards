@@ -127,7 +127,6 @@ class CMS
         this.inputCommentContent    = document.getElementById("comment-content");
 
         
-        this.inputRegisterUsername = document.getElementById("register-username");
         this.inputRegisterPassword = document.getElementById("register-password");
 
         //Buttons
@@ -266,7 +265,7 @@ class CMS
 
     async Register(aFormData)
     {
-        if (this.inputRegisterUsername.length >= 5)
+        if (this.inputRegisterUsername.value.length >= 5)
         {
             const url = "/register";
 
@@ -285,7 +284,7 @@ class CMS
         {
             let registerMessage = document.getElementById("register-message");
             registerMessage.classList.remove("hidden");
-            registerMessage.value = "ERROR: Username must be at least 6 characters long.";
+            registerMessage.innerText = "ERROR: Username must be at least 6 characters long.";
         }
     }
 
@@ -295,10 +294,21 @@ class CMS
         this.inputRegisterPassword.value = "";
 
         
+        this.inputRegisterUsername.style.borderColor = "";
+        this.inputRegisterUsername.style.backgroundColor = "";
+        
+        let icon = document.getElementById("register-username-icon");
+
+        icon.classList.add("fa-user");
+        icon.classList.toggle("fa-times", false);
+        icon.classList.toggle("fa-check", false);
+        
         let loginModal = document.getElementById("login-modal-container");
             
-        loginModal.style.display = "none";
-        registerMessage.classList.add("hidden");
+        let registerMessage = document.getElementById("register-message");
+        registerMessage.classList.remove("hidden");
+        registerMessage.innerText = "Registration successfull.";
+
     }
 
     async Search(aFormData)
@@ -613,6 +623,17 @@ class CMS
         return data;
     }
     
+    async PostDataDebug(aURL, aPostoptions)
+    {
+        const response = await fetch(aURL, aPostoptions);
+        
+        const data = await response.text();
+        console.log(data);
+
+        return data;
+    }
+    
+    
     async FetchData(aURL)
     {
         const postOptions = 
@@ -655,15 +676,6 @@ class CMS
 
         this.ClearElement(divAllEntriesContainer);
 
-        for (let entry of aData.data)
-        {
-            let divEntry = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
-
-            let divEntryTitle = this.DOMFactory.CreateElementAndAppendTo("div", divEntry);
-            let linkTitle = this.DOMFactory.CreateLinkWithText(entry.title, "javascript:void(0)", divEntryTitle);
-            linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
-        }
-
         if (aData.data.length == 0)
         {
             let divEntryInformation = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
@@ -675,6 +687,14 @@ class CMS
             this.DOMFactory.CreateTextAndAppendTo("Showing " + aData.data.length + " posts.", divEntryInformation);
         }
 
+        for (let entry of aData.data)
+        {
+            let divEntry = this.DOMFactory.CreateElementAndAppendTo("div", divAllEntriesContainer);
+
+            let divEntryTitle = this.DOMFactory.CreateElementAndAppendTo("div", divEntry);
+            let linkTitle = this.DOMFactory.CreateLinkWithText(entry.title, "javascript:void(0)", divEntryTitle);
+            linkTitle.addEventListener("click", () => this.ShowSingleEntry(entry.entryID));
+        }
     }
 
     PresentEntryAsHTML(aData)
@@ -853,6 +873,9 @@ class CMS
 
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
+
+            let numLikes = document.getElementById("entry-numlikes");
+            numLikes.innerText = aLikesData.data.length + " users like this.";
         }
     }
 
@@ -866,7 +889,7 @@ class CMS
     }
 
     //Uses same functionality as UpdateLikes(), move to separate functions if we have time.
-    HandleLikeUpdate(aData)
+    async HandleLikeUpdate(aData)
     {
         if (aData.data == 1)
         {
@@ -902,6 +925,12 @@ class CMS
 
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
+
+            
+        let likesData = await this.GetLikesData(aData.entryID);
+        
+        let numLikes = document.getElementById("entry-numlikes");
+        numLikes.innerText = likesData.data.length + " users like this.";
         }
     }
 
