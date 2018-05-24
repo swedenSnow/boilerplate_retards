@@ -968,7 +968,8 @@ main {
   font-family: var(--primary-font);
 }
 
-#post-title {
+#post-title,
+#edit-title {
   border-radius: 8px;
   height: 2em;
   margin-bottom: 2rem;
@@ -997,13 +998,15 @@ main {
   border-radius: 8px;
 }
 
-#post-content {
+#post-content,
+#edit-content {
   height: 15em;
   border-radius: 0.5rem;
   margin-bottom: 2rem;
 }
 
-#btn-post {
+#btn-post,
+#btn-edit {
   width: 40%;
   margin: auto;
 }
@@ -1053,19 +1056,6 @@ div {
   font-family: var(--primary-font);
 }
 
-<<<<<<< HEAD
-#entries-search-results-container a {
-  margin-bottom: 1rem;
-  font-family: var(--primary-font);
-}
-
-#entries-search-results-container {
-  padding: 1rem 2rem;
-}
-
-=======
->>>>>>> 9fb184b19a93b5161b41ae6ed11fc5afe2beb9a2
-.comment-deleted
-{
+.comment-deleted {
   opacity: 0.3;
 }
