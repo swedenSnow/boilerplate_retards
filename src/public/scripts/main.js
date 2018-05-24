@@ -1,5 +1,3 @@
-//debugger;
-
 class DOMFactory
 {
     constructor()
@@ -318,9 +316,6 @@ class CMS
     
             this.PresentSearchResults(searchText, data);
     
-            //Debug Purpose
-            console.log(data);
-    
             this.DivToggle("ShowSearchResults");
         }
     }
@@ -386,9 +381,7 @@ class CMS
     {
         //Loading Div.
 
-        console.log("ID: " + aID);
         let data = await this.GetEntry(aID);
-        console.log(data);
 
         await this.UpdateEntryEdit(data);
 
@@ -419,8 +412,6 @@ class CMS
 
         const data = await this.FetchData(url);
 
-        console.log(data);
-
         return data;
     }
 
@@ -441,7 +432,6 @@ class CMS
         }
 
         const data = await this.PostData(url, postOptions);
-        console.log(data);
 
         this.HandleEntryPosted(data);
     }
@@ -476,15 +466,11 @@ class CMS
 
         const data = await this.PostData(url, postOptions);
 
-        console.log(data);
-
         this.HandleEntryUpdated(data);
     }
 
     HandleEntryUpdated(aData)
     {
-        console.log(aData);
-
         this.divMessage.innerText = "Entry with title: " + this.inputEditTitle.value + " was updated.";
         this.DivToggle("ShowMessage")
 
@@ -524,8 +510,6 @@ class CMS
 
     HandleEntryDeleted(aID, aEntryTitle, aData)
     {
-        console.log(aData);
-
         this.divMessage.innerText = "Entry with title: " + aEntryTitle + " was deleted.";
         this.DivToggle("ShowMessage")
     }
@@ -631,7 +615,6 @@ class CMS
     {
         const response = await fetch(aURL, aPostoptions);
         const data = await response.text();
-        console.log(data);
         return data;
     }
 
@@ -839,12 +822,9 @@ class CMS
   
     UpdateLikes(aID, aLikesData)
     {
-        console.log(this.userID);
         if (aLikesData.data != null)
         {
             let like = aLikesData.data.find(o => Number(o.userID) === Number(this.userID));
-            console.log(aLikesData.data);
-            console.log(like);
 
             if (like != undefined)
             {
@@ -878,8 +858,6 @@ class CMS
 
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
-
-            console.log("Likes: " + aLikesData.data.length);
         }
     }
 
@@ -930,7 +908,6 @@ class CMS
                 this.iconLikes.addEventListener("click", this.cmdLike);
             }
         }
-        console.log(aData);
     }
 
     DivToggle(aString)
@@ -958,8 +935,6 @@ class CMS
 
     async CheckUsernameAvailability()
     {
-        console.log(this.inputRegisterUsername.value);
-
         let username = this.inputRegisterUsername.value;
         
         let icon = document.getElementById("register-username-icon");
@@ -969,8 +944,6 @@ class CMS
         if (username.length >= 6)
         {          
             const data = await this.GetUserNameAvailability(username);
-
-            console.log(data);
 
             if (data.data == true)
             {
@@ -1005,8 +978,6 @@ class CMS
 
     async GetUserNameAvailability(aUserName)
     {
-        console.log("Checking username: " + aUserName);
-
         const url = 'register/' + aUserName;
 
         const data = await this.FetchData(url);
