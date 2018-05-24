@@ -1073,6 +1073,7 @@ const logoutButton = document.getElementById("user-logout");
 const linksClose = document.getElementsByClassName("close-links")[0];
 const linksCloseTwo = document.getElementsByClassName("close-links")[1];
 const linksCloseThree = document.getElementsByClassName("close-links")[2];
+const linksCloseFour = document.getElementsByClassName("close-links")[3];
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
@@ -1106,6 +1107,10 @@ linksCloseTwo.onclick = function() {
     modalTwo.style.display = "none";
 }
 linksCloseThree.onclick = function() {
+    modalTwo.style.display = "none";
+}
+
+linksCloseFour.onclick = function() {
     modalTwo.style.display = "none";
 }
 
