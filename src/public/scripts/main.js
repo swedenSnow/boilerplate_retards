@@ -542,6 +542,8 @@ class CMS
 
         confirmationDiv.innerHTML = "Are you sure you want to delete entry with title:<br>" + aEntryTitle;
 
+        this.ClearElement(confirmationButtonDiv);
+
         let confirmButton = this.DOMFactory.CreateElementAndAppendTo("button", confirmationButtonDiv)
         confirmButton.innerText = "Yes, I want to delete it! ";
 
