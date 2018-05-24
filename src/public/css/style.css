@@ -1070,7 +1070,6 @@ div {
   opacity: 0.3;
 }
 
-<<<<<<< HEAD
 #entries-single-container {
   margin-left: 1rem;
   font-size: 1.2rem;
@@ -1134,11 +1133,10 @@ div {
   color: pink;
   margin-bottom: 8px;
   text-shadow: 1px 1px grey;
-=======
+}
 #loggedin-username
 {
     color: white;
     background: transparent;
     border: 0;
->>>>>>> 6155b0159f31655b2a4ecef34b4003b2f5084e47
 }
