@@ -905,17 +905,14 @@ button.user-logout {
   height: 2em;
 }
 
-button.user-logout:hover,
-button.user-logout:focus {
+button.user-logout,
+.logout-btn:hover,
+button.user-logout,
+.logout-btn:focus {
   background-color: red;
   opacity: 0.8;
   border-radius: 0px 13px 0px 13px;
   font-size: 1.1rem;
-}
-
-.comment-deleted
-{
-  opacity: 0.3;
 }
 
 main {
@@ -1009,9 +1006,6 @@ main {
   margin: auto;
 }
 
-#form-post {
-}
-
 #entries-all-container {
   padding: 1rem;
   font-size: 2rem;
@@ -1034,4 +1028,15 @@ a:focus {
 #entries-all-container div {
   margin-top: 3rem;
   margin-bottom: 3rem;
+}
+#entries-search-results {
+  text-align: center;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex-flow: column wrap;
+}
+
+#entries-search-results-text {
+  margin-top: 3rem;
 }

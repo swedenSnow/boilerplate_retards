@@ -137,13 +137,8 @@
         <div id="entries-message" class="hidden">
         </div>
         <div id="entries-all" class="hidden">
-<<<<<<< HEAD
             <div>
                 <strong class="form-title">All entries</strong>
-=======
-            <div id="entries-all-title">
-                <strong>All entries</strong>
->>>>>>> 5aea9f84d70fa17e2cc1a56b67ac7a2ca3652778
             </div>
         <div id="entries-all-container">
         </div>
