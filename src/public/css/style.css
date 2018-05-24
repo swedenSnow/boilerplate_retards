@@ -968,7 +968,8 @@ main {
   font-family: var(--primary-font);
 }
 
-#post-title {
+#post-title,
+#edit-title {
   border-radius: 8px;
   height: 2em;
   margin-bottom: 2rem;
@@ -997,13 +998,15 @@ main {
   border-radius: 8px;
 }
 
-#post-content {
+#post-content,
+#edit-content {
   height: 15em;
   border-radius: 0.5rem;
   margin-bottom: 2rem;
 }
 
-#btn-post {
+#btn-post,
+#btn-edit {
   width: 40%;
   margin: auto;
 }
@@ -1066,8 +1069,6 @@ div {
 {
   opacity: 0.3;
 }
-
-
 
 #loggedin-username
 {

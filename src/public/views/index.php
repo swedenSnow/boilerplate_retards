@@ -199,9 +199,9 @@
         <div>
             <strong  class="form-title">Edit Entry</strong>
             <form id="form-edit" method="POST">
-                <label for="edit-title"><strong>Title:</strong></label>
+                <label for="edit-title" class="post-form-title"><strong>Title:</strong></label>
                 <input id="edit-title" type="text" name="title">
-                <label for="edit-content"><strong>Content:</strong></label>
+                <label for="edit-content" class="post-form-title"><strong>Content:</strong></label>
                 <textarea id="edit-content" name="content"></textarea>     
                 <button id="btn-edit" form="form-edit">Edit</button>
             </form>
