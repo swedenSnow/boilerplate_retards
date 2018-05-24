@@ -754,7 +754,7 @@ class CMS
 
         this.ClearElement(divCreatedBy);
 
-        divCreatedBy.innerHTML = "Posted By: ";
+        divCreatedBy.innerHTML = "Posted By:<br>";
         let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
         linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
 
