@@ -341,6 +341,7 @@ template {
 [hidden] {
   display: none;
 }
+
 /* END NORMALIZER
 --------------------------------------------------------------------- */
 
@@ -356,7 +357,7 @@ font-family: 'Cinzel', serif;
   --primary-font: "Raleway", sans-serif;
   --title-font: "Abril Fatface", cursive;
   --root-font: 1rem;
-  --title-fontsize: 4rem;
+  --title-fontsize: 3rem;
 }
 html {
   -webkit-text-size-adjust: 100%;
@@ -425,7 +426,6 @@ nav li {
 
 button {
   border-radius: 0.5rem;
-  /* background-color: #bdbdbd; */
   background-color: #648c95;
   color: black;
   transition: color 0.5s linear;
@@ -464,21 +464,6 @@ button:hover {
   border: none;
 }
 
-.search-btn button:hover {
-  /* border-radius: 0.5rem;
-  background-color: transparent;
-  border: none; */
-}
-
-/* input {
-  border: 1px #000000 solid;
-  padding-left: 1em;
-  font-weight: bolder;
-  color: #000000;
-  height: 2.5em;
-  width: 10em;
-} */
-
 .btn-login,
 .btn-register {
   border-radius: 13px 0px 13px 0px;
@@ -499,12 +484,6 @@ header,
   justify-content: center;
   height: 20rem;
   width: 100%;
-  /* background: linear-gradient(135deg, #ccc 25%, transparent 25%) -50px 0,
-    linear-gradient(225deg, #eee 25%, transparent 25%) -50px 0,
-    linear-gradient(315deg, #ccc 25%, transparent 25%),
-    linear-gradient(45deg, #eee 25%, transparent 25%);
-  background-size: 100px 100px;
-  background-color: #fff; */
   background: linear-gradient(
       30deg,
       #bdbdbd 12%,
@@ -559,7 +538,7 @@ header,
 }
 
 .title {
-  font-size: 3rem;
+  font-size: var(--title-fontsize);
   letter-spacing: 5px;
   text-transform: uppercase;
   text-align: center;
@@ -656,16 +635,16 @@ h1::after {
   -ms-transition: all 0.25s ease-out;
   -o-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out;
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
   transition: all 500ms ease;
   justify-content: flex-start;
   transition: all 0.5s;
@@ -736,14 +715,6 @@ h1::after {
   transition: all 500ms ease;
   padding-top: calc(20px + 1.4em);
 }
-/* 
-.user-menu {
-  display: flex;
-  flex-flow: row wrap;
-  height: 100%;
-  width: 100%;
-  padding: 0 3rem;
-} */
 
 .login-modal-content,
 input {
@@ -764,20 +735,6 @@ form {
   height: 2em;
   width: 98%;
   outline-style: none;
-  /* background: pink;
-  background-color: pink;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(#e64bd1),
-    to(#248ebf)
-  );
-  background-image: -webkit-linear-gradient(top, pink, lightblue);
-  background-image: -moz-linear-gradient(top, #d46a15, #bf4c24);
-  background-image: -ms-linear-gradient(top, #d46a15, #bf4c24);
-  background-image: -o-linear-gradient(top, #d46a15, #bf4c24);
-  background-image: linear-gradient(top, #d46a15, #bf4c24); */
 }
 
 .login-head {
@@ -819,9 +776,6 @@ form {
 }
 
 #input-search {
-  /* -webkit-transition: all 1s;
-  -moz-transition: all 1s;
-  transition: all 0.5s ease-out; */
   padding-right: 0;
   position: relative;
   right: 0;
@@ -837,31 +791,6 @@ form {
 .search-show {
   width: 180px;
   transition: 2s ease-in-out;
-}
-/* Tablet */
-@media screen and (max-width: 768px) {
-  .login-modal-container {
-    justify-content: center;
-  }
-  .title {
-    font-size: 2.5rem;
-  }
-}
-
-@media screen and (max-width: 530px) {
-  .title {
-    font-size: 1.5rem;
-  }
-  h1::after {
-    margin-left: 0;
-  }
-  h1:before,
-  h1:after {
-    flex: 1;
-    height: 3px;
-    content: "";
-    background-color: black;
-  }
 }
 
 .user-menu {
@@ -1211,4 +1140,31 @@ div {
 
 #entries-delete-button {
   margin-left: 1rem;
+}
+
+/* far from enough but a beginning */
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .login-modal-container {
+    justify-content: center;
+  }
+  .title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  h1::after {
+    margin-left: 0;
+  }
+  h1:before,
+  h1:after {
+    flex: 1;
+    height: 3px;
+    content: "";
+    background-color: black;
+  }
 }
