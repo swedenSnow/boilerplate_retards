@@ -797,7 +797,7 @@ class CMS
                 let divUserCreated = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
                 divUserCreated.innerText = "Created at: " + comment.createdAt;
     
-                let divCommentContent = this.DOMFactory.CreateElementAndAppendTo("div", divComment);
+                let divCommentContent = this.DOMFactory.CreateElementAndAppendTo("p", divComment);
                 divCommentContent.innerText = comment.content;
 
                 if (comment.createdBy == this.userID || this.userLevel == 1)

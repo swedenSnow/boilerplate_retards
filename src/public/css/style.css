@@ -925,7 +925,7 @@ main {
   flex-flow: row wrap;
   padding: 2rem;
   margin: 0;
-  height: 67vh;
+  min-height: 100vh;
   background: #444;
   background-image: -webkit-gradient(
     linear,
@@ -1078,11 +1078,13 @@ div {
   margin-left: 1rem;
   font-size: 1.2rem;
   margin-top: 3rem;
+  width: 50%;
 }
 
 #entry-single-created-by a {
   font-size: 2rem;
   color: pink;
+  text-shadow: 1px 1px #000;
 }
 
 #entry-single-title div {
@@ -1090,6 +1092,9 @@ div {
   font-family: var(--primary-font);
 }
 
+#entry-single-title {
+  font-size: 2rem;
+}
 #entry-single-options {
   margin-top: 3rem;
   display: flex;
@@ -1100,14 +1105,13 @@ div {
 .fa-edit {
   content: "\f044";
   font-size: 2rem;
-  /* align-self: flex-end; */
+  margin-right: 2rem;
 }
 
 .fa-trash-alt {
   content: "\f2ed";
   font-size: 2rem;
   width: 100%;
-  margin-left: 2rem;
 }
 .fa-thumbs-up {
   content: "\f164";
@@ -1138,11 +1142,10 @@ div {
   margin-bottom: 8px;
   text-shadow: 1px 1px grey;
 }
-#loggedin-username
-{
-    color: white;
-    background: transparent;
-    border: 0;
+#loggedin-username {
+  color: white;
+  background: transparent;
+  border: 0;
 }
 
 #form-addcomment textarea {
@@ -1150,8 +1153,44 @@ div {
   border-radius: 8px;
   border: 1px solid grey;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 #form-addcomment button {
-  width: 50%;
+  min-width: 45%;
+  width: 45%;
+}
+
+#entry-single-content {
+  margin-bottom: 2rem;
+}
+
+#entry-comments {
+  padding: 1rem;
+  width: 85%;
+  border: 1px dashed;
+  background: pink;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+}
+
+#entry-comments a {
+  font-size: 1.2rem;
+  color: #000;
+  text-shadow: 1px 1px #000;
+}
+
+#entry-comments i {
+  color: white;
+}
+
+#entry-comments div {
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+}
+
+#entry-comments p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
 }
