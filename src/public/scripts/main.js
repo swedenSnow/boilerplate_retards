@@ -219,7 +219,7 @@ class CMS
         logoutContainer.classList.remove("hidden");
 
         let title = document.getElementById("title");
-        title.innerText = "Welcome " + aUserName;
+        title.innerText = "Welcome, " + aUserName;
 
         this.divMessage.innerHTML = "You are now logged in.";
 
@@ -658,7 +658,7 @@ class CMS
         {
             let divUser = this.DOMFactory.CreateElementAndAppendTo("div", divUsersContainer);
 
-            let divUserName = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
+            let divUserName = this.DOMFactory.CreateElementAndAppendTo("p", divUser);
             divUserName.innerText = user.username;
 
             let divUserCreated = this.DOMFactory.CreateElementAndAppendTo("div", divUser);
