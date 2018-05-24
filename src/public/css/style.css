@@ -1056,6 +1056,23 @@ div {
   font-family: var(--primary-font);
 }
 
-.comment-deleted {
+#entries-search-results-container a {
+  margin-bottom: 1rem;
+  font-family: var(--primary-font);
+}
+
+#entries-search-results-container {
+  padding: 1rem 2rem;
+}
+
+.comment-deleted
+{
   opacity: 0.3;
+}
+
+#loggedin-username
+{
+    color: white;
+    background: transparent;
+    border: 0;
 }
