@@ -540,10 +540,10 @@ class CMS
         let confirmationDiv = document.getElementById("entries-delete-confirmation");
         let confirmationButtonDiv = document.getElementById("entries-delete-button");
 
-        confirmationDiv.innerText = "Are you sure you want to delete entry titled: " + aEntryTitle;
+        confirmationDiv.innerHTML = "Are you sure you want to delete entry with title:<br>" + aEntryTitle;
 
         let confirmButton = this.DOMFactory.CreateElementAndAppendTo("button", confirmationButtonDiv)
-        confirmButton.innerText = "Yes";
+        confirmButton.innerText = "Yes, I want to delete it! ";
 
         confirmButton.addEventListener("click", () => this.DeleteEntry(aID, aEntryTitle));
     }
@@ -752,11 +752,9 @@ class CMS
 
         this.ClearElement(divCreatedBy);
 
-        
         divCreatedBy.innerHTML = "Posted By: ";
         let linkUserName = this.DOMFactory.CreateLinkWithText(aData.data.username, "javascript:void(0)", divCreatedBy);
         linkUserName.addEventListener("click", () => this.ShowPostsByUsername(aData.data.username));
-
 
         divCreatedAt.innerText = aData.data.createdAt;
 

@@ -210,7 +210,7 @@
 
     <div id="entries-delete" class="hidden">
         <div>
-            <strong class="form-title">>Delete Entry</strong>
+            <strong class="form-title">Delete Entry</strong>
         </div>
         <div id="entries-delete-confirmation">
         </div>
