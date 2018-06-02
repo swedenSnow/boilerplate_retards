@@ -5,8 +5,11 @@ Mikael Larsson & Häni Abu Zeid
 
 ### Screenshots
 <img width="1622" alt="skarmavbild 2018-06-02 kl 10 09 23" src="https://user-images.githubusercontent.com/31956031/40872438-969de704-664e-11e8-9fbf-2fcfb1453d88.png">
+
 <img width="376" alt="skarmavbild 2018-06-02 kl 10 17 46" src="https://user-images.githubusercontent.com/31956031/40872439-979e46e4-664e-11e8-805a-4ce2d152484c.png">
-<img width="708" alt="skarmavbild 2018-05-24 kl 19 42 05" src="https://user-images.githubusercontent.com/31956031/40872446-a67dcd74-664e-11e8-886b-f41b0f2415c2.png">
+
+<img width="596" alt="skarmavbild 2018-06-02 kl 10 34 44" src="https://user-images.githubusercontent.com/31956031/40872565-aee61668-6650-11e8-8445-908f0d5ef01b.png">
+
 <img width="880" alt="skarmavbild 2018-06-02 kl 10 11 41" src="https://user-images.githubusercontent.com/31956031/40872447-ab1084f8-664e-11e8-8995-b5a7386c916a.png">
 
 
