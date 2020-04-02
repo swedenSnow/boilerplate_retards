@@ -42,4 +42,4 @@ https://github.com/swedenSnow/boilerplate_retards
 
 - [x] Koden är välstrukturerad och håller hög nivå både i gränssnittet och i det bakomliggande APIet. Det ska inte ligga kvar något "utvecklingskod" och produkten ska kännas färdig. Minimal upprepning av kod och det är tydligt vad varje del i applikationen gör. Gränssnittet är användarvänligt och lättförstått.
 - [x] APIet kan även hantera att man kan gilla ett inlägg.
-* Rollbaserad autentisering. Man kan ha två olika roller som en användare: `admin`/`user` och dessa har olika rättigheter. Ni begränsar användaren på något sätt så att denna inte kan t.ex. ta bort vad som helst medan en `admin` kan göra vad som helst med APIt.
+-[x] Rollbaserad autentisering. Man kan ha två olika roller som en användare: `admin`/`user` och dessa har olika rättigheter. Ni begränsar användaren på något sätt så att denna inte kan t.ex. ta bort vad som helst medan en `admin` kan göra vad som helst med APIt.
